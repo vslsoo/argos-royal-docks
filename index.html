@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Argos Royal Docks Atlas</title>
+<meta name="description" content="Interactive atlas for a new Argos location in Royal Docks, Newham: study-area selection, Opportunity Area, walking catchments of existing Argos stores and planned population growth.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+/* Layout: planning-atlas tool. Top bar with section tabs, map canvas left, wide evidence sheet right; stacks on phones. Light theme only. */
+:root{
+  color-scheme:light;
+  --bg:#F6F5F1; --surface:#FFFFFF; --ink:#1F1E1B; --muted:#66645D; --line:#E2DFD7;
+  --oa:#1F1E1B; --ctx:#B8B6AD; --ctx-line:#8F8D85;
+  --iso:#6B4FBB;
+  --ct:#D9702E; --pd:#C2378F; --rest:#A8A69E; --accent:#C2378F;
+  --f-display:"Unbounded","Golos Text",system-ui,sans-serif;
+  --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sheet:560px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.45;display:flex;flex-direction:column;font-variant-numeric:tabular-nums;
+  padding-top:env(safe-area-inset-top,0px)}
+header.top{background:var(--surface);border-bottom:1px solid var(--line);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px;
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px}
+.brand{display:flex;flex-direction:column;gap:1px}
+.brand b{font-family:var(--f-display);font-weight:600;font-size:15px;letter-spacing:.01em}
+.brand span{font-size:12px;color:var(--muted)}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap}
+nav.tabs button{font:inherit;font-weight:500;font-size:13px;border:1px solid var(--line);background:transparent;color:var(--ink);padding:7px 14px;border-radius:999px;cursor:pointer}
+nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+nav.tabs button:focus-visible,.chip:focus-within,.row:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) var(--sheet)}
+.mapcol{position:relative;min-width:0;min-height:0;border-right:1px solid var(--line)}
+#map{position:absolute;inset:0;background:#EDEBE6}
+.leaflet-container{font-family:var(--f-body)}
+.layers-card{position:absolute;z-index:800;top:12px;left:56px;background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.12);padding:10px 12px 8px;display:flex;flex-direction:column;gap:5px;font-size:12.5px;max-width:calc(100% - 72px)}
+.layers-card label,.lc-static{display:flex;align-items:center;gap:7px;cursor:pointer;white-space:nowrap}
+.lc-static{cursor:default;padding-left:20px}
+.layers-card input{margin:0;accent-color:var(--ink)}
+.lc-title{font-family:var(--f-display);font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.sw{display:inline-block;width:16px;height:12px;border-radius:2px;flex:none}
+.sw.sq{width:10px;height:10px;border-radius:0;background:var(--ink);border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.3)}
+.lc-fold{align-self:flex-start;font:inherit;font-size:11.5px;color:var(--muted);background:none;border:0;padding:2px 0;cursor:pointer;text-decoration:underline}
+.layers-card.folded > :not(.lc-title):not(.lc-fold){display:none}
+.reset{position:absolute;z-index:800;right:12px;top:12px;font:inherit;font-size:12.5px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.reset:focus-visible,.lc-fold:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.intro{display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.intro h1{font-family:var(--f-display);font-weight:600;font-size:21px;line-height:1.3;margin:0;text-wrap:balance}
+.intro p{margin:0;color:#3c3b36;max-width:68ch}
+.sheet{overflow-y:auto;background:var(--surface);padding-block:20px 32px;padding-left:24px;padding-right:max(24px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:26px;min-width:0}
+.sheet h2{font-family:var(--f-display);font-weight:600;font-size:16px;margin:0 0 4px;letter-spacing:.01em;text-wrap:balance}
+.sub{color:var(--muted);font-size:13px;margin:0}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.kpi{border-top:2px solid var(--ink);padding-top:8px}
+.kpi b{display:block;font-size:24px;font-weight:700;letter-spacing:-.01em}
+.kpi span{font-size:12px;color:var(--muted);line-height:1.3;display:block}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12.5px;margin:10px 0 6px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.rows{display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"nm num" "pic pic" "plan plan";gap:3px 10px;align-items:baseline;padding:8px 10px;border-radius:6px;cursor:pointer}
+.row:hover,.row.hl{background:#F1EFEA}
+.row .nm{grid-area:nm;font-size:13px;color:var(--muted)}
+.row.sel .nm{color:var(--ink);font-weight:700;font-size:14px}
+.row .num{grid-area:num;text-align:right;font-size:13px;color:var(--muted);white-space:nowrap}
+.row.sel .num{color:var(--ink)}
+.row .num b{font-weight:600}
+.row svg{grid-area:pic;height:28px;width:auto;max-width:100%;display:block;overflow:visible;margin-top:2px}
+.row .plan{grid-area:plan;font-size:12px;color:var(--muted)}
+.row.sel .plan{color:var(--ink)}
+.note{font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.45}
+.src{font-size:12px;color:var(--muted);font-style:italic;margin:8px 0 0;line-height:1.45}
+.src a,.layers a{color:inherit}
+.block p{margin:0 0 6px;max-width:68ch}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:6px 0 0;font-size:13.5px}
+.facts dt{font-weight:700;white-space:nowrap}
+.facts dd{margin:0}
+footer.layers{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;line-height:1.5}
+/* map layers */
+.lf-river{fill:#A9CFEA;fill-opacity:.85;stroke:none}
+.lf-iso20{fill:var(--iso);fill-opacity:.14;stroke:var(--iso);stroke-opacity:.35;stroke-width:1}
+.lf-iso15{fill:var(--iso);fill-opacity:.24;stroke:var(--iso);stroke-opacity:.6;stroke-width:1.2}
+.lf-ctx{fill:var(--ctx);fill-opacity:.45;stroke:var(--ctx-line);stroke-width:1}
+.lf-ctx.hl{fill-opacity:.75;stroke:var(--ink);stroke-width:2}
+.lf-ct{fill:var(--ct);fill-opacity:.6;stroke:var(--ct);stroke-width:2.6}
+.lf-pd{fill:var(--pd);fill-opacity:.6;stroke:var(--pd);stroke-width:2.6}
+.lf-ct.hl,.lf-pd.hl{fill-opacity:.82;stroke:var(--ink)}
+.lf-oa{fill:none;stroke:var(--oa);stroke-width:2;stroke-dasharray:7 5}
+.lf-tun-halo{stroke:#fff;stroke-width:7;stroke-linecap:round;fill:none}
+.lf-tun{stroke:var(--ink);stroke-width:2.4;stroke-dasharray:3 3;fill:none}
+.store{width:12px;height:12px;background:var(--ink);border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.leaflet-tooltip.lbl{background:rgba(255,255,255,.82);border:0;box-shadow:none;color:#4a4943;font-size:11.5px;text-align:center;line-height:1.2;padding:1px 4px;white-space:nowrap;border-radius:3px}
+.leaflet-tooltip.lbl-sel{background:#fff;color:var(--ink);font-weight:700;font-size:13.5px;border:2px solid var(--c);border-radius:8px;padding:4px 9px;text-align:center;line-height:1.25;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.leaflet-tooltip.slbl{background:#fff;color:var(--ink);border:0;box-shadow:0 1px 3px rgba(0,0,0,.15);font-size:11.5px;padding:1px 5px;line-height:1.3}
+.leaflet-tooltip.lbl::before,.leaflet-tooltip.lbl-sel::before,.leaflet-tooltip.slbl::before{display:none}
+.leaflet-tooltip.tip{background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:8px;box-shadow:0 4px 18px rgba(0,0,0,.14);font-size:12.5px;padding:8px 10px;line-height:1.5;white-space:nowrap}
+.tip b{font-size:13.5px}
+.tip .k{color:var(--muted)}
+.zoom-hide .ctxlbl,.zoom-hide .stlbl{display:none}
+@media (max-width:1180px){:root{--sheet:460px}}
+@media (max-width:980px){
+  main{display:flex;flex-direction:column}
+  .mapcol{border-right:0;border-bottom:1px solid var(--line)}
+  .mapcol{height:68vh;flex:none}
+  .sheet{overflow:visible;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+}
+@media (max-width:440px){.kpi b{font-size:18px}.kpis{gap:10px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><b>Argos · Royal Docks</b><span>Huff-model location study for a new Argos in Newham, London</span></div>
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" aria-selected="true" data-section="study-area">Study area</button>
+  </nav>
+</header>
+
+<main id="section-study-area">
+  <section class="mapcol">
+    <div id="map" role="region" aria-label="Map of Royal Docks"></div>
+    <div class="layers-card" role="group" aria-label="Map layers">
+      <div class="lc-title">Layers</div>
+      <div class="lc-static"><i class="sw" style="background:rgba(217,112,46,.6);border:2px solid var(--ct)"></i>Canning Town</div>
+      <div class="lc-static"><i class="sw" style="background:rgba(194,55,143,.6);border:2px solid var(--pd)"></i>Pontoon Dock</div>
+      <label><input type="checkbox" id="ly-ctx" checked><i class="sw" style="background:rgba(184,182,173,.55);border:1px solid var(--ctx-line)"></i>Other MSOAs in the OA</label>
+      <label><input type="checkbox" id="ly-oa" checked><i class="sw" style="border:2px dashed var(--oa);background:transparent"></i>Opportunity Area (GLA)</label>
+      <label><input type="checkbox" id="ly-iso" checked><i class="sw" style="background:rgba(107,79,187,.38);border:1px solid rgba(107,79,187,.7)"></i>Walk to Argos: 15 min<i class="sw" style="background:rgba(107,79,187,.14);border:1px solid rgba(107,79,187,.4);margin-left:6px"></i>20 min</label>
+      <label><input type="checkbox" id="ly-st" checked><i class="sw sq"></i>Argos stores</label>
+      <label><input type="checkbox" id="ly-lbl" checked><i class="sw" style="border:0;background:transparent;font-size:11px;line-height:12px;text-align:center">Aa</i>Labels</label>
+      <button type="button" id="lc-fold" class="lc-fold" aria-expanded="true">Hide</button>
+    </div>
+    <button type="button" id="reset" class="reset">Reset view</button>
+  </section>
+
+  <aside class="sheet" aria-label="Why this study area">
+    <div class="intro">
+      <div class="eyebrow">Study area · demand zone for the Huff model</div>
+      <h1>Canning Town and Pontoon Dock: the most populous parts of the growth area, with no Argos nearby</h1>
+      <p>The two selected MSOAs had <b>29,215</b> residents in mid-2024 (+21.0% since 2021; Newham overall +6.6%), with ≈ 21,500 more expected from approved and under-construction housing schemes. Both sit inside the Royal Docks and Beckton Riverside Opportunity Area, and neither is within a 20-minute walk of an Argos.</p>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><b>29,215</b><span>residents in the two selected MSOAs, mid-2024</span></div>
+      <div class="kpi"><b>+21.0%</b><span>growth 2021–24 (Newham +6.6%)</span></div>
+      <div class="kpi"><b>≈ +21,500</b><span>residents from approved and under-construction schemes</span></div>
+    </div>
+
+    <div class="block">
+      <h2>Residents today and planned growth</h2>
+      <p class="sub">MSOAs that overlap the Opportunity Area. One figure = 2,000 residents. Hover a row to find the area on the map; click to zoom to it.</p>
+      <div class="legend" id="pic-legend"></div>
+      <div class="rows" id="rows"></div>
+      <p class="note">Right: residents in mid-2024 and growth since mid-2021. Planned growth = homes in housing schemes × the MSOA's average household size in 2021. "Approved" covers approved and under-construction schemes; "pending" covers applications still under consideration. Beckton includes Gallions Reach (application 24/00989/OUT, 5,776 homes). Shown: MSOAs with at least 5% of their land area inside the OA.</p>
+      <p class="src">Sources: residents — ONS mid-year population estimates 2021 and 2024 by LSOA (Nomis NM_2014_1); households — ONS Census 2021, TS041; housing schemes — GLA Planning London Datahub.</p>
+    </div>
+
+    <div class="block">
+      <h2>Argos</h2>
+      <p>No part of either area lies within a 20-minute walk of any Argos. The nearest stores on the north bank are Stratford Broadway (2.0 km from Canning Town) and the Argos in Sainsbury's Beckton (2.4 km from Pontoon Dock). South of the river, the Woolwich store's walking zone reaches only the edge of North Woolwich, through the Woolwich Foot Tunnel.</p>
+      <p class="src">Sources: stores — OpenStreetMap (shop=catalogue), not yet checked against argos.co.uk; stores inside Sainsbury's identified by location; walking isochrones — Valhalla routing on OpenStreetMap data; distances are straight-line to the MSOA boundary.</p>
+    </div>
+
+    <div class="block">
+      <h2>GLA plan (OAPF, 2023)</h2>
+      <dl class="facts">
+        <dt>~95,000</dt><dd>residents across the whole Opportunity Area today</dd>
+        <dt>36,300</dt><dd>new homes by 2041 (higher-growth scenario; baseline 27,300)</dd>
+        <dt>Phasing</dt><dd>9,900 by 2027 · 17,700 by 2032 · 8,200 by 2041</dd>
+        <dt>Key schemes</dt><dd>Thameside West, 5,000 homes (Canning Town); Silvertown Quays, ~3,000 homes (Pontoon Dock)</dd>
+      </dl>
+      <p class="src">Source: GLA, <a href="https://data.london.gov.uk/dataset/royal-docks-and-beckton-riverside-oapf-e76oj" target="_blank" rel="noopener">Royal Docks and Beckton Riverside Opportunity Area Planning Framework (2023)</a>, Appendix A: 95,000 residents — p. 17; 36,300 homes — p. 59; phasing — p. 273; schemes — pp. 38–39.</p>
+    </div>
+
+    <footer class="layers">Canning Town = MSOA Newham 034 "Canning Town South &amp; Bow Creek"; Pontoon Dock = MSOA Newham 042 "Silvertown &amp; Royal Wharf". Map layers: Opportunity Area boundary — GLA; MSOA boundaries — ONS LSOA 2021 (BFE), names — House of Commons Library MSOA Names; River Thames — ONS BFE minus BFC boundaries; foot tunnel and stores — OpenStreetMap; walking isochrones — Valhalla/OSM; basemap — Esri World Light Gray Canvas (Esri, HERE, Garmin, © OpenStreetMap contributors). Map labels show residents in mid-2024 (ONS, Nomis NM_2014_1).</footer>
+  </aside>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="data/territory.js"></script>
+<script>
+(function(){
+const D=window.MAPDATA;
+const fmt=v=>Math.round(v).toLocaleString('en-GB');
+const pc=v=>(v>=0?'+':'')+v.toFixed(1)+'%';
+const r100=v=>v>=100?fmt(Math.round(v/100)*100):fmt(v);
+const CLS={'Newham 034':'ct','Newham 042':'pd'}, VAR={ct:'--ct',pd:'--pd'};
+const planTxt=p=>[p.pop_firm?`approved +${r100(p.pop_firm)}`:null,p.pop_pending?`pending +${r100(p.pop_pending)}`:null].filter(Boolean).join(' · ')||'no schemes';
+
+/* ---------- map ---------- */
+const map=L.map('map',{zoomSnap:.25,minZoom:11,maxZoom:17});
+L.control.scale({imperial:false,position:'bottomleft'}).addTo(map);
+const pane=(n,z)=>{map.createPane(n);map.getPane(n).style.zIndex=z};
+pane('river',290);pane('iso',300);pane('ctx',350);pane('sel',360);pane('oa',400);pane('labelsBase',420);pane('top',450);
+map.getPane('labelsBase').style.pointerEvents='none';
+const att='Basemap &copy; Esri World Light Gray Canvas (Esri, HERE, Garmin, &copy; OpenStreetMap contributors) · ONS · GLA';
+L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',{maxZoom:16,maxNativeZoom:16,attribution:att}).addTo(map);
+L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}',{maxZoom:18,maxNativeZoom:16,pane:'labelsBase',opacity:.8}).addTo(map);
+
+L.geoJSON(D.river,{pane:'river',style:{className:'lf-river'},interactive:false}).addTo(map);
+const iso=L.layerGroup([
+  L.geoJSON(D.iso20,{pane:'iso',style:{className:'lf-iso20'},interactive:false}),
+  L.geoJSON(D.iso15,{pane:'iso',style:{className:'lf-iso15'},interactive:false})]).addTo(map);
+const oa=L.geoJSON(D.oa,{pane:'oa',style:{className:'lf-oa'},interactive:false}).addTo(map);
+const tunnel=L.layerGroup([
+  L.geoJSON(D.tunnel,{pane:'top',style:{className:'lf-tun-halo'},interactive:false}),
+  L.geoJSON(D.tunnel,{pane:'top',style:{className:'lf-tun'},interactive:false})]).addTo(map);
+
+const polyById={},rowById={};
+const tipHtml=p=>`<b>${p.name}</b> <span class="k">· MSOA ${p.id}</span><br>`+
+  `Residents: <b>${fmt(p.pop2024)}</b> in 2024 <span class="k">(${fmt(p.pop2021)} in 2021, ${pc(p.growth)})</span><br>`+
+  `<span class="k">Land area inside the OA:</span> ${p.pct_oa.toFixed(0)}%<br>`+
+  `<span class="k">Planned growth:</span> ${planTxt(p)}<br>`+
+  `<span class="k">Homes in schemes:</span> ${fmt(p.homes_firm)} approved${p.homes_pending?`, ${fmt(p.homes_pending)} pending`:''}`;
+const ctxG=L.layerGroup().addTo(map), selG=L.layerGroup().addTo(map), lblG=L.layerGroup().addTo(map);
+const OFF={'Newham 030':[-10,-30],'Newham 031':[30,10]};
+D.msoa.forEach(f=>{
+  const p=f.properties, c=CLS[p.id];
+  const lyr=L.geoJSON(f,{pane:c?'sel':'ctx',style:{className:c?'lf-'+c:'lf-ctx'}});
+  lyr.bindTooltip(tipHtml(p),{sticky:true,className:'tip',direction:'top',offset:[0,-10]});
+  lyr.on('mouseover',()=>hl(p.id,true)).on('mouseout',()=>hl(p.id,false));
+  (c?selG:ctxG).addLayer(lyr); polyById[p.id]=lyr;
+  const t=L.tooltip({permanent:true,direction:'center',interactive:false,className:c?'lbl-sel':'lbl ctxlbl',offset:c?[0,0]:(OFF[p.id]||[0,0])})
+    .setLatLng(p.lab).setContent(`${p.name}<br>${fmt(p.pop2024)} residents`);
+  if(c) t.on('add',()=>{const el=t.getElement(); if(el) el.style.setProperty('--c',`var(${VAR[c]})`)});
+  lblG.addLayer(t);
+});
+lblG.addLayer(L.tooltip({permanent:true,direction:'right',className:'slbl stlbl',offset:[10,0]}).setLatLng([51.4966,0.0623]).setContent('Woolwich Foot Tunnel (pedestrian)'));
+const stG=L.layerGroup().addTo(map), stLbl=L.layerGroup().addTo(map);
+D.stores.forEach(f=>{
+  const [lon,lat]=f.geometry.coordinates, p=f.properties;
+  const full=p.name+(p.kind==="in Sainsbury's"?" (in Sainsbury's)":'');
+  const m=L.marker([lat,lon],{pane:'top',icon:L.divIcon({className:'',html:'<div class="store"></div>',iconSize:[16,16],iconAnchor:[8,8]}),keyboard:false});
+  m.bindTooltip(`<b>${full}</b>${p.addr?`<br><span class="k">${p.addr}</span>`:''}<br><span class="k">OpenStreetMap ${p.osm}</span>`,{className:'tip',direction:'top',offset:[0,-8]});
+  if(p.label) stLbl.addLayer(L.tooltip({permanent:true,direction:'right',offset:[10,0],className:'slbl stlbl'}).setLatLng([lat,lon]).setContent(full));
+  stG.addLayer(m);
+});
+map.fitBounds(L.geoJSON(D.oa).getBounds().pad(.15));
+const zoomCls=()=>map.getContainer().classList.toggle('zoom-hide',map.getZoom()<13.25);
+map.on('zoomend',zoomCls); zoomCls();
+
+document.getElementById('lc-fold').addEventListener('click',e=>{const c=e.target.closest('.layers-card');const f=c.classList.toggle('folded');e.target.textContent=f?'Show':'Hide';e.target.setAttribute('aria-expanded',String(!f))});
+const home=()=>map.fitBounds(L.geoJSON(D.oa).getBounds().pad(.15));
+document.getElementById('reset').addEventListener('click',home);
+const toggle=(id,layers)=>document.getElementById(id).addEventListener('change',e=>layers.forEach(l=>e.target.checked?l.addTo(map):map.removeLayer(l)));
+toggle('ly-oa',[oa]); toggle('ly-ctx',[ctxG]); toggle('ly-iso',[iso,tunnel]); toggle('ly-st',[stG,stLbl]); toggle('ly-lbl',[lblG]);
+document.getElementById('ly-ctx').addEventListener('change',e=>map.getContainer().classList.toggle('no-ctx',!e.target.checked));
+const st=document.createElement('style'); st.textContent='.no-ctx .ctxlbl{display:none}'; document.head.appendChild(st);
+
+function hl(id,on){
+  const l=polyById[id]; if(l) l.eachLayer(x=>{const el=x.getElement&&x.getElement(); if(el) el.classList.toggle('hl',on)});
+  const r=rowById[id]; if(r) r.classList.toggle('hl',on);
+}
+
+/* ---------- pictogram: one figure = 2,000 residents, continuous fill across layers ---------- */
+const U=2000, IW=13, IH=22, GAP=3.2;
+const personPath=x=>`<circle cx="${x+IW/2}" cy="4" r="3.6"/><rect x="${x+1.6}" y="9" width="${IW-3.2}" height="${IH-9}" rx="4"/>`;
+function iconRow(segs,color,uid){
+  let s0=0,out='',defs='',n=0;
+  segs.forEach(([v,style])=>{
+    if(v<=0) return; const e=s0+v/U;
+    for(let j=Math.floor(s0);j<Math.ceil(e);j++){
+      const a=Math.max(s0,j)-j, b=Math.min(e,j+1)-j, x=j*(IW+GAP), id=`c${uid}_${n++}`;
+      defs+=`<clipPath id="${id}"><rect x="${x+a*IW-(a===0?1:0)}" y="-1" width="${(b-a)*IW+(a===0?1:0)+(b===1?1:0)}" height="${IH+2}"/></clipPath>`;
+      const s=style==='solid'?`fill="${color}"`:style==='tint'?`fill="${color}" fill-opacity=".38"`:`fill="none" stroke="${color}" stroke-width="1.2"`;
+      out+=`<g clip-path="url(#${id})" ${s}>${personPath(x)}</g>`;
+    }
+    s0=e;
+  });
+  return `<defs>${defs}</defs>${out}`;
+}
+const leg=document.getElementById('pic-legend');
+[['solid','Residents 2024'],['tint','+ approved / under construction'],['outline','+ applications pending']].forEach(([s,t],i)=>
+  leg.insertAdjacentHTML('beforeend',`<span><svg width="${IW}" height="${IH}" viewBox="0 -1 ${IW} ${IH+2}" aria-hidden="true">${iconRow([[U,s]],'#77756e','L'+i)}</svg>${t}</span>`));
+const rowsEl=document.getElementById('rows'), SCALE_W=16*(IW+GAP);
+D.msoa.forEach((f,i)=>{
+  const p=f.properties, c=CLS[p.id], color=c?`var(${VAR[c]})`:'var(--rest)';
+  const el=document.createElement('div'); el.className='row'+(c?' sel':''); el.tabIndex=0;
+  el.setAttribute('aria-label',`${p.name}: ${fmt(p.pop2024)} residents, ${pc(p.growth)} since 2021; planned growth ${planTxt(p)}`);
+  el.innerHTML=`<div class="nm">${p.name}${p.id==='Newham 033'?'*':''}</div>`+
+    `<svg viewBox="0 -1 ${SCALE_W} ${IH+2}" preserveAspectRatio="xMinYMid meet" aria-hidden="true">${iconRow([[p.pop2024,'solid'],[p.pop_firm,'tint'],[p.pop_pending,'outline']],color,'r'+i)}</svg>`+
+    `<div class="num"><b>${fmt(p.pop2024)}</b> · ${pc(p.growth)}</div><div class="plan">Planned growth: ${planTxt(p)}</div>`;
+  el.addEventListener('mouseenter',()=>hl(p.id,true)); el.addEventListener('mouseleave',()=>hl(p.id,false));
+  el.addEventListener('focus',()=>hl(p.id,true)); el.addEventListener('blur',()=>hl(p.id,false));
+  el.addEventListener('click',()=>map.flyToBounds(polyById[p.id].getBounds().pad(.35),{duration:.6}));
+  el.addEventListener('keydown',e=>{if(e.key==='Enter') el.click()});
+  rowsEl.appendChild(el); rowById[p.id]=el;
+});
+
+/* ---------- sections: hash routing, ready for more tabs ---------- */
+function show(){const s=(location.hash||'#study-area').slice(1);
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.section===s||(!document.getElementById('section-'+s)&&b.dataset.section==='study-area'))));}
+document.querySelectorAll('nav.tabs button').forEach(b=>b.addEventListener('click',()=>{location.hash=b.dataset.section;show();setTimeout(()=>map.invalidateSize(),50)}));
+window.addEventListener('hashchange',show); show();
+})();
+</script>
+</body>
+</html>
