@@ -14,6 +14,7 @@
   color-scheme:light;
   --bg:#F6F5F1; --surface:#FFFFFF; --ink:#1F1E1B; --muted:#66645D; --line:#E2DFD7;
   --oa:#1F1E1B; --ctx:#B8B6AD; --ctx-line:#8F8D85;
+  --comp:#C8442A;
   --st:#5B3FA8; --cn:#0A8F7C; --cp:#937600;
   --ct:#D9702E; --pd:#C2378F; --rest:#A8A69E; --accent:#C2378F;
   --f-display:"Unbounded","Golos Text",system-ui,sans-serif;
@@ -46,6 +47,7 @@ main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) var(--
 .sw{display:inline-block;width:16px;height:12px;border-radius:2px;flex:none}
 .lc-fold{align-self:flex-start;font:inherit;font-size:11.5px;color:var(--muted);background:none;border:0;padding:2px 0;cursor:pointer;text-decoration:underline}
 .layers-card.folded > :not(.lc-title):not(.lc-fold){display:none}
+.layers-card.bl{top:auto;bottom:44px;left:12px}
 .reset{position:absolute;z-index:800;right:12px;top:12px;font:inherit;font-size:12.5px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08)}
 .reset:focus-visible,.lc-fold:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .intro{display:flex;flex-direction:column;gap:8px}
@@ -83,6 +85,18 @@ main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) var(--
 footer.layers{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;line-height:1.5}
 footer.layers ul{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
 footer.layers a{color:var(--ink)}
+[hidden]{display:none!important}
+.kpi.zero b{color:var(--comp)}
+.grps{display:flex;flex-direction:column;margin-top:6px}
+.grp{display:grid;grid-template-columns:28px minmax(0,1fr);gap:2px 10px;padding:9px 10px;border-radius:6px;cursor:pointer;align-items:baseline}
+.grp:hover,.grp.hl{background:#F1EFEA}
+.grp:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.grp .n{font-size:20px;font-weight:700;grid-row:span 2;text-align:right}
+.grp .t{font-weight:600}
+.grp .d{font-size:13px;color:#3c3b36}
+.also{font-size:13px;margin:10px 0 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.also li{display:flex;gap:8px;align-items:baseline}
+.also .sh{position:relative;top:1px}
 /* map layers */
 .lf-river{fill:#A9CFEA;fill-opacity:.85;stroke:none}
 .lf-iso{stroke-width:1}
@@ -115,6 +129,15 @@ footer.layers a{color:var(--ink)}
 .tip b{font-size:13.5px}
 .tip .k{color:var(--muted)}
 .zoom-mid .ctxlbl{display:none}
+.lf-study{fill:#1F1E1B;fill-opacity:.07;stroke:#1F1E1B;stroke-width:2.6}
+.lf-zone{fill:var(--st);fill-opacity:.06;stroke:var(--st);stroke-opacity:.8;stroke-width:1.6;stroke-dasharray:6 5}
+.sh{display:inline-block;border-radius:50%;box-sizing:border-box;flex:none;transition:transform .15s,opacity .15s}
+.sh.partial{width:13px;height:13px;background:var(--comp);border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.3)}
+.sh.check{width:13px;height:13px;background:#fff;border:2.5px solid var(--comp);box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+.sh.exclude{width:8px;height:8px;background:#9a978e;border:1px solid #fff}
+.sh.argos{width:13px;height:13px;background:var(--cp);border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.3)}
+.grp-on .sh{opacity:.22}
+.grp-on .sh.on{opacity:1;transform:scale(1.45);box-shadow:0 0 0 2px var(--ink)}
 .zoom-lo .stlbl{display:none}
 @media (max-width:1180px){:root{--sheet:460px}}
 @media (max-width:980px){
@@ -132,13 +155,14 @@ footer.layers a{color:var(--ink)}
   <div class="brand"><b>Argos · Royal Docks</b><span>Huff-model location study for a new Argos in Newham, London</span></div>
   <nav class="tabs" role="tablist" aria-label="Sections">
     <button role="tab" aria-selected="true" data-section="study-area">Study area</button>
+    <button role="tab" aria-selected="false" data-section="competition">Competition</button>
   </nav>
 </header>
 
-<main id="section-study-area">
+<main>
   <section class="mapcol">
     <div id="map" role="region" aria-label="Map of Royal Docks"></div>
-    <div class="layers-card" role="group" aria-label="Map layers">
+    <div class="layers-card" data-for="study-area" role="group" aria-label="Map layers">
       <div class="lc-title">Layers</div>
       <div class="lc-static"><i class="sw" style="background:rgba(217,112,46,.6);border:2px solid var(--ct)"></i>Canning Town</div>
       <div class="lc-static"><i class="sw" style="background:rgba(194,55,143,.6);border:2px solid var(--pd)"></i>Pontoon Dock</div>
@@ -150,12 +174,23 @@ footer.layers a{color:var(--ink)}
       <div class="lc-pt"><i class="pt cp"></i>Collection point (no stock)</div>
       <label><input type="checkbox" id="ly-iso" checked>Walk to the point:<i class="sw" style="background:rgba(31,30,27,.32);border:1px solid rgba(31,30,27,.55)"></i>15 min<i class="sw" style="background:rgba(31,30,27,.12);border:1px solid rgba(31,30,27,.3)"></i>20 min</label>
       <label><input type="checkbox" id="ly-lbl" checked><i class="sw" style="border:0;background:transparent;font-size:11px;line-height:12px;text-align:center">Aa</i>Labels</label>
-      <button type="button" id="lc-fold" class="lc-fold" aria-expanded="true">Hide</button>
+      <button type="button" class="lc-fold" aria-expanded="true">Hide</button>
+    </div>
+    <div class="layers-card bl" data-for="competition" role="group" aria-label="Map layers" hidden>
+      <div class="lc-title">Layers</div>
+      <div class="lc-static"><i class="sw" style="background:rgba(31,30,27,.08);border:2px solid var(--ink)"></i>Study area (Canning Town + Pontoon Dock)</div>
+      <label><input type="checkbox" id="ly2-zone" checked><i class="sw" style="background:rgba(91,63,168,.07);border:1.5px dashed var(--st)"></i>15-minute walk from the study area</label>
+      <div class="lc-pt"><i class="sh partial"></i>Overlaps part of the Argos range</div>
+      <div class="lc-pt"><i class="sh check"></i>Unclear, to check</div>
+      <div class="lc-pt"><i class="sh argos"></i>Argos collection point</div>
+      <label><input type="checkbox" id="ly2-ex" checked><i class="sh exclude" style="margin:0 4px"></i>Not relevant</label>
+      <label><input type="checkbox" id="ly2-lbl" checked><i class="sw" style="border:0;background:transparent;font-size:11px;line-height:12px;text-align:center">Aa</i>Labels</label>
+      <button type="button" class="lc-fold" aria-expanded="true">Hide</button>
     </div>
     <button type="button" id="reset" class="reset">Reset view</button>
   </section>
 
-  <aside class="sheet" aria-label="Why this study area">
+  <aside class="sheet" data-for="study-area" aria-label="Why this study area">
     <div class="intro">
       <div class="eyebrow">Study area · demand zone for the Huff model</div>
       <h1>Canning Town and Pontoon Dock: the largest, fastest-growing part of the Royal Docks, with no Argos store within walking distance</h1>
@@ -205,10 +240,50 @@ footer.layers a{color:var(--ink)}
       </ul>
     </footer>
   </aside>
+
+  <aside class="sheet" data-for="competition" aria-label="Competition near the study area" hidden>
+    <div class="intro">
+      <div class="eyebrow">Competition · 15-minute walk from the study area</div>
+      <h1>No local competitor: no shop within walking distance sells the Argos range</h1>
+      <p>We checked every shop OpenStreetMap records within a 15-minute walk of Canning Town and Pontoon Dock. None of the general-merchandise chains is there. What exists covers one category each, or is a small non-food aisle in a supermarket.</p>
+    </div>
+    <div class="kpis">
+      <div class="kpi zero"><b>0</b><span>direct competitors</span></div>
+      <div class="kpi zero"><b>0</b><span>general-merchandise chains (Currys, B&amp;M, The Range, Smyths, Dunelm…)</span></div>
+      <div class="kpi"><b>24</b><span>shops that overlap one part of the range</span></div>
+    </div>
+
+    <div class="block">
+      <h2>What the 24 partial competitors are</h2>
+      <p class="sub">Hover a group to find its shops on the map.</p>
+      <div class="grps" id="grps"></div>
+    </div>
+
+    <div class="block">
+      <h2>Also on the map</h2>
+      <ul class="also">
+        <li><i class="sh argos"></i><span><b>2 Argos collection points</b> (Leven Road, Bromley-by-Bow): Argos's own network, no stock.</span></li>
+        <li><i class="sh check"></i><span><b>1 shop to check</b>: My Little Panda, tagged as a general store.</span></li>
+        <li><i class="sh exclude" style="margin:0 2px"></i><span><b>18 not relevant</b>: groceries, health and beauty, trade wholesalers, tool hire, airside shops at London City Airport.</span></li>
+      </ul>
+      <p class="note">The study area itself has only 5 partial competitors: Lidl, Morrisons, Wickes and two small independents. Relevance is a first-pass judgement; OpenStreetMap may miss small independents.</p>
+    </div>
+
+    <footer class="layers">
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap</a> via Overpass API (9 Nov 2026): shops</li>
+        <li><a href="https://valhalla.github.io/valhalla/" target="_blank" rel="noopener">Valhalla</a> on OpenStreetMap data: 15-minute walking zone</li>
+        <li><a href="https://www.argos.co.uk/stores" target="_blank" rel="noopener">Argos store locator</a>: collection points</li>
+        <li><a href="https://geoportal.statistics.gov.uk/" target="_blank" rel="noopener">ONS Open Geography Portal</a>: MSOA boundaries</li>
+      </ul>
+    </footer>
+  </aside>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="data/territory.js"></script>
+<script src="data/competition.js"></script>
 <script>
 (function(){
 const D=window.MAPDATA;
@@ -230,11 +305,11 @@ L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World
 
 L.geoJSON(D.river,{pane:'river',style:{className:'lf-river'},interactive:false}).addTo(map);
 const iso=L.layerGroup(['cp','cn','st'].flatMap(f=>[20,15].map(t=>
-  L.geoJSON(D.iso[f+t],{pane:'iso',style:{className:`lf-iso ${f} t${t}`},interactive:false})))).addTo(map);
-const oa=L.geoJSON(D.oa,{pane:'oa',style:{className:'lf-oa'},interactive:false}).addTo(map);
+  L.geoJSON(D.iso[f+t],{pane:'iso',style:{className:`lf-iso ${f} t${t}`},interactive:false}))));
+const oa=L.geoJSON(D.oa,{pane:'oa',style:{className:'lf-oa'},interactive:false});
 const tunnel=L.layerGroup([
   L.geoJSON(D.tunnel,{pane:'top',style:{className:'lf-tun-halo'},interactive:false}),
-  L.geoJSON(D.tunnel,{pane:'top',style:{className:'lf-tun'},interactive:false})]).addTo(map);
+  L.geoJSON(D.tunnel,{pane:'top',style:{className:'lf-tun'},interactive:false})]);
 
 const polyById={},rowById={};
 const tipHtml=p=>`<b>${p.name}</b> <span class="k">· MSOA ${p.id}</span><br>`+
@@ -242,7 +317,7 @@ const tipHtml=p=>`<b>${p.name}</b> <span class="k">· MSOA ${p.id}</span><br>`+
   `<span class="k">Land area inside the OA:</span> ${p.pct_oa.toFixed(0)}%<br>`+
   `<span class="k">Planned growth:</span> ${planTxt(p)}<br>`+
   `<span class="k">Homes in schemes:</span> ${fmt(p.homes_firm)} approved${p.homes_pending?`, ${fmt(p.homes_pending)} pending`:''}`;
-const ctxG=L.layerGroup().addTo(map), selG=L.layerGroup().addTo(map), lblG=L.layerGroup().addTo(map);
+const ctxG=L.layerGroup(), selG=L.layerGroup(), lblG=L.layerGroup();
 const OFF={'Newham 030':[-10,-30],'Newham 031':[30,10]};
 D.msoa.forEach(f=>{
   const p=f.properties, c=CLS[p.id];
@@ -256,7 +331,7 @@ D.msoa.forEach(f=>{
   lblG.addLayer(t);
 });
 lblG.addLayer(L.tooltip({permanent:true,direction:'right',className:'slbl ctxlbl',offset:[10,0]}).setLatLng([51.4966,0.0623]).setContent('Woolwich Foot Tunnel (pedestrian)'));
-const stG=L.layerGroup().addTo(map), stLbl=L.layerGroup().addTo(map);
+const stG=L.layerGroup(), stLbl=L.layerGroup();
 const FMT={st:'Argos store',cn:"Argos inside Sainsbury's",cp:'Collection point, no stock'};
 const shortLbl=n=>n.replace(/^Tower Hamlets /,'').replace(/ (Local )?Sainsbury's$/,'').replace(/ Argos$/,'').replace(/^Greenwich (?!Peninsula)/,'');
 const SOFF={'Greenwich Peninsula':['left',[-10,0]],'Woolwich Arsenal':['right',[10,9]],'Woolwich':['left',[-10,-6]],'Leven Road':['left',[-10,0]],'Mile End Station':['left',[-10,0]]};
@@ -271,17 +346,66 @@ D.stores.forEach(f=>{
   stG.addLayer(m);
 });
 const homeB=L.geoJSON(D.oa).getBounds().extend(L.geoJSON(D.stores).getBounds()).pad(.03);
-const cardEl=document.querySelector('.layers-card');
-const home=()=>{const w=map.getSize().x, c=cardEl.classList.contains('folded')||w<700?0:cardEl.offsetWidth+56; map.fitBounds(homeB,{paddingTopLeft:[c,0]})};
-home();
 const zoomCls=()=>{const z=map.getZoom(),c=map.getContainer().classList; c.toggle('zoom-mid',z<13.25); c.toggle('zoom-lo',z<12.25)};
-map.on('zoomend',zoomCls); zoomCls();
+map.on('zoomend',zoomCls);
 
-document.getElementById('lc-fold').addEventListener('click',e=>{const c=e.target.closest('.layers-card');const f=c.classList.toggle('folded');e.target.textContent=f?'Show':'Hide';e.target.setAttribute('aria-expanded',String(!f))});
-if(matchMedia('(max-width:640px)').matches){const b=document.getElementById('lc-fold');b.click();}
+/* ---------- competition layers ---------- */
+const C=window.COMPDATA;
+const zoneL=L.geoJSON(C.zone,{pane:'iso',style:{className:'lf-zone'},interactive:false});
+const studyL=L.geoJSON(C.study,{pane:'sel',style:{className:'lf-study'},interactive:false});
+const shopG=L.layerGroup(), exG=L.layerGroup(), shopLbl=L.layerGroup();
+const REL={partial:'Overlaps part of the Argos range',check:'Unclear, to check',exclude:'Not relevant',argos:'Argos collection point (own network)'};
+C.shops.forEach(f=>{
+  const [lon,lat]=f.geometry.coordinates,p=f.properties;
+  const m=L.marker([lat,lon],{pane:'top',icon:L.divIcon({className:'',html:`<i class="sh ${p.rel}" data-grp="${p.grp||''}"></i>`,iconSize:[16,16],iconAnchor:[8,8]}),title:p.name,alt:p.name,zIndexOffset:p.rel==='exclude'?-100:0});
+  m.bindTooltip(`<b>${p.name}</b>${p.brand&&p.brand!==p.name?` <span class="k">· ${p.brand}</span>`:''}<br>${REL[p.rel]}<br><span class="k">${p.why}</span>${p.addr?`<br><span class="k">${p.addr}</span>`:''}<br><span class="k">${p.inside?'Inside the study area':'Within a 15-minute walk'}</span>`,{className:'tip',direction:'top',offset:[0,-8]});
+  (p.rel==='exclude'?exG:shopG).addLayer(m);
+  if(p.rel==='partial'&&p.brand) shopLbl.addLayer(L.tooltip({permanent:true,direction:p.brand==='Lidl'?'left':'right',offset:[p.brand==='Lidl'?-9:9,p.brand==='Lidl'?4:0],className:'slbl'}).setLatLng([lat,lon]).setContent(p.brand));
+});
+const GRPS=[
+ ['super','Supermarket non-food aisles','Lidl, Morrisons and the large Tesco at Bromley-by-Bow: small appliances, textiles and toys. A limited range that changes week to week.'],
+ ['home','Furniture and homeware','Six independents, mostly furniture: bulky goods in a single category.'],
+ ['phone','Phone and computer shops','Five independents on Barking Road: phones, accessories, repairs.'],
+ ['diy','DIY and trade','Screwfix, Toolstation, Wickes and two small hardware shops: tools and heaters for the trade.'],
+ ['pound','Pound and variety stores','Two independents with cheap homeware and toys.'],
+ ['misc','Garden, gifts and games','A garden centre, a craft gift shop and a card-game shop: marginal overlap.']];
+const gEl=document.getElementById('grps');
+const cnt=g=>C.shops.filter(f=>f.properties.grp===g).length;
+const grpHl=(g,on)=>{map.getContainer().classList.toggle('grp-on',on); map.getContainer().querySelectorAll('.sh[data-grp]').forEach(el=>el.classList.toggle('on',on&&el.dataset.grp===g))};
+GRPS.forEach(([g,t,d])=>{const el=document.createElement('div'); el.className='grp'; el.tabIndex=0;
+  el.innerHTML=`<div class="n">${cnt(g)}</div><div class="t">${t}</div><div class="d">${d}</div>`;
+  el.addEventListener('mouseenter',()=>grpHl(g,true)); el.addEventListener('mouseleave',()=>grpHl(g,false));
+  el.addEventListener('focus',()=>grpHl(g,true)); el.addEventListener('blur',()=>grpHl(g,false));
+  gEl.appendChild(el)});
+
+/* ---------- sections: each owns its layers, card and sheet ---------- */
+const SECT={
+ 'study-area':{always:[selG],toggles:[['ly-oa',[oa]],['ly-ctx',[ctxG]],['ly-iso',[iso,tunnel]],['ly-st',[stG,stLbl]],['ly-lbl',[lblG]]],
+   bounds:()=>homeB},
+ 'competition':{always:[studyL,shopG],toggles:[['ly2-zone',[zoneL]],['ly2-ex',[exG]],['ly2-lbl',[shopLbl]]],
+   bounds:()=>L.geoJSON(C.zone).getBounds().pad(.01)}};
+let cur=null;
+const card=()=>document.querySelector(`.layers-card[data-for="${cur}"]`);
+const home=()=>{const c=card(), w=map.getSize().x, pad=c.classList.contains('folded')||c.classList.contains('bl')||w<700?0:c.offsetWidth+56; map.fitBounds(SECT[cur].bounds(),{paddingTopLeft:[pad,0]})};
+const all=k=>[...SECT[k].always,...SECT[k].toggles.flatMap(t=>t[1])];
+function setSection(k){
+  if(!SECT[k]) k='study-area';
+  if(cur===k) return; 
+  if(cur) all(cur).forEach(l=>map.removeLayer(l));
+  cur=k;
+  SECT[k].always.forEach(l=>l.addTo(map));
+  SECT[k].toggles.forEach(([id,ls])=>{if(document.getElementById(id).checked) ls.forEach(l=>l.addTo(map))});
+  document.querySelectorAll('[data-for]').forEach(el=>el.hidden=el.dataset.for!==k);
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.section===k)));
+  map.getContainer().classList.toggle('no-ctx',k==='study-area'&&!document.getElementById('ly-ctx').checked);
+  document.querySelector(`.sheet[data-for="${k}"]`).scrollTop=0;
+  map.invalidateSize(); home(); zoomCls();
+}
+Object.entries(SECT).forEach(([k,S])=>S.toggles.forEach(([id,ls])=>document.getElementById(id).addEventListener('change',e=>{if(cur===k) ls.forEach(l=>e.target.checked?l.addTo(map):map.removeLayer(l))})));
+document.querySelectorAll('.lc-fold').forEach(b=>{
+  b.addEventListener('click',e=>{const c=e.target.closest('.layers-card');const f=c.classList.toggle('folded');e.target.textContent=f?'Show':'Hide';e.target.setAttribute('aria-expanded',String(!f))});
+  if(matchMedia('(max-width:640px)').matches) b.click();});
 document.getElementById('reset').addEventListener('click',home);
-const toggle=(id,layers)=>document.getElementById(id).addEventListener('change',e=>layers.forEach(l=>e.target.checked?l.addTo(map):map.removeLayer(l)));
-toggle('ly-oa',[oa]); toggle('ly-ctx',[ctxG]); toggle('ly-iso',[iso,tunnel]); toggle('ly-st',[stG,stLbl]); toggle('ly-lbl',[lblG]);
 document.getElementById('ly-ctx').addEventListener('change',e=>map.getContainer().classList.toggle('no-ctx',!e.target.checked));
 const st=document.createElement('style'); st.textContent='.no-ctx .ctxlbl{display:none}'; document.head.appendChild(st);
 
@@ -325,11 +449,10 @@ D.msoa.forEach((f,i)=>{
   rowsEl.appendChild(el); rowById[p.id]=el;
 });
 
-/* ---------- sections: hash routing, ready for more tabs ---------- */
-function show(){const s=(location.hash||'#study-area').slice(1);
-  document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.section===s||(!document.getElementById('section-'+s)&&b.dataset.section==='study-area'))));}
-document.querySelectorAll('nav.tabs button').forEach(b=>b.addEventListener('click',()=>{location.hash=b.dataset.section;show();setTimeout(()=>map.invalidateSize(),50)}));
-window.addEventListener('hashchange',show); show();
+/* ---------- hash routing ---------- */
+const route=()=>setSection((location.hash||'#study-area').slice(1));
+document.querySelectorAll('nav.tabs button').forEach(b=>b.addEventListener('click',()=>{location.hash=b.dataset.section}));
+window.addEventListener('hashchange',route); route();
 })();
 </script>
 </body>
