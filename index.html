@@ -244,6 +244,7 @@ const zoomCls=()=>map.getContainer().classList.toggle('zoom-hide',map.getZoom()<
 map.on('zoomend',zoomCls); zoomCls();
 
 document.getElementById('lc-fold').addEventListener('click',e=>{const c=e.target.closest('.layers-card');const f=c.classList.toggle('folded');e.target.textContent=f?'Show':'Hide';e.target.setAttribute('aria-expanded',String(!f))});
+if(matchMedia('(max-width:640px)').matches){const b=document.getElementById('lc-fold');b.click();}
 const home=()=>map.fitBounds(L.geoJSON(D.oa).getBounds().pad(.15));
 document.getElementById('reset').addEventListener('click',home);
 const toggle=(id,layers)=>document.getElementById(id).addEventListener('change',e=>layers.forEach(l=>e.target.checked?l.addTo(map):map.removeLayer(l)));
