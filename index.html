@@ -80,7 +80,9 @@ main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) var(--
 .facts{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:6px 0 0;font-size:13.5px}
 .facts dt{font-weight:700;white-space:nowrap}
 .facts dd{margin:0}
-footer.layers{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;line-height:1.5}
+footer.layers{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;line-height:1.5}
+footer.layers ul{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
+footer.layers a{color:var(--ink)}
 /* map layers */
 .lf-river{fill:#A9CFEA;fill-opacity:.85;stroke:none}
 .lf-iso20{fill:var(--iso);fill-opacity:.14;stroke:var(--iso);stroke-opacity:.35;stroke-width:1}
@@ -142,7 +144,7 @@ footer.layers{font-size:12px;color:var(--muted);border-top:1px solid var(--line)
     <div class="intro">
       <div class="eyebrow">Study area · demand zone for the Huff model</div>
       <h1>Canning Town and Pontoon Dock: the most populous parts of the growth area, with no Argos nearby</h1>
-      <p>The two selected MSOAs had <b>29,215</b> residents in mid-2024 (+21.0% since 2021; Newham overall +6.6%), with ≈ 21,500 more expected from approved and under-construction housing schemes. Both sit inside the Royal Docks and Beckton Riverside Opportunity Area, and neither is within a 20-minute walk of an Argos.</p>
+      <p>The two selected MSOAs had <b>29,215</b> residents in mid-2024 (+21.0% since 2021; Newham overall +6.6%), with ≈ 21,500 more expected from approved and under-construction housing schemes. Both sit inside the Royal Docks and Beckton Riverside Opportunity Area, and neither is within a 20-minute walk of an Argos. The areas are MSOAs Newham 034 and Newham 042.</p>
     </div>
     <div class="kpis">
       <div class="kpi"><b>29,215</b><span>residents in the two selected MSOAs, mid-2024</span></div>
@@ -156,13 +158,11 @@ footer.layers{font-size:12px;color:var(--muted);border-top:1px solid var(--line)
       <div class="legend" id="pic-legend"></div>
       <div class="rows" id="rows"></div>
       <p class="note">Right: residents in mid-2024 and growth since mid-2021. Planned growth = homes in housing schemes × the MSOA's average household size in 2021. "Approved" covers approved and under-construction schemes; "pending" covers applications still under consideration. Beckton includes Gallions Reach (application 24/00989/OUT, 5,776 homes). Shown: MSOAs with at least 5% of their land area inside the OA.</p>
-      <p class="src">Sources: residents — ONS mid-year population estimates 2021 and 2024 by LSOA (Nomis NM_2014_1); households — ONS Census 2021, TS041; housing schemes — GLA Planning London Datahub.</p>
     </div>
 
     <div class="block">
       <h2>Argos</h2>
       <p>No part of either area lies within a 20-minute walk of any Argos. The nearest stores on the north bank are Stratford Broadway (2.0 km from Canning Town) and the Argos in Sainsbury's Beckton (2.4 km from Pontoon Dock). South of the river, the Woolwich store's walking zone reaches only the edge of North Woolwich, through the Woolwich Foot Tunnel.</p>
-      <p class="src">Sources: stores — OpenStreetMap (shop=catalogue), not yet checked against argos.co.uk; stores inside Sainsbury's identified by location; walking isochrones — Valhalla routing on OpenStreetMap data; distances are straight-line to the MSOA boundary.</p>
     </div>
 
     <div class="block">
@@ -173,10 +173,21 @@ footer.layers{font-size:12px;color:var(--muted);border-top:1px solid var(--line)
         <dt>Phasing</dt><dd>9,900 by 2027 · 17,700 by 2032 · 8,200 by 2041</dd>
         <dt>Key schemes</dt><dd>Thameside West, 5,000 homes (Canning Town); Silvertown Quays, ~3,000 homes (Pontoon Dock)</dd>
       </dl>
-      <p class="src">Source: GLA, <a href="https://data.london.gov.uk/dataset/royal-docks-and-beckton-riverside-oapf-e76oj" target="_blank" rel="noopener">Royal Docks and Beckton Riverside Opportunity Area Planning Framework (2023)</a>, Appendix A: 95,000 residents — p. 17; 36,300 homes — p. 59; phasing — p. 273; schemes — pp. 38–39.</p>
     </div>
 
-    <footer class="layers">Canning Town = MSOA Newham 034 "Canning Town South &amp; Bow Creek"; Pontoon Dock = MSOA Newham 042 "Silvertown &amp; Royal Wharf". Map layers: Opportunity Area boundary — GLA; MSOA boundaries — ONS LSOA 2021 (BFE), names — House of Commons Library MSOA Names; River Thames — ONS BFE minus BFC boundaries; foot tunnel and stores — OpenStreetMap; walking isochrones — Valhalla/OSM; basemap — Esri World Light Gray Canvas (Esri, HERE, Garmin, © OpenStreetMap contributors). Map labels show residents in mid-2024 (ONS, Nomis NM_2014_1).</footer>
+    <footer class="layers">
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.nomisweb.co.uk/" target="_blank" rel="noopener">ONS via Nomis</a>: mid-year population estimates and Census 2021</li>
+        <li><a href="https://geoportal.statistics.gov.uk/" target="_blank" rel="noopener">ONS Open Geography Portal</a>: LSOA and MSOA boundaries</li>
+        <li><a href="https://houseofcommonslibrary.github.io/msoanames/" target="_blank" rel="noopener">House of Commons Library</a>: MSOA names</li>
+        <li><a href="https://data.london.gov.uk/dataset/royal-docks-and-beckton-riverside-oapf-e76oj" target="_blank" rel="noopener">GLA, Royal Docks and Beckton Riverside OAPF (2023)</a>: Opportunity Area and growth plan</li>
+        <li><a href="https://www.london.gov.uk/programmes-strategies/planning/digital-planning/planning-london-datahub" target="_blank" rel="noopener">GLA Planning London Datahub</a>: housing schemes</li>
+        <li><a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap</a>: Argos stores (not yet checked against argos.co.uk) and the Woolwich Foot Tunnel</li>
+        <li><a href="https://valhalla.github.io/valhalla/" target="_blank" rel="noopener">Valhalla</a>: walking isochrones</li>
+        <li><a href="https://www.arcgis.com/home/item.html?id=8b3d38c0819547faa83f7b7aca80bd76" target="_blank" rel="noopener">Esri World Light Gray Canvas</a>: basemap</li>
+      </ul>
+    </footer>
   </aside>
 </main>
 
