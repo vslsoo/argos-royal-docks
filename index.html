@@ -153,7 +153,7 @@ footer.layers a{color:var(--ink)}
   <div class="brand"><b>Argos · Royal Docks</b><span>Huff-model location study for a new Argos in Newham, London</span></div>
   <nav class="tabs" role="tablist" aria-label="Sections">
     <button role="tab" aria-selected="true" data-section="study-area">Study area</button>
-    <button role="tab" aria-selected="false" data-section="competition">Competition</button>
+    <button role="tab" aria-selected="false" data-section="competitors">Competitors</button>
   </nav>
 </header>
 
@@ -174,7 +174,7 @@ footer.layers a{color:var(--ink)}
       <label><input type="checkbox" id="ly-lbl" checked><i class="sw" style="border:0;background:transparent;font-size:11px;line-height:12px;text-align:center">Aa</i>Labels</label>
       <button type="button" class="lc-fold" aria-expanded="true">Hide</button>
     </div>
-    <div class="layers-card bl" data-for="competition" role="group" aria-label="Map layers" hidden>
+    <div class="layers-card bl" data-for="competitors" role="group" aria-label="Map layers" hidden>
       <div class="lc-title">Layers</div>
       <div class="lc-static"><i class="sw" style="background:rgba(31,30,27,.08);border:2px solid var(--ink)"></i>Study area (Canning Town + Pontoon Dock)</div>
       <label><input type="checkbox" id="ly2-zone" checked><i class="sw" style="background:rgba(91,63,168,.07);border:1.5px dashed var(--st)"></i>15-minute walk from the study area</label>
@@ -237,9 +237,9 @@ footer.layers a{color:var(--ink)}
     </footer>
   </aside>
 
-  <aside class="sheet" data-for="competition" aria-label="Competition near the study area" hidden>
+  <aside class="sheet" data-for="competitors" aria-label="Competition near the study area" hidden>
     <div class="intro">
-      <div class="eyebrow">Competition · 15-minute walk from the study area</div>
+      <div class="eyebrow">Competitors · 15-minute walk from the study area</div>
       <h1>No local competitor: no shop within walking distance sells the Argos range</h1>
       <p>We checked every shop OpenStreetMap records within a 15-minute walk of Canning Town and Pontoon Dock. None of the general-merchandise chains is there. What exists covers one category each, or is a small non-food aisle in a supermarket.</p>
     </div>
@@ -376,7 +376,7 @@ GRPS.forEach(([g,t,d])=>{const el=document.createElement('div'); el.className='g
 const SECT={
  'study-area':{always:[selG],toggles:[['ly-oa',[oa]],['ly-ctx',[ctxG]],['ly-iso',[iso,tunnel]],['ly-st',[stG,stLbl]],['ly-lbl',[lblG]]],
    bounds:()=>homeB},
- 'competition':{always:[studyL,shopG],toggles:[['ly2-zone',[zoneL]],['ly2-lbl',[shopLbl]]],
+ 'competitors':{always:[studyL,shopG],toggles:[['ly2-zone',[zoneL]],['ly2-lbl',[shopLbl]]],
    bounds:()=>L.geoJSON(C.zone).getBounds().pad(.01)}};
 let cur=null;
 const card=()=>document.querySelector(`.layers-card[data-for="${cur}"]`);
@@ -444,7 +444,7 @@ D.msoa.forEach((f,i)=>{
 });
 
 /* ---------- hash routing ---------- */
-const route=()=>setSection((location.hash||'#study-area').slice(1));
+const route=()=>{const h=(location.hash||'#study-area').slice(1); setSection(h==='competition'?'competitors':h)};
 document.querySelectorAll('nav.tabs button').forEach(b=>b.addEventListener('click',()=>{location.hash=b.dataset.section}));
 window.addEventListener('hashchange',route); route();
 })();
