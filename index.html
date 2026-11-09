@@ -133,8 +133,6 @@ footer.layers a{color:var(--ink)}
 .lf-zone{fill:var(--st);fill-opacity:.06;stroke:var(--st);stroke-opacity:.8;stroke-width:1.6;stroke-dasharray:6 5}
 .sh{display:inline-block;border-radius:50%;box-sizing:border-box;flex:none;transition:transform .15s,opacity .15s}
 .sh.partial{width:13px;height:13px;background:var(--comp);border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.3)}
-.sh.check{width:13px;height:13px;background:#fff;border:2.5px solid var(--comp);box-shadow:0 0 0 1px rgba(0,0,0,.15)}
-.sh.exclude{width:8px;height:8px;background:#9a978e;border:1px solid #fff}
 .sh.argos{width:13px;height:13px;background:var(--cp);border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.3)}
 .grp-on .sh{opacity:.22}
 .grp-on .sh.on{opacity:1;transform:scale(1.45);box-shadow:0 0 0 2px var(--ink)}
@@ -181,9 +179,7 @@ footer.layers a{color:var(--ink)}
       <div class="lc-static"><i class="sw" style="background:rgba(31,30,27,.08);border:2px solid var(--ink)"></i>Study area (Canning Town + Pontoon Dock)</div>
       <label><input type="checkbox" id="ly2-zone" checked><i class="sw" style="background:rgba(91,63,168,.07);border:1.5px dashed var(--st)"></i>15-minute walk from the study area</label>
       <div class="lc-pt"><i class="sh partial"></i>Overlaps part of the Argos range</div>
-      <div class="lc-pt"><i class="sh check"></i>Unclear, to check</div>
       <div class="lc-pt"><i class="sh argos"></i>Argos collection point</div>
-      <label><input type="checkbox" id="ly2-ex" checked><i class="sh exclude" style="margin:0 4px"></i>Not relevant</label>
       <label><input type="checkbox" id="ly2-lbl" checked><i class="sw" style="border:0;background:transparent;font-size:11px;line-height:12px;text-align:center">Aa</i>Labels</label>
       <button type="button" class="lc-fold" aria-expanded="true">Hide</button>
     </div>
@@ -263,10 +259,8 @@ footer.layers a{color:var(--ink)}
       <h2>Also on the map</h2>
       <ul class="also">
         <li><i class="sh argos"></i><span><b>2 Argos collection points</b> (Leven Road, Bromley-by-Bow): Argos's own network, no stock.</span></li>
-        <li><i class="sh check"></i><span><b>1 shop to check</b>: My Little Panda, tagged as a general store.</span></li>
-        <li><i class="sh exclude" style="margin:0 2px"></i><span><b>18 not relevant</b>: groceries, health and beauty, trade wholesalers, tool hire, airside shops at London City Airport.</span></li>
       </ul>
-      <p class="note">The study area itself has only 5 partial competitors: Lidl, Morrisons, Wickes and two small independents. Relevance is a first-pass judgement; OpenStreetMap may miss small independents.</p>
+      <p class="note">The study area itself has only 5 partial competitors: Lidl, Morrisons, Wickes and two small independents. Groceries, health and beauty, trade wholesalers, tool hire and airside shops at London City Airport are left out. OpenStreetMap may miss small independents.</p>
     </div>
 
     <footer class="layers">
@@ -353,13 +347,13 @@ map.on('zoomend',zoomCls);
 const C=window.COMPDATA;
 const zoneL=L.geoJSON(C.zone,{pane:'iso',style:{className:'lf-zone'},interactive:false});
 const studyL=L.geoJSON(C.study,{pane:'sel',style:{className:'lf-study'},interactive:false});
-const shopG=L.layerGroup(), exG=L.layerGroup(), shopLbl=L.layerGroup();
-const REL={partial:'Overlaps part of the Argos range',check:'Unclear, to check',exclude:'Not relevant',argos:'Argos collection point (own network)'};
+const shopG=L.layerGroup(), shopLbl=L.layerGroup();
+const REL={partial:'Overlaps part of the Argos range',argos:'Argos collection point (own network)'};
 C.shops.forEach(f=>{
   const [lon,lat]=f.geometry.coordinates,p=f.properties;
-  const m=L.marker([lat,lon],{pane:'top',icon:L.divIcon({className:'',html:`<i class="sh ${p.rel}" data-grp="${p.grp||''}"></i>`,iconSize:[16,16],iconAnchor:[8,8]}),title:p.name,alt:p.name,zIndexOffset:p.rel==='exclude'?-100:0});
+  const m=L.marker([lat,lon],{pane:'top',icon:L.divIcon({className:'',html:`<i class="sh ${p.rel}" data-grp="${p.grp||''}"></i>`,iconSize:[16,16],iconAnchor:[8,8]}),title:p.name,alt:p.name});
   m.bindTooltip(`<b>${p.name}</b>${p.brand&&p.brand!==p.name?` <span class="k">· ${p.brand}</span>`:''}<br>${REL[p.rel]}<br><span class="k">${p.why}</span>${p.addr?`<br><span class="k">${p.addr}</span>`:''}<br><span class="k">${p.inside?'Inside the study area':'Within a 15-minute walk'}</span>`,{className:'tip',direction:'top',offset:[0,-8]});
-  (p.rel==='exclude'?exG:shopG).addLayer(m);
+  shopG.addLayer(m);
   if(p.rel==='partial'&&p.brand) shopLbl.addLayer(L.tooltip({permanent:true,direction:p.brand==='Lidl'?'left':'right',offset:[p.brand==='Lidl'?-9:9,p.brand==='Lidl'?4:0],className:'slbl'}).setLatLng([lat,lon]).setContent(p.brand));
 });
 const GRPS=[
@@ -382,7 +376,7 @@ GRPS.forEach(([g,t,d])=>{const el=document.createElement('div'); el.className='g
 const SECT={
  'study-area':{always:[selG],toggles:[['ly-oa',[oa]],['ly-ctx',[ctxG]],['ly-iso',[iso,tunnel]],['ly-st',[stG,stLbl]],['ly-lbl',[lblG]]],
    bounds:()=>homeB},
- 'competition':{always:[studyL,shopG],toggles:[['ly2-zone',[zoneL]],['ly2-ex',[exG]],['ly2-lbl',[shopLbl]]],
+ 'competition':{always:[studyL,shopG],toggles:[['ly2-zone',[zoneL]],['ly2-lbl',[shopLbl]]],
    bounds:()=>L.geoJSON(C.zone).getBounds().pad(.01)}};
 let cur=null;
 const card=()=>document.querySelector(`.layers-card[data-for="${cur}"]`);
