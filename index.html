@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@500;600&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
 <style>
 /* Layout: planning-atlas tool. Top bar with section tabs, map canvas left, wide evidence sheet right; stacks on phones. Light theme only. */
 :root{
@@ -224,7 +225,10 @@ svg.chart rect.m:hover,svg.chart rect.m.hl{stroke:var(--ink);stroke-width:1.5}
 .steps summary{cursor:pointer;font-weight:600}
 .steps summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .steps details p{margin:6px 0 0;color:#3c3b36;max-width:68ch}
-.fx{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:14px;background:#F6F5F1;border-radius:6px;padding:6px 10px;margin:6px 0 0;display:block;overflow-x:auto;white-space:nowrap}
+.fx{background:#F6F5F1;border-radius:6px;padding:8px 12px;margin:8px 0 0;display:block;overflow-x:auto;overflow-y:hidden;font-size:15px}
+.fx .katex{font-size:1.05em}
+footer.layers summary{cursor:pointer;font-family:var(--f-display);font-weight:600;font-size:16px;color:var(--ink)}
+footer.layers summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .take{margin:4px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
 .take li{display:grid;grid-template-columns:22px 1fr;gap:6px;align-items:baseline;font-size:14px}
 .take li>b{font-family:var(--f-display);font-size:12px;color:var(--muted)}
@@ -309,7 +313,7 @@ main.nomap .mapcol{display:none}
       <div class="ramp" id="share-ramp"></div>
       <label><input type="checkbox" id="ly4-sup" checked>Stores in the model</label>
       <div class="lc-pt"><i class="sp cp"></i>Argos collection point</div>
-      <div class="lc-pt"><i class="sp comp"></i>Competitor</div>
+      <div class="lc-pt"><i class="sp comp"></i>Competitor (large chains only)</div>
       <div class="lc-pt"><i class="sp cand c-ss"></i><i class="sp cand c-cp"></i>Candidate (store / CP)</div>
       <label><input type="checkbox" id="ly4-zone" checked><i class="sw" style="background:rgba(91,63,168,.07);border:1.5px dashed var(--st)"></i>15-minute walk from the study area</label>
       <button type="button" class="lc-fold" aria-expanded="true">Hide</button>
@@ -447,19 +451,18 @@ main.nomap .mapcol{display:none}
     <div class="intro">
       <div class="eyebrow">Huff model · where the money goes</div>
       <h1 id="hf-h1"></h1>
-      <p id="hf-lede"></p>
     </div>
     <div class="kpis" id="hf-kpis"></div>
 
     <div class="block">
       <h2>Where the sales come from</h2>
-      <p class="sub">Spend the candidate takes from each current destination, £ a year.</p>
       <div class="bars" id="hf-src"></div>
+      <p class="note" id="hf-compnote"></p>
     </div>
 
     <div class="block">
       <h2>Share falls with walking time</h2>
-      <p class="sub">Candidate's share of residents' spend by walking time, weighted by spend.</p>
+      <p class="sub">Candidate's share of residents' spend, by minutes on foot.</p>
       <div id="hf-decay"></div>
     </div>
 
@@ -471,35 +474,27 @@ main.nomap .mapcol{display:none}
     </div>
 
     <div class="block">
-      <h2>Sensitivity</h2>
-      <p class="sub" id="hf-tsub"></p>
-      <div id="hf-tornado"></div>
-      <p class="note" id="hf-tcap"></p>
-    </div>
-
-    <div class="block">
       <h2>How it was calculated</h2>
       <div class="steps" id="hf-steps"></div>
     </div>
 
     <div class="block">
-      <h2>Model parameters</h2>
-      <div class="tscroll"><table class="dtab" id="hf-params"></table></div>
+      <details class="alts"><summary>Model parameters</summary>
+      <div class="tscroll"><table class="dtab" id="hf-params"></table></div></details>
     </div>
 
-    <footer class="layers"><h2>Sources</h2><ul class="srclist"></ul></footer>
+    <footer class="layers"><details><summary>Sources</summary><ul class="srclist"></ul></details></footer>
   </aside>
 
   <aside class="sheet wide" data-for="pnl" aria-label="P&amp;L and payback" hidden>
     <div class="intro">
       <div class="eyebrow">P&amp;L &amp; payback · £ ex VAT per year</div>
-      <h1>What each candidate would earn, and how fast it pays back</h1>
+      <h1>Contribution and payback</h1>
       <ul class="take" id="pl-take"></ul>
     </div>
 
     <div class="ctl">
       <div class="seg" id="pl-seg" role="group" aria-label="Scenario"></div>
-      <span class="sub" id="pl-scen"></span>
     </div>
 
     <div class="block">
@@ -521,16 +516,17 @@ main.nomap .mapcol{display:none}
     </div>
 
     <div class="block">
-      <h2>Assumptions</h2>
-      <div class="tscroll"><table class="dtab" id="pl-ass"></table></div>
+      <details class="alts"><summary>Assumptions</summary>
+      <div class="tscroll"><table class="dtab" id="pl-ass"></table></div></details>
       <a class="dl" id="pl-dl" download>Download the appraisal workbook (.xlsx)</a>
     </div>
 
-    <footer class="layers"><h2>Sources</h2><ul class="srclist"></ul></footer>
+    <footer class="layers"><details><summary>Sources</summary><ul class="srclist"></ul></details></footer>
   </aside>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
 <script src="data/territory.js"></script>
 <script src="data/competition.js"></script>
 <script src="data/candidates.js"></script>
@@ -733,6 +729,7 @@ const supPopup=p=>{const c=selC, cand=p.type==='candidate';
   const kind=cand?`Candidate · ${cap(p.format)}`:p.chain==='Argos'?'Argos '+p.format:`Competitor · ${p.chain}`;
   let sales;
   if(cand) sales=p.point_id===c?`<dt>Sales</dt><dd><b>${M(p.sales_gbp)}</b> (new)</dd>`:`<dt>Sales if opened</dt><dd>${M(p.sales_gbp)} <span class="k">(not the selected candidate)</span></dd>`;
+  else if(p.type==='competitor') sales=`<dt>Sales</dt><dd><span class="k">not shown per chain: the modelled chains also absorb the share of independent shops, so trade from local shops is reported only in total</span></dd>`;
   else {const a=p.base_sales_gbp, b=p['sales_with_'+c+'_gbp']; sales=`<dt>Sales today</dt><dd>${M(a)}</dd><dt>With ${c}</dt><dd>${M(b)} <span class="k">(${M(b-a)}, ${pct((b-a)/a,1)})</span></dd>`}
   return `<b>${cand?p.point_id+' · ':''}${esc(p.name)}</b><br><span class="k">${esc(kind)}</span><dl class="pp">`+
     `<dt>Attractiveness A</dt><dd>${p.A}</dd><dt>Range coverage</dt><dd>${pct(p.coverage,1)}</dd><dt>Price index</dt><dd>${p.price_index}</dd>${sales}</dl>`+
@@ -756,7 +753,7 @@ function drawHuffMap(){
 
 /* panel */
 function srcBars(c){const r=S.candidates[c];
-  const rows=[['Trips to stores outside the walk zone',r.from_outside_trips],['Online (home delivery)',r.from_online],['Local competitors',r.from_local_competitors],['Existing Argos collection points',r.from_existing_argos]];
+  const rows=[['Trips to stores outside the walk zone',r.from_outside_trips],['Online (home delivery)',r.from_online],['Local shops (total)',r.from_local_competitors],['Existing Argos collection points',r.from_existing_argos]];
   const mx=Math.max(...rows.map(x=>x[1])), col=`var(${fmtCls(candInfo(c))==='cp'?'--fcp':'--fss'})`;
   return rows.map(([t,v])=>`<div class="bar" title="${t}: ${M(v)} (${pct(v/r.sales_gbp)})"><span>${t}</span><span class="tr"><i style="width:${(100*v/mx).toFixed(1)}%;--c:${col}"></i></span><b>${M(v)} <small>${pct(v/r.sales_gbp)}</small></b></div>`).join('')}
 const BANDS=[[0,2],[2,5],[5,10],[10,15],[15,20],[20,Infinity]];
@@ -772,30 +769,9 @@ function decaySvg(c){
   g+=`<text x="${W/2}" y="${Hh-2}" text-anchor="middle">minutes on foot to ${c}</text>`;
   return `<svg class="chart" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Share of spend by walking time to ${c}">${g}</svg>`}
 const rankOf=c=>CIDS.slice().sort((a,b)=>S.candidates[b].incremental_gbp-S.candidates[a].incremental_gbp).indexOf(c)+1;
-const SENS_EN={'β':'β, distance decay','коэф. CP':'CP format factor','γ':'γ, price sensitivity','доля онлайна':'Online share','доля местных':'Local share of offline','α выезд':'α, outside trips','α онлайн CP':'α, online (CP)'};
-const sensName=p=>{const k=Object.keys(SENS_EN).find(k=>p===k||p.startsWith(k+' ')); return k?SENS_EN[k]:p};
-function tornado(c){
-  const base=S.sensitivity.find(r=>r.parameter==='base')['incremental_'+c];
-  const by={}; S.sensitivity.filter(r=>r.parameter!=='base').forEach(r=>(by[r.parameter]=by[r.parameter]||[]).push(r));
-  const rows=Object.entries(by).map(([k,rs])=>{const v=rs.map(r=>({x:r['incremental_'+c],val:r.value})); const lo=v.reduce((a,b)=>a.x<b.x?a:b), hi=v.reduce((a,b)=>a.x>b.x?a:b); return {name:sensName(k),lo,hi,span:hi.x-lo.x}}).sort((a,b)=>b.span-a.span);
-  const xs=rows.flatMap(r=>[r.lo.x,r.hi.x]).concat(base), x0=Math.min(...xs)*.86, x1=Math.max(...xs)*1.04;
-  const W=460,lw=150,rh=26,top=6,Hh=top+rows.length*rh+26, sx=v=>lw+(W-lw-10)*(v-x0)/(x1-x0);
-  let g='';
-  rows.forEach((r,i)=>{const y=top+i*rh, a=sx(r.lo.x), b=sx(r.hi.x);
-    g+=`<text x="0" y="${y+15}" style="fill:var(--ink)">${esc(r.name)}</text>`;
-    g+=r.span<1?`<text x="${sx(base)+6}" y="${y+15}">no effect on a store</text>`:`<rect class="m" x="${a}" y="${y+4}" width="${Math.max(b-a,1)}" height="${rh-10}" rx="3" fill="var(--fss)" fill-opacity=".75"><title>${esc(r.name)}: ${r.lo.val} → ${M(r.lo.x)}; ${r.hi.val} → ${M(r.hi.x)}</title></rect>`+
-      `<text x="${a-4}" y="${y+15}" text-anchor="end">${r.lo.val}</text><text x="${b+4}" y="${y+15}">${r.hi.val}</text>`});
-  const tk=[]; const step=Math.pow(10,Math.floor(Math.log10(x1-x0)))/ (x1-x0>3*Math.pow(10,Math.floor(Math.log10(x1-x0)))?1:2);
-  for(let t=Math.ceil(x0/step)*step;t<=x1;t+=step) tk.push(t);
-  g=tk.map(t=>`<line class="grid" x1="${sx(t)}" x2="${sx(t)}" y1="${top}" y2="${Hh-22}"/><text x="${sx(t)}" y="${Hh-8}" text-anchor="middle">${M(t)}</text>`).join('')+g+
-    `<line class="zero" x1="${sx(base)}" x2="${sx(base)}" y1="${top-2}" y2="${Hh-22}"/>`;
-  return {svg:`<svg class="chart" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Sensitivity of ${c} incremental revenue">${g}</svg>`, base}}
-
 function huffPanel(){
   const c=selC, r=S.candidates[c], p=candInfo(c);
   document.getElementById('hf-h1').textContent=`${c} ${p.name}: ${M(r.sales_gbp)} of sales, ${M(r.incremental_gbp)} new to Argos`;
-  const outsideShare=r.from_outside_trips/r.sales_gbp, onlineShare=r.from_online/r.sales_gbp;
-  document.getElementById('hf-lede').textContent=`${cap(p.format)}. ${pct(outsideShare)} of its sales are trips residents now make to stores outside the walk zone, ${pct(onlineShare)} is online spend. Little comes from local shops or existing Argos points.`;
   document.getElementById('hf-kpis').innerHTML=
     `<div class="kpi"><b>${M(r.sales_gbp)}</b><span>sales a year</span></div>`+
     `<div class="kpi"><b>${M(r.incremental_gbp)}</b><span>incremental to Argos, range ${M(r.incremental_low)}–${M(r.incremental_high)}</span></div>`+
@@ -803,8 +779,6 @@ function huffPanel(){
   document.getElementById('hf-src').innerHTML=srcBars(c);
   document.getElementById('hf-decay').innerHTML=decaySvg(c);
   document.querySelectorAll('#hf-tab tr[data-c]').forEach(tr=>tr.classList.toggle('on',tr.dataset.c===c));
-  const t=tornado(c); document.getElementById('hf-tornado').innerHTML=t.svg;
-  document.getElementById('hf-tsub').textContent=`${c} incremental revenue when one input moves to the end of its range; line = base (${M(t.base)}).`;
   document.querySelectorAll('#hf-seg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.c===c)));
 }
 function selectCand(c){selC=c; drawHuffMap(); huffPanel()}
@@ -816,30 +790,32 @@ document.getElementById('hf-tab').innerHTML=`<thead><tr><th>Candidate</th><th>Sa
   CIDS.map(c=>{const r=S.candidates[c], p=candInfo(c); return `<tr data-c="${c}" tabindex="0"><td><b>${c}</b> ${esc(p.name)}<br><span class="k" style="color:var(--muted)">${cap(p.format)}</span></td><td>${M(r.sales_gbp)}</td><td>${M(r.incremental_gbp)}</td><td>${M(r.incremental_low)}–${M(r.incremental_high)}</td><td>${rankOf(c)}</td></tr>`}).join('')+'</tbody>';
 document.querySelectorAll('#hf-tab tr[data-c]').forEach(tr=>{tr.addEventListener('click',()=>selectCand(tr.dataset.c)); tr.addEventListener('keydown',e=>{if(e.key==='Enter') selectCand(tr.dataset.c)})});
 const ao=PRM.alpha_online;
-document.getElementById('hf-tabnote').textContent=`Incremental = sales minus what existing Argos points lose and minus spend Argos already gets: ${pct(PRM.alpha_outside)} of outside trips, ${pct(ao.store)} (store) or ${pct(ao.collection_point)} (CP) of online. Range = those recapture rates at the ends of their ranges.`;
+const compIn=SUP.filter(p=>p.type==='competitor'), compAll=C.shops.filter(f=>f.properties.rel==='partial').length;
+const compNames=compIn.map(p=>p.chain).join(', ');
+const compTxt=`Competitors are modelled only where range and prices could be collected online (${compNames}). Independent shops in the walk zone are not modelled individually; their share is absorbed by the chains through the ${pct(PRM.local_share_of_offline)} local-retention calibration, so trade drawn from local shops is reported only in total.`;
+document.getElementById('hf-compnote').textContent=compTxt;
 (()=>{const runs=S.sensitivity, baseRank=runs.find(r=>r.parameter==='base').ranking, n=runs.filter(r=>r.ranking===baseRank).length;
-  document.getElementById('hf-tcap').textContent=`Ranking ${baseRank} holds in ${n===runs.length?'all '+n:n+' of '+runs.length} sensitivity runs.`})();
+  document.getElementById('hf-tabnote').textContent=`Range: recapture rates α at the ends of their ranges. Ranking ${baseRank} holds in ${n===runs.length?'all '+n:n+' of '+runs.length} sensitivity runs.`})();
 
 /* how it was calculated */
 (()=>{const d=S.demand, wk=d.market_gbp*PRM.vat_divisor/52/d.households, ff=PRM.format_factor;
   const betas=S.sensitivity.filter(r=>/^β/.test(r.parameter)).map(r=>+r.value).sort((a,b)=>a-b);
+  const sc=k=>PL.scenarios.find(x=>x.key===k), lo=sc('Low'), bs=sc('Base'), hi=sc('High');
+  const tp=v=>(v*100).toFixed(0)+'\\%', tm=v=>'\\text{'+M(v)+'}';
   const steps=[
-   ['1. Demand',`Census 2021 households by Output Area, grown to mid-2024 with LSOA population estimates, allocated to OSM residential buildings by footprint × levels, then summed into ${d.points} points on a 50 m grid (${fmt(d.households)} households).`,
-    `E<sub>i</sub> = households<sub>i</sub> × £${wk.toFixed(2)}/week × 52 ÷ ${PRM.vat_divisor} &nbsp;⇒&nbsp; ΣE = ${M(d.market_gbp)} a year`,
-    '£/week: 12 Argos categories, ONS Family Spending, London-adjusted, weighted by how each item can be bought (collect / delivery).'],
-   ['2. Attractiveness','Each store gets one score from its range, prices and format.',
-    `A<sub>j</sub> = coverage<sub>j</sub> × max(price index<sub>j</sub>, ${PRM.price_index_floor})<sup>−γ</sup> × format factor`,
-    `Coverage is spend-weighted share of the basket a chain sells. Format factor: store ${ff.standalone}, concession ${ff.concession}, collection point ${ff.collection_point}; γ = ${PRM.gamma}.`],
-   ['3. Distance','Real walking time from every demand point to every store (Valhalla, pedestrian profile on OpenStreetMap).',null,null],
-   ['4. Choice','Each household splits its spend between stores and two options that are not on the map: online delivery and trips to stores outside the walk zone (U).',
-    `P<sub>ij</sub> = (A<sub>j</sub> / D<sub>ij</sub><sup>β</sup>) ÷ (U + Σ<sub>k</sub> A<sub>k</sub> / D<sub>ik</sub><sup>β</sup>)`,
-    `U = ${PRM.U_nonspatial}, calibrated so that today online takes ${pct(PRM.online_share)} of spend (ONS) and walk-zone stores take ${pct(PRM.local_share_of_offline)} of offline spend (Newham Retail & Leisure Study 2022).`],
-   ['5. Distance decay β',`β = ${PRM.beta}, set so the new store captures the target share of spend of households within a 5-minute walk. Range ${betas[0]}–${betas[betas.length-1]}.`,null,esc(S.calibration.beta)],
-   ['6. Incremental revenue','Not all of a new store’s sales are new to Argos.',
-    `Incremental = sales − existing Argos CPs − ${pct(PRM.alpha_outside)} × outside trips − α<sub>online</sub> × online`,
-    `α<sub>online</sub> = ${pct(ao.store)} for a store, ${pct(ao.collection_point)} for a collection point (a CP mostly switches existing argos.co.uk customers from delivery to collection).`],
-   ['7. Limitations','Residents of the 2 study MSOAs only (no workers or visitors); 12 categories only; β is not calibrated on Argos data (in the role: Argos customer postcodes); Huff draws proportionally with no brand loyalty, so a store’s incremental revenue is an upper bound.',null,null]];
-  document.getElementById('hf-steps').innerHTML=steps.map(([t,a,f,b])=>`<details><summary>${t}</summary><p>${a}</p>${f?`<span class="fx">${f}</span>`:''}${b?`<p class="note">${b}</p>`:''}</details>`).join('');
+   ['1. Demand',`${d.points} points on a 50 m grid: Census 2021 households, grown to mid-2024 and placed in OSM residential buildings.`,
+    `E_i = \\text{households}_i \\times \\text{£}${wk.toFixed(2)}/\\text{wk} \\times 52 \\div ${PRM.vat_divisor} \\qquad \\textstyle\\sum_i E_i = ${tm(d.market_gbp)}`],
+   ['2. Attractiveness',`Format factor: store ${ff.standalone} · concession ${ff.concession} · CP ${ff.collection_point}. γ = ${PRM.gamma}.`,
+    `A_j = \\text{coverage}_j \\times \\max(\\text{price index}_j,\\ ${PRM.price_index_floor})^{-\\gamma} \\times \\text{format}_j`],
+   ['3. Distance','Walking time on real paths (Valhalla, OpenStreetMap).',`D_{ij} = \\text{minutes on foot from } i \\text{ to } j`],
+   ['4. Choice',`U = online delivery + trips outside the walk zone; calibrated to ${pct(PRM.online_share)} online and ${pct(PRM.local_share_of_offline)} of offline spend in the zone.`,
+    `P_{ij} = \\dfrac{A_j / D_{ij}^{\\beta}}{U + \\sum_k A_k / D_{ik}^{\\beta}}`],
+   ['5. Distance decay β',`β ${bs.beta}: a new store takes ${bs.neighbour_share} of spend within a 5-minute walk. Low β ${lo.beta} (${lo.neighbour_share}), high β ${hi.beta} (${hi.neighbour_share}).`,null],
+   ['6. Incremental revenue',`α<sub>online</sub>: ${pct(ao.store)} for a store, ${pct(ao.collection_point)} for a CP.`,
+    `\\text{Incr.} = \\text{sales} - \\text{Argos CPs} - ${tp(PRM.alpha_outside)} \\cdot \\text{outside} - \\alpha_{\\text{online}} \\cdot \\text{online}`],
+   ['7. Limitations','Residents of the 2 MSOAs only · 12 categories · β not calibrated on Argos data · no brand loyalty, so store incremental is an upper bound · local competitors: chains only.',null]];
+  const tex=(f)=>{const el=document.createElement('span'); el.className='fx'; if(window.katex){try{katex.render(f,el,{displayMode:false,throwOnError:false})}catch(e){el.textContent=f}} else el.textContent=f.replace(/\\[a-z]+\{?|[{}]/g,''); return el.outerHTML};
+  document.getElementById('hf-steps').innerHTML=steps.map(([t,a,f])=>`<details><summary>${t}</summary><p>${a}</p>${f?tex(f):''}</details>`).join('');
   const NAMES={beta:'β, distance decay',gamma:'γ, price sensitivity',price_index_floor:'Price index floor',format_factor:'Format factor',online_share:'Online share of spend (target)',local_share_of_offline:'Walk-zone share of offline spend (target)',U_nonspatial:'U, non-spatial alternatives',online_fraction_of_U:'Online part of U',vat_divisor:'VAT divisor',alpha_outside:'α, recapture of outside trips',alpha_online:'α, recapture of online'};
   const SUBN={standalone:'store',concession:'concession',collection_point:'collection point',store:'store'};
   const isPct=k=>/share|alpha|fraction/.test(k);
@@ -864,9 +840,9 @@ document.getElementById('pl-dl').href='data/'+PL.file;
   const stores=plCands.filter(c=>c.format==='Small standalone'), bs=stores.reduce((a,b)=>a.scenarios.Base.contribution>b.scenarios.Base.contribution?a:b);
   const nm=id=>`${id} ${esc(candInfo(id)?candInfo(id).name:'')}`;
   document.getElementById('pl-take').innerHTML=[
-   `<b>Highest contribution in Base:</b> ${nm(best.c.id)}, ${M(best.v)} a year (${best.c.format.toLowerCase()}).`,
-   never.length?`<b>Never pays back:</b> ${never.map(c=>nm(c.id)).join(', ')}, not in any of the ${SCN.length} scenarios.`:`<b>Every candidate pays back</b> in at least one scenario.`,
-   `<b>Best store:</b> ${nm(bs.id)} pays back in ${yrs(bs.scenarios.Base.payback)} in Base (${SCN.map(s=>s.key+' '+yrs(bs.scenarios[s.key].payback)).filter((_,i)=>SCN[i].key!=='Base').join(', ')}).`
+   `<b>Best contribution:</b> ${best.c.id}, ${M(best.v)} a year (Base)`,
+   never.length?`<b>No payback in any scenario:</b> ${never.map(c=>c.id).join(', ')}`:`<b>Every candidate pays back</b> in at least one scenario`,
+   `<b>Best store:</b> ${bs.id}, payback ${yrs(bs.scenarios.Base.payback)} (Base)`
   ].map((t,i)=>`<li><b>${i+1}</b><span>${t}</span></li>`).join('')})();
 function plTable(){
   const k=selS, rows=PL.lines, tot=new Set(['total_costs','contribution']), money=new Set(rows.map(r=>r.key)); money.delete('payback');
@@ -876,7 +852,7 @@ function plTable(){
     if(r.key==='payback') return `<td class="${v==null?'neg':''}">${yrs(v)}</td>`;
     const shown=cost.has(r.key)&&v?-v:v; return `<td class="${shown<0&&!cost.has(r.key)?'neg':''}">${v===0&&cost.has(r.key)?'—':M(shown)}</td>`}).join('')+'</tr>'});
   document.getElementById('pl-tab').innerHTML=h+'</tbody>';
-  const s=SCN.find(x=>x.key===k); document.getElementById('pl-scen').textContent=`β ${s.beta}: new store takes ${s.neighbour_share} of spend of households within a 5-minute walk.`}
+}
 function contribSvg(){
   const W=480,Hh=250,pl=46,pb=26,pt=16, vals=plCands.flatMap(c=>SCN.map(s=>c.scenarios[s.key].contribution));
   const lo=Math.min(0,...vals)*1.15, hi=Math.max(0,...vals)*1.15, sy=v=>pt+(Hh-pb-pt)*(hi-v)/(hi-lo);
