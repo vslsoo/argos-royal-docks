@@ -1,0 +1,214 @@
+{
+ "model": "Huff gravity model with two non-spatial alternatives (online, outside trips)",
+ "run_date": "2026-11-10",
+ "currency": "GBP ex VAT per year",
+ "parameters": {
+  "beta": 0.95,
+  "gamma": 1.0,
+  "price_index_floor": 0.8,
+  "format_factor": {
+   "standalone": 1.0,
+   "concession": 0.7,
+   "collection_point": 0.4
+  },
+  "online_share": 0.3,
+  "local_share_of_offline": 0.05,
+  "U_nonspatial": 2.6894,
+  "online_fraction_of_U": 0.3109,
+  "vat_divisor": 1.2,
+  "alpha_outside": 0.08,
+  "alpha_online": {
+   "store": 0.08,
+   "collection_point": 0.4
+  }
+ },
+ "calibration": {
+  "beta": "0.95 so that C3 takes 13.5% (1.5x Argos national share ~9%) of spend of households within 5 min walk; range 0.70 (9%) - 1.16 (18%)",
+  "U": "bisection so that base scenario: online 30% of E, walk-zone points 5% of offline E (Newham Retail & Leisure Study 2022, zones E16 1/2)"
+ },
+ "demand": {
+  "points": 446,
+  "households": 12896,
+  "market_gbp": 18825180,
+  "method": "Census 2021 households by OA x LSOA growth to mid-2024; allocated to OSM residential buildings by footprint x levels; aggregated to 50 m cells"
+ },
+ "candidates": {
+  "C1": {
+   "sales_gbp": 371847,
+   "from_outside_trips": 250225,
+   "from_online": 112883,
+   "from_local_competitors": 5688,
+   "from_existing_argos": 3051,
+   "incremental_gbp": 303625,
+   "incremental_low": 282328,
+   "incremental_high": 322420
+  },
+  "C2": {
+   "sales_gbp": 280676,
+   "from_outside_trips": 184355,
+   "from_online": 83168,
+   "from_local_competitors": 9845,
+   "from_existing_argos": 3308,
+   "incremental_gbp": 229352,
+   "incremental_low": 213661,
+   "incremental_high": 243200
+  },
+  "C3": {
+   "sales_gbp": 1029699,
+   "from_outside_trips": 693072,
+   "from_online": 312664,
+   "from_local_competitors": 15540,
+   "from_existing_argos": 8423,
+   "incremental_gbp": 940817,
+   "incremental_low": 900588,
+   "incremental_high": 970989
+  },
+  "C4": {
+   "sales_gbp": 675006,
+   "from_outside_trips": 435467,
+   "from_online": 196451,
+   "from_local_competitors": 34773,
+   "from_existing_argos": 8315,
+   "incremental_gbp": 616138,
+   "incremental_low": 590861,
+   "incremental_high": 635095
+  }
+ },
+ "sensitivity": [
+  {
+   "parameter": "base",
+   "value": "base",
+   "incremental_C1": 303625,
+   "incremental_C2": 229352,
+   "incremental_C3": 940817,
+   "incremental_C4": 616138,
+   "ranking": "C3 > C4 > C1 > C2"
+  },
+  {
+   "parameter": "β (калибровка 9–18%)",
+   "value": "0.7",
+   "incremental_C1": 238325,
+   "incremental_C2": 198160,
+   "incremental_C3": 719315,
+   "incremental_C4": 532924,
+   "ranking": "C3 > C4 > C1 > C2"
+  },
+  {
+   "parameter": "β (калибровка 9–18%)",
+   "value": "1.16",
+   "incremental_C1": 365072,
+   "incremental_C2": 252428,
+   "incremental_C3": 1143985,
+   "incremental_C4": 679054,
+   "ranking": "C3 > C4 > C1 > C2"
+  },
+  {
+   "parameter": "коэф. CP",
+   "value": "0.2",
+   "incremental_C1": 181684,
+   "incremental_C2": 137501,
+   "incremental_C3": 1084831,
+   "incremental_C4": 713753,
+   "ranking": "C3 > C4 > C1 > C2"
+  },
+  {
+   "parameter": "коэф. CP",
+   "value": "0.6",
+   "incremental_C1": 391329,
+   "incremental_C2": 295581,
+   "incremental_C3": 831108,
+   "incremental_C4": 542430,
+   "ranking": "C3 > C4 > C1 > C2"
+  },
+  {
+   "parameter": "γ",
+   "value": "0.5",
+   "incremental_C1": 295254,
+   "incremental_C2": 223157,
+   "incremental_C3": 916765,
+   "incremental_C4": 600721,
+   "ranking": "C3 > C4 > C1 > C2"
+  },
+  {
+   "parameter": "γ",
+   "value": "2.0",
+   "incremental_C1": 288325,
+   "incremental_C2": 217684,
+   "incremental_C3": 896880,
+   "incremental_C4": 585030,
+   "ranking": "C3 > C4 > C1 > C2"
+  },
+  {
+   "parameter": "доля онлайна",
+   "value": "0.25",
+   "incremental_C1": 331366,
+   "incremental_C2": 249773,
+   "incremental_C3": 1001577,
+   "incremental_C4": 655930,
+   "ranking": "C3 > C4 > C1 > C2"
+  },
+  {
+   "parameter": "доля онлайна",
+   "value": "0.35",
+   "incremental_C1": 276690,
+   "incremental_C2": 209460,
+   "incremental_C3": 879290,
+   "incremental_C4": 575885,
+   "ranking": "C3 > C4 > C1 > C2"
+  },
+  {
+   "parameter": "доля местных",
+   "value": "0.035",
+   "incremental_C1": 213590,
+   "incremental_C2": 162603,
+   "incremental_C3": 677023,
+   "incremental_C4": 443760,
+   "ranking": "C3 > C4 > C1 > C2"
+  },
+  {
+   "parameter": "доля местных",
+   "value": "0.1",
+   "incremental_C1": 595992,
+   "incremental_C2": 442529,
+   "incremental_C3": 1728418,
+   "incremental_C4": 1137612,
+   "ranking": "C3 > C4 > C1 > C2"
+  },
+  {
+   "parameter": "α выезд",
+   "value": "0.05",
+   "incremental_C1": 311132,
+   "incremental_C2": 234883,
+   "incremental_C3": 961610,
+   "incremental_C4": 629202,
+   "ranking": "C3 > C4 > C1 > C2"
+  },
+  {
+   "parameter": "α выезд",
+   "value": "0.12",
+   "incremental_C1": 293616,
+   "incremental_C2": 221978,
+   "incremental_C3": 913094,
+   "incremental_C4": 598719,
+   "ranking": "C3 > C4 > C1 > C2"
+  },
+  {
+   "parameter": "α онлайн CP",
+   "value": "0.3",
+   "incremental_C1": 314914,
+   "incremental_C2": 237669,
+   "incremental_C3": 940817,
+   "incremental_C4": 616138,
+   "ranking": "C3 > C4 > C1 > C2"
+  },
+  {
+   "parameter": "α онлайн CP",
+   "value": "0.5",
+   "incremental_C1": 292337,
+   "incremental_C2": 221035,
+   "incremental_C3": 940817,
+   "incremental_C4": 616138,
+   "ranking": "C3 > C4 > C1 > C2"
+  }
+ ]
+}

@@ -137,6 +137,109 @@ footer.layers a{color:var(--ink)}
 .grp-on .sh{opacity:.22}
 .grp-on .sh.on{opacity:1;transform:scale(1.45);box-shadow:0 0 0 2px var(--ink)}
 .zoom-lo .stlbl{display:none}
+/* candidate sites */
+:root{--fcp:#0A8F7C; --fss:#5B3FA8; --ex:#8F8D85}
+.lf-msoa2{fill:#1F1E1B;fill-opacity:.05;stroke:#1F1E1B;stroke-width:2.2}
+.cand{display:inline-block;width:16px;height:16px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.35);box-sizing:content-box;flex:none}
+.cand.cp{background:var(--fcp)} .cand.ss{background:var(--fss)}
+.cand.tbc{outline:2px dashed var(--ink);outline-offset:2px}
+.cand.on{box-shadow:0 0 0 3px var(--ink)}
+.altpt{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--fss);opacity:.5;border:1px solid #fff;box-sizing:content-box;flex:none}
+.exa{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ex);border:1.5px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.25);flex:none}
+.leaflet-tooltip.clbl{background:#fff;color:var(--ink);font-weight:600;font-size:12px;border:1.5px solid var(--c);border-radius:6px;padding:1px 6px;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.leaflet-tooltip.albl{background:rgba(255,255,255,.85);color:#4a4943;border:0;box-shadow:none;font-size:10.5px;padding:0 3px}
+.leaflet-tooltip.clbl::before,.leaflet-tooltip.albl::before{display:none}
+.zoom-c .alblw{display:none}
+.badge{display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.02em;background:#FFF1D6;color:#7A4B00;border:1px solid #E8C27A;border-radius:999px;padding:0 7px;line-height:1.6;white-space:nowrap}
+.pp{display:grid;grid-template-columns:auto 1fr;gap:1px 10px;margin:6px 0 0}
+.pp dt{color:var(--muted)} .pp dd{margin:0}
+.leaflet-popup-content .cav{margin:7px 0 0;padding:5px 8px;background:#FBF7EE;border-left:3px solid #E8C27A;font-size:12px;line-height:1.45}
+.leaflet-popup-content .srcs{margin-top:6px;font-size:12px}
+.srcs a{color:inherit}
+.kpis.k3 .kpi b{font-size:22px}
+.fgrp{margin-top:4px}
+.fgrp + .fgrp{margin-top:18px}
+.fhead{display:flex;align-items:center;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.fhead b{font-size:13.5px;white-space:nowrap}
+.fhead span{color:var(--muted);font-size:12.5px;line-height:1.35}
+.site{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"t v" "m v";gap:1px 12px;padding:8px;border-bottom:1px solid var(--line);cursor:pointer;align-items:start}
+.site:hover,.site.hl{background:#F1EFEA}
+.site:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.site .t{grid-area:t;font-weight:600;min-width:0}
+.site .t i{font-style:normal;font-weight:700;margin-right:6px}
+.site .v{grid-area:v;text-align:right;white-space:nowrap;font-weight:600;align-self:center}
+.site .m{grid-area:m;color:var(--muted);font-size:12px;display:flex;flex-wrap:wrap;gap:2px 8px;align-items:center}
+.site .v small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.callout{background:#FBF7EE;border-left:3px solid #E8C27A;padding:8px 10px;font-size:12.5px;margin-top:10px;line-height:1.45}
+.callout b{font-weight:700}
+.callout a{color:inherit}
+details.alts summary{cursor:pointer;font-family:var(--f-display);font-weight:600;font-size:16px;list-style-position:outside}
+details.alts summary span{font-family:var(--f-body);font-weight:400;font-size:12.5px;color:var(--muted);margin-left:6px}
+details.alts summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tscroll{overflow-x:auto;max-width:100%}
+.sheet>.block{min-width:0;max-width:100%}
+@media (max-width:980px){main{width:100%;overflow-x:hidden}.sheet{width:100%}}
+/* huff + p&l */
+:root{--q1:#FCE3CC;--q2:#F5B47F;--q3:#E57F3E;--q4:#BF5016;--q5:#7F300A;
+  --scL:#C9C6BE;--scB:#7E7B73;--scH:#1F1E1B;--neg:#B5381F}
+.seg{display:inline-flex;flex-wrap:wrap;gap:2px;border:1px solid var(--line);border-radius:999px;padding:2px;background:#fff}
+.seg button{font:inherit;font-size:12.5px;font-weight:600;border:0;background:transparent;color:var(--ink);padding:4px 11px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.ramp{display:flex;gap:2px;padding-left:20px;font-size:11px;color:var(--muted)}
+.ramp span{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:34px}
+.ramp i{display:block;width:34px;height:9px;border-radius:2px}
+.dem{stroke:#fff;stroke-width:.8;fill-opacity:.9}
+.flow{stroke-linecap:round;stroke-opacity:.45;fill:none}
+.sp{display:inline-block;box-sizing:content-box;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.35);flex:none}
+.sp.cp{width:9px;height:9px;border-radius:50%;background:var(--cp)}
+.sp.comp{width:9px;height:9px;background:var(--comp)}
+.sp.cand{width:11px;height:11px;border-radius:50%}
+.sp.cand.sel{width:17px;height:17px;border-width:3px;box-shadow:0 0 0 2px var(--ink)}
+.sp.c-cp{background:var(--fcp)} .sp.c-ss{background:var(--fss)}
+.bars{display:flex;flex-direction:column;gap:7px;margin-top:8px}
+.bar{display:grid;grid-template-columns:minmax(120px,38%) 1fr auto;gap:10px;align-items:center;font-size:12.5px}
+.bar .tr{height:14px;position:relative}
+.bar .tr i{position:absolute;left:0;top:0;bottom:0;border-radius:0 4px 4px 0;background:var(--c,var(--ink))}
+.bar b{font-weight:600;min-width:72px;text-align:right}
+.bar small{color:var(--muted);font-weight:400}
+svg.chart{display:block;width:100%;height:auto;overflow:visible;font-family:var(--f-body)}
+svg.chart text{font-size:11px;fill:var(--muted)}
+svg.chart text.v{fill:var(--ink);font-weight:600}
+svg.chart .grid{stroke:var(--line);stroke-width:1}
+svg.chart .zero{stroke:var(--ink);stroke-width:1.5}
+svg.chart rect.m:hover,svg.chart rect.m.hl{stroke:var(--ink);stroke-width:1.5}
+.dtab{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px}
+.dtab th{text-align:right;font-weight:600;color:var(--muted);font-size:11.5px;border-bottom:1px solid var(--line);padding:5px 6px;white-space:nowrap}
+.dtab td{text-align:right;border-bottom:1px solid var(--line);padding:5px 6px;white-space:nowrap}
+.dtab th:first-child,.dtab td:first-child{text-align:left;white-space:normal}
+.dtab tr.on td{background:#F1EFEA;font-weight:600}
+.dtab tr[data-c]{cursor:pointer}
+.dtab tr[data-c]:hover td{background:#F7F6F2}
+.dtab tr.tot td{font-weight:700;border-top:1.5px solid var(--ink)}
+.dtab tr.sub td{color:var(--muted)}
+.dtab .neg{color:var(--neg)}
+.dtab td.wrap{white-space:normal;text-align:left;color:var(--muted);font-size:12px;min-width:220px}
+.steps details{border-bottom:1px solid var(--line);padding:8px 0}
+.steps summary{cursor:pointer;font-weight:600}
+.steps summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.steps details p{margin:6px 0 0;color:#3c3b36;max-width:68ch}
+.fx{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:14px;background:#F6F5F1;border-radius:6px;padding:6px 10px;margin:6px 0 0;display:block;overflow-x:auto;white-space:nowrap}
+.take{margin:4px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.take li{display:grid;grid-template-columns:22px 1fr;gap:6px;align-items:baseline;font-size:14px}
+.take li>b{font-family:var(--f-display);font-size:12px;color:var(--muted)}
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.ctl .sub{font-size:12.5px}
+.sw-leg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);margin-top:6px}
+.sw-leg span{display:inline-flex;align-items:center;gap:6px}
+.sw-leg i{width:12px;height:12px;border-radius:2px;display:inline-block}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px}
+.dl{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--ink);margin-top:10px}
+main.nomap{grid-template-columns:minmax(0,1fr)}
+main.nomap .mapcol{display:none}
+.sheet.wide{padding-left:max(24px,calc((100% - 1040px)/2));padding-right:max(24px,calc((100% - 1040px)/2))}
+.srclist li{overflow-wrap:anywhere}
+@media (max-width:760px){.grid2{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:1180px){:root{--sheet:460px}}
 @media (max-width:980px){
   main{display:flex;flex-direction:column}
@@ -154,6 +257,9 @@ footer.layers a{color:var(--ink)}
   <nav class="tabs" role="tablist" aria-label="Sections">
     <button role="tab" aria-selected="true" data-section="study-area">Study area</button>
     <button role="tab" aria-selected="false" data-section="competitors">Competitors</button>
+    <button role="tab" aria-selected="false" data-section="candidates">Candidate sites</button>
+    <button role="tab" aria-selected="false" data-section="huff">Huff model</button>
+    <button role="tab" aria-selected="false" data-section="pnl">P&amp;L &amp; payback</button>
   </nav>
 </header>
 
@@ -181,6 +287,31 @@ footer.layers a{color:var(--ink)}
       <div class="lc-pt"><i class="sh partial"></i>Overlaps part of the Argos range</div>
       <div class="lc-pt"><i class="sh argos"></i>Argos collection point</div>
       <label><input type="checkbox" id="ly2-lbl" checked><i class="sw" style="border:0;background:transparent;font-size:11px;line-height:12px;text-align:center">Aa</i>Labels</label>
+      <button type="button" class="lc-fold" aria-expanded="true">Hide</button>
+    </div>
+    <div class="layers-card bl" data-for="candidates" role="group" aria-label="Map layers" hidden>
+      <div class="lc-title">Layers</div>
+      <div class="lc-static"><i class="sw" style="background:rgba(31,30,27,.06);border:2px solid var(--ink)"></i>Canning Town (034), Pontoon Dock (042)</div>
+      <label><input type="checkbox" id="ly3-zone" checked><i class="sw" style="background:rgba(91,63,168,.07);border:1.5px dashed var(--st)"></i>15-minute walk from the study area</label>
+      <div class="lc-pt"><i class="cand cp" style="width:11px;height:11px"></i>Candidate: collection point</div>
+      <div class="lc-pt"><i class="cand ss" style="width:11px;height:11px"></i>Candidate: small standalone</div>
+      <div class="lc-pt"><i class="cand cp tbc" style="width:9px;height:9px;outline-width:1.5px"></i>Terms to be confirmed</div>
+      <label><input type="checkbox" id="ly3-alt" checked><i class="altpt"></i>Alternative units</label>
+      <label><input type="checkbox" id="ly3-ex" checked><i class="exa"></i>Existing Argos points</label>
+      <label><input type="checkbox" id="ly3-lbl" checked><i class="sw" style="border:0;background:transparent;font-size:11px;line-height:12px;text-align:center">Aa</i>Labels</label>
+      <button type="button" class="lc-fold" aria-expanded="true">Hide</button>
+    </div>
+    <div class="layers-card" data-for="huff" role="group" aria-label="Map layers" hidden>
+      <div class="lc-title">Candidate</div>
+      <div class="seg" id="hf-seg" role="group" aria-label="Candidate"></div>
+      <label><input type="checkbox" id="ly4-flow" checked><i class="sw" style="height:3px;background:var(--fss);opacity:.6"></i><span id="flow-lbl">Spend flows</span></label>
+      <label><input type="checkbox" id="ly4-dem" checked><i class="sw" style="border-radius:50%;width:12px;background:var(--q3)"></i>Homes: size = spend, colour = candidate's share</label>
+      <div class="ramp" id="share-ramp"></div>
+      <label><input type="checkbox" id="ly4-sup" checked>Stores in the model</label>
+      <div class="lc-pt"><i class="sp cp"></i>Argos collection point</div>
+      <div class="lc-pt"><i class="sp comp"></i>Competitor</div>
+      <div class="lc-pt"><i class="sp cand c-ss"></i><i class="sp cand c-cp"></i>Candidate (store / CP)</div>
+      <label><input type="checkbox" id="ly4-zone" checked><i class="sw" style="background:rgba(91,63,168,.07);border:1.5px dashed var(--st)"></i>15-minute walk from the study area</label>
       <button type="button" class="lc-fold" aria-expanded="true">Hide</button>
     </div>
     <button type="button" id="reset" class="reset">Reset view</button>
@@ -273,11 +404,138 @@ footer.layers a{color:var(--ink)}
       </ul>
     </footer>
   </aside>
+
+  <aside class="sheet" data-for="candidates" aria-label="Candidate sites" hidden>
+    <div class="intro">
+      <div class="eyebrow">Candidate sites · checked 10 Nov 2026</div>
+      <h1>Four sites shortlisted: two collection points, two vacant shop units</h1>
+    </div>
+    <div class="kpis k3">
+      <div class="kpi"><b>2</b><span>collection points in Sainsbury's Local</span></div>
+      <div class="kpi"><b>1.8–2.5k</b><span>sq ft, vacant Class E units</span></div>
+      <div class="kpi"><b>£42–75k</b><span>rent a year for the units</span></div>
+    </div>
+
+    <div class="block">
+      <h2>Shortlist</h2>
+      <p class="sub">Click a site to open it on the map.</p>
+      <div id="clist"></div>
+    </div>
+
+    <div class="block">
+      <details class="alts">
+        <summary>Alternatives<span>7 more units</span></summary>
+        <div id="alist" style="margin-top:6px"></div>
+        <p class="note">A2–A4 have no exact address and are plotted at C3.</p>
+      </details>
+    </div>
+
+    <footer class="layers">
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.rightmove.co.uk/" target="_blank" rel="noopener">Rightmove</a> and <a href="https://search.savills.com/" target="_blank" rel="noopener">Savills</a> (10 Nov 2026): listings; rent excludes rates and service charge</li>
+        <li><a href="https://postcodes.io/" target="_blank" rel="noopener">postcodes.io</a>: postcode centroids (markers may be up to ~100 m off)</li>
+        <li><a href="https://corporate.sainsburys.co.uk/news/press-releases/sainsbury-s-agrees-sale-of-argos-to-swift-partners/" target="_blank" rel="noopener">Sainsbury's</a>: sale of Argos to Swift Partners</li>
+        <li><a href="https://www.argos.co.uk/stores" target="_blank" rel="noopener">Argos store locator</a> (9 Nov 2026): existing Argos points</li>
+        <li><a href="https://valhalla.github.io/valhalla/" target="_blank" rel="noopener">Valhalla</a> on OpenStreetMap data: 15-minute walking zone</li>
+        <li><a href="https://geoportal.statistics.gov.uk/" target="_blank" rel="noopener">ONS Open Geography Portal</a>: MSOA boundaries</li>
+      </ul>
+    </footer>
+  </aside>
+
+  <aside class="sheet" data-for="huff" aria-label="Huff model results" hidden>
+    <div class="intro">
+      <div class="eyebrow">Huff model · where the money goes</div>
+      <h1 id="hf-h1"></h1>
+      <p id="hf-lede"></p>
+    </div>
+    <div class="kpis" id="hf-kpis"></div>
+
+    <div class="block">
+      <h2>Where the sales come from</h2>
+      <p class="sub">Spend the candidate takes from each current destination, £ a year.</p>
+      <div class="bars" id="hf-src"></div>
+    </div>
+
+    <div class="block">
+      <h2>Share falls with walking time</h2>
+      <p class="sub">Candidate's share of residents' spend by walking time, weighted by spend.</p>
+      <div id="hf-decay"></div>
+    </div>
+
+    <div class="block">
+      <h2>All four candidates</h2>
+      <p class="sub">Click a row to switch the map.</p>
+      <div class="tscroll"><table class="dtab" id="hf-tab"></table></div>
+      <p class="note" id="hf-tabnote"></p>
+    </div>
+
+    <div class="block">
+      <h2>Sensitivity</h2>
+      <p class="sub" id="hf-tsub"></p>
+      <div id="hf-tornado"></div>
+      <p class="note" id="hf-tcap"></p>
+    </div>
+
+    <div class="block">
+      <h2>How it was calculated</h2>
+      <div class="steps" id="hf-steps"></div>
+    </div>
+
+    <div class="block">
+      <h2>Model parameters</h2>
+      <div class="tscroll"><table class="dtab" id="hf-params"></table></div>
+    </div>
+
+    <footer class="layers"><h2>Sources</h2><ul class="srclist"></ul></footer>
+  </aside>
+
+  <aside class="sheet wide" data-for="pnl" aria-label="P&amp;L and payback" hidden>
+    <div class="intro">
+      <div class="eyebrow">P&amp;L &amp; payback · £ ex VAT per year</div>
+      <h1>What each candidate would earn, and how fast it pays back</h1>
+      <ul class="take" id="pl-take"></ul>
+    </div>
+
+    <div class="ctl">
+      <div class="seg" id="pl-seg" role="group" aria-label="Scenario"></div>
+      <span class="sub" id="pl-scen"></span>
+    </div>
+
+    <div class="block">
+      <h2>Annual P&amp;L</h2>
+      <div class="tscroll"><table class="dtab" id="pl-tab"></table></div>
+    </div>
+
+    <div class="grid2">
+      <div class="block">
+        <h2>Annual contribution, three scenarios</h2>
+        <div class="sw-leg" id="pl-leg1"></div>
+        <div id="pl-contrib"></div>
+      </div>
+      <div class="block">
+        <h2>Payback, years</h2>
+        <div class="sw-leg" id="pl-leg2"></div>
+        <div id="pl-payback"></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Assumptions</h2>
+      <div class="tscroll"><table class="dtab" id="pl-ass"></table></div>
+      <a class="dl" id="pl-dl" download>Download the appraisal workbook (.xlsx)</a>
+    </div>
+
+    <footer class="layers"><h2>Sources</h2><ul class="srclist"></ul></footer>
+  </aside>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="data/territory.js"></script>
 <script src="data/competition.js"></script>
+<script src="data/candidates.js"></script>
+<script src="data/huff.js"></script>
+<script src="data/pnl.js"></script>
 <script>
 (function(){
 const D=window.MAPDATA;
@@ -372,11 +630,318 @@ GRPS.forEach(([g,t,d])=>{const el=document.createElement('div'); el.className='g
   el.addEventListener('focus',()=>grpHl(g,true)); el.addEventListener('blur',()=>grpHl(g,false));
   gEl.appendChild(el)});
 
+/* ---------- candidate sites ---------- */
+const CA=window.CANDIDATES, AL=window.CANDIDATE_ALTERNATIVES, CAV=window.SAINSBURYS_CAVEAT;
+const FCLS={'Collection point':'cp','Small standalone':'ss'}, FCOL={cp:'--fcp',ss:'--fss'};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const host=u=>{try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return u}};
+const srcLinks=a=>a.map((u,i)=>`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(host(u))}</a>`).join(' · ');
+const areaTxt=v=>v==null?'—':typeof v==='number'?fmt(v)+' sq ft':/\d/.test(v)?v+' sq ft':v;
+const rentTxt=(v,ap)=>v==null?'—':typeof v==='number'?(ap?'≈ ':'')+'£'+fmt(v):String(v).replace(/(^|≈ |from ≈ )(\d)/,'$1£$2');
+const dateTxt=d=>new Date(d+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+const sitePopup=c=>`<b>${esc(c.id)} · ${esc(c.name)}</b>`+(c.sainsburys?` <span class="badge">${CAV.badge}</span>`:'')+
+  `<dl class="pp"><dt>Address</dt><dd>${esc(c.address)}, ${esc(c.postcode)}</dd>`+
+  `<dt>Format</dt><dd>${esc(c.format)}</dd>`+
+  `<dt>Area</dt><dd>${esc(areaTxt(c.area_sqft))}</dd>`+
+  `<dt>Rent pa</dt><dd>${esc(rentTxt(c.rent_pa_gbp,c.rent_approx))}${c.rent_note?` <span class="k">· ${esc(c.rent_note)}</span>`:''}</dd>`+
+  `<dt>Status</dt><dd>${esc(c.status)}</dd>`+
+  `<dt>Checked</dt><dd>${dateTxt(c.checked_on)} <span class="k">· coords: ${esc(c.coord_quality)}</span></dd>`+
+  (c.note?`<dt>Note</dt><dd>${esc(c.note)}</dd>`:'')+`</dl>`+
+  (c.sainsburys?`<div class="cav">${CAV.text}<div class="srcs">${srcLinks(CAV.sources)}</div></div>`:'')+
+  `<div class="srcs"><span class="k">Sources:</span> ${srcLinks(c.sources)}</div>`;
+
+const msoa2=L.layerGroup(D.msoa.filter(f=>CLS[f.properties.id]).map(f=>
+  L.geoJSON(f,{pane:'sel',style:{className:'lf-msoa2'},interactive:false})));
+const LAB3={'Newham 034':[51.5205,0.0125],'Newham 042':[51.5045,0.047]};
+const msoa2Lbl=L.layerGroup(D.msoa.filter(f=>CLS[f.properties.id]).map(f=>
+  L.tooltip({permanent:true,direction:'center',interactive:false,className:'lbl'}).setLatLng(LAB3[f.properties.id]||f.properties.lab).setContent(`${f.properties.name}<br><span style="font-size:10.5px">${f.properties.id}</span>`)));
+const zone3=L.geoJSON(C.zone,{pane:'iso',style:{className:'lf-zone'},interactive:false});
+const exG=L.layerGroup();
+D.stores.forEach(f=>{const [lon,lat]=f.geometry.coordinates,p=f.properties;
+  const m=L.marker([lat,lon],{pane:'oa',icon:L.divIcon({className:'',html:'<i class="exa"></i>',iconSize:[12,12],iconAnchor:[6,6]}),title:p.name,alt:p.name});
+  m.bindTooltip(`<b>${esc(p.name)}</b><br>Existing: ${FMT[p.fmt]}<br><span class="k">${esc(p.addr)}</span>`,{className:'tip',direction:'top',offset:[0,-6]});
+  exG.addLayer(m)});
+const candG=L.layerGroup(), candLbl=L.layerGroup(), altG=L.layerGroup(), altLbl=L.layerGroup(), candM={};
+const CDIR={C1:['right',[12,0]],C2:['left',[-12,0]],C3:['left',[-12,0]],C4:['top',[0,-12]]};
+CA.forEach(c=>{const k=FCLS[c.format];
+  const m=L.marker([c.lat,c.lon],{pane:'top',zIndexOffset:1000,icon:L.divIcon({className:'',html:`<i class="cand ${k}${c.sainsburys?' tbc':''}" data-id="${c.id}"></i>`,iconSize:[22,22],iconAnchor:[11,11]}),title:`${c.id} ${c.name}`,alt:`${c.id} ${c.name}`});
+  m.bindPopup(sitePopup(c),{maxWidth:340,autoPanPaddingTopLeft:[20,60]});
+  candG.addLayer(m); candM[c.id]=m;
+  const [dir,off]=CDIR[c.id]||['right',[12,0]];
+  const t=L.tooltip({permanent:true,direction:dir,offset:off,className:'clbl'}).setLatLng([c.lat,c.lon]).setContent(`${c.id} · ${c.format}`);
+  t.on('add',()=>{const el=t.getElement(); if(el) el.style.setProperty('--c',`var(${FCOL[k]})`)});
+  candLbl.addLayer(t)});
+const AOFF={A2:['bottom',[0,8]],A3:['bottom',[0,22]],A4:['bottom',[0,36]],A5:['right',[7,0]],A6:['top',[0,-6]],A1:['right',[7,0]],A7:['left',[-7,0]]};
+AL.forEach(a=>{
+  const m=L.marker([a.lat,a.lon],{pane:'oa',icon:L.divIcon({className:'',html:'<i class="altpt"></i>',iconSize:[10,10],iconAnchor:[5,5]}),title:a.name,alt:a.name});
+  m.bindPopup(sitePopup(a),{maxWidth:340}); altG.addLayer(m); candM[a.id]=m;
+  const approx=/approx/.test(a.coord_quality), [dir,off]=AOFF[a.id]||['right',[7,0]];
+  altLbl.addLayer(L.tooltip({permanent:true,direction:dir,offset:off,className:'albl alblw'}).setLatLng([a.lat,a.lon]).setContent(`${a.id}${approx?' (approx.)':''}`))});
+const candHl=(id,on)=>{const el=map.getContainer().querySelector(`.cand[data-id="${id}"]`); if(el) el.classList.toggle('on',on)};
+const kRent=(v,ap)=>typeof v==='number'?(ap?'≈ ':'')+'£'+(v/1000).toFixed(v%1000?1:0)+'k':rentTxt(v);
+const siteRow=(c,isAlt)=>{const k=FCLS[c.format], approx=/approx/.test(c.coord_quality);
+  const val=c.sainsburys?'<span class="badge">'+CAV.badge+'</span>':`${esc(kRent(c.rent_pa_gbp,c.rent_approx))}<small>${esc(areaTxt(c.area_sqft))}</small>`;
+  return `<div class="site" data-id="${c.id}" tabindex="0" role="button"><div class="t"><i>${c.id}</i>${esc(c.name)}</div><div class="v">${val}</div>`+
+    `<div class="m">${esc(c.postcode.replace(/ \(.*/,''))}${approx?' · approx. location':''}${c.status!=='Available'&&!c.sainsburys?' · '+esc(c.status):''}</div></div>`};
+const wire=(el,isAlt)=>el.querySelectorAll('.site').forEach(r=>{const id=r.dataset.id;
+  const open=()=>{const m=candM[id]; if(isAlt&&!document.getElementById('ly3-alt').checked) document.getElementById('ly3-alt').click();
+    map.flyTo(m.getLatLng(),Math.max(map.getZoom(),15),{duration:.6}); map.once('moveend',()=>m.openPopup())};
+  r.addEventListener('click',open); r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}});
+  if(!isAlt){r.addEventListener('mouseenter',()=>candHl(id,true)); r.addEventListener('mouseleave',()=>candHl(id,false))}});
+const FDEF={'Collection point':'counter in a host store, no stock: order online, collect here','Small standalone':'own small store, ~1,500–2,500 sq ft, fast-moving stock + collection'};
+const clist=document.getElementById('clist');
+clist.innerHTML=Object.keys(FDEF).map(f=>`<div class="fgrp"><div class="fhead"><i class="cand ${FCLS[f]}" style="width:10px;height:10px;border-width:2px"></i><b>${f}</b><span>${FDEF[f]}</span></div>`+
+  CA.filter(c=>c.format===f).map(c=>siteRow(c)).join('')+
+  (f==='Collection point'?`<div class="callout"><b>${CAV.badge}.</b> ${CAV.short} <span class="srcs">${srcLinks(CAV.sources)}</span></div>`:'')+'</div>').join('');
+wire(clist,false);
+const alist=document.getElementById('alist'); alist.innerHTML=AL.map(a=>siteRow(a,true)).join(''); wire(alist,true);
+const cZoom=()=>map.getContainer().classList.toggle('zoom-c',map.getZoom()<15);
+map.on('zoomend',cZoom); cZoom();
+
+/* ---------- Huff model + P&L (data: data/huff.js, data/pnl.js) ---------- */
+const H=window.HUFF, S=H.summary, PRM=S.parameters, PL=window.PNL;
+const CIDS=Object.keys(S.candidates);
+const M=v=>{if(v==null||isNaN(v)) return '—'; const a=Math.abs(v), sg=v<0?'−':'';
+  return sg+'£'+(a>=1e6?(a/1e6).toFixed(2)+'m':a>=1e3?Math.round(a/1e3)+'k':Math.round(a))};
+const pct=(v,d=0)=>(v*100).toFixed(d)+'%';
+const trimPct=v=>{const x=+(v*100).toFixed(1); return x+'%'};
+const SUP=H.supply.features.map(f=>({...f.properties,lat:f.geometry.coordinates[1],lon:f.geometry.coordinates[0]}));
+const DEM=H.demand.features.map(f=>({...f.properties,lat:f.geometry.coordinates[1],lon:f.geometry.coordinates[0]}));
+const candInfo=id=>SUP.find(p=>p.point_id===id);
+const fmtCls=p=>p.format==='collection point'?'cp':'ss';
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const FLOW_MIN=500;
+const SHARE_BINS=[.01,.03,.06,.12], SHARE_COL=['--q1','--q2','--q3','--q4','--q5'];
+const shareCol=v=>`var(${SHARE_COL[SHARE_BINS.filter(b=>v>=b).length]})`;
+const Emax=Math.max(...DEM.map(p=>p.E_gbp));
+const flowMax=Math.max(...CIDS.flatMap(c=>DEM.map(p=>p[c+'_gbp'])));
+let selC=CIDS.includes('C3')?'C3':CIDS[0];
+
+const zone4=L.geoJSON(C.zone,{pane:'river',style:{className:'lf-zone'},interactive:false});
+const msoa4=L.layerGroup(D.msoa.filter(f=>CLS[f.properties.id]).map(f=>L.geoJSON(f,{pane:'oa',style:{className:'lf-msoa2',fill:false},interactive:false})));
+const flowG=L.layerGroup(), demG=L.layerGroup(), supG=L.layerGroup();
+document.getElementById('flow-lbl').textContent=`Spend flows to the candidate (≥ ${M(FLOW_MIN)} a year)`;
+document.getElementById('share-ramp').innerHTML=SHARE_COL.map((c,i)=>`<span><i style="background:var(${c})"></i>${i===0?'<'+trimPct(SHARE_BINS[0]):i===SHARE_COL.length-1?'≥'+trimPct(SHARE_BINS[i-1]):trimPct(SHARE_BINS[i-1])+'–'+trimPct(SHARE_BINS[i])}</span>`).join('');
+
+const demPopup=p=>{const c=selC;
+  return `<b>Home cluster ${p.pid}</b> <span class="k">· OA ${esc(p.oa21cd)}</span><dl class="pp">`+
+  `<dt>Households</dt><dd>${p.households.toFixed(1)}</dd><dt>Market</dt><dd>${M(p.E_gbp)} a year</dd>`+
+  `<dt>Walk to ${c}</dt><dd>${p[c+'_walk_min'].toFixed(1)} min</dd><dt>${c} share</dt><dd>${pct(p[c+'_share'],1)}</dd>`+
+  `<dt>£ to ${c}</dt><dd><b>${M(p[c+'_gbp'])}</b></dd>`+
+  `<dt>of which</dt><dd>${M(p[c+'_from_outside_gbp'])} from trips outside · ${M(p[c+'_from_online_gbp'])} from online · ${M(p[c+'_from_local_gbp'])} from local stores</dd></dl>`};
+const supPopup=p=>{const c=selC, cand=p.type==='candidate';
+  const kind=cand?`Candidate · ${cap(p.format)}`:p.chain==='Argos'?'Argos '+p.format:`Competitor · ${p.chain}`;
+  let sales;
+  if(cand) sales=p.point_id===c?`<dt>Sales</dt><dd><b>${M(p.sales_gbp)}</b> (new)</dd>`:`<dt>Sales if opened</dt><dd>${M(p.sales_gbp)} <span class="k">(not the selected candidate)</span></dd>`;
+  else {const a=p.base_sales_gbp, b=p['sales_with_'+c+'_gbp']; sales=`<dt>Sales today</dt><dd>${M(a)}</dd><dt>With ${c}</dt><dd>${M(b)} <span class="k">(${M(b-a)}, ${pct((b-a)/a,1)})</span></dd>`}
+  return `<b>${cand?p.point_id+' · ':''}${esc(p.name)}</b><br><span class="k">${esc(kind)}</span><dl class="pp">`+
+    `<dt>Attractiveness A</dt><dd>${p.A}</dd><dt>Range coverage</dt><dd>${pct(p.coverage,1)}</dd><dt>Price index</dt><dd>${p.price_index}</dd>${sales}</dl>`+
+    `<span class="k">Sales: residents of the 2 study MSOAs only, 12 categories, £ ex VAT a year.</span>`};
+
+function drawHuffMap(){
+  const c=selC, cp=candInfo(c), to=[cp.lat,cp.lon], col=`var(${fmtCls(cp)==='cp'?'--fcp':'--fss'})`;
+  flowG.clearLayers(); demG.clearLayers(); supG.clearLayers();
+  DEM.filter(p=>p[c+'_gbp']>=FLOW_MIN).sort((a,b)=>a[c+'_gbp']-b[c+'_gbp']).forEach(p=>
+    flowG.addLayer(L.polyline([[p.lat,p.lon],to],{pane:'iso',interactive:false,className:'flow',color:getComputedStyle(document.documentElement).getPropertyValue(fmtCls(cp)==='cp'?'--fcp':'--fss').trim(),weight:Math.max(.7,10*p[c+'_gbp']/flowMax)})));
+  DEM.slice().sort((a,b)=>b.E_gbp-a.E_gbp).forEach(p=>{
+    const m=L.circleMarker([p.lat,p.lon],{pane:'ctx',radius:2+12*Math.sqrt(p.E_gbp/Emax),className:'dem',fillColor:getComputedStyle(document.documentElement).getPropertyValue(SHARE_COL[SHARE_BINS.filter(b=>p[c+'_share']>=b).length]).trim()});
+    m.bindPopup(()=>demPopup(p),{maxWidth:320}); demG.addLayer(m)});
+  SUP.forEach(p=>{const cand=p.type==='candidate', on=p.point_id===c;
+    const cls=cand?`sp cand c-${fmtCls(p)}${on?' sel':''}`:p.chain==='Argos'?'sp cp':'sp comp', sz=on?23:cand?15:13;
+    const m=L.marker([p.lat,p.lon],{pane:'top',zIndexOffset:on?2000:cand?1000:0,icon:L.divIcon({className:'',html:`<i class="${cls}"></i>`,iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]}),title:p.name,alt:p.name});
+    m.bindPopup(()=>supPopup(p),{maxWidth:320});
+    if(cand) m.bindTooltip(p.point_id,{permanent:true,direction:'right',offset:[on?12:8,0],className:on?'clbl':'albl'}).on('tooltipopen',e=>{const el=e.tooltip.getElement(); if(el) el.style.setProperty('--c',col)});
+    supG.addLayer(m)});
+}
+
+/* panel */
+function srcBars(c){const r=S.candidates[c];
+  const rows=[['Trips to stores outside the walk zone',r.from_outside_trips],['Online (home delivery)',r.from_online],['Local competitors',r.from_local_competitors],['Existing Argos collection points',r.from_existing_argos]];
+  const mx=Math.max(...rows.map(x=>x[1])), col=`var(${fmtCls(candInfo(c))==='cp'?'--fcp':'--fss'})`;
+  return rows.map(([t,v])=>`<div class="bar" title="${t}: ${M(v)} (${pct(v/r.sales_gbp)})"><span>${t}</span><span class="tr"><i style="width:${(100*v/mx).toFixed(1)}%;--c:${col}"></i></span><b>${M(v)} <small>${pct(v/r.sales_gbp)}</small></b></div>`).join('')}
+const BANDS=[[0,2],[2,5],[5,10],[10,15],[15,20],[20,Infinity]];
+function decaySvg(c){
+  const vals=BANDS.map(([a,b])=>{const ps=DEM.filter(p=>p[c+'_walk_min']>=a&&p[c+'_walk_min']<b); const E=ps.reduce((s,p)=>s+p.E_gbp,0);
+    return {lab:b===Infinity?`${a}+`:`${a}–${b}`, v:E?ps.reduce((s,p)=>s+p[c+'_gbp'],0)/E:null, n:ps.length, E}});
+  const W=460,Hh=170,pl=8,pb=30,pt=18,bw=(W-pl*2)/vals.length, mx=Math.max(...vals.map(x=>x.v||0))||1, col=`var(${fmtCls(candInfo(c))==='cp'?'--fcp':'--fss'})`;
+  let g=`<line class="zero" x1="0" x2="${W}" y1="${Hh-pb}" y2="${Hh-pb}"/>`;
+  vals.forEach((x,i)=>{const h=x.v==null?0:(Hh-pb-pt)*x.v/mx, X=pl+i*bw+bw*.18, w=bw*.64, y=Hh-pb-h;
+    g+=x.v==null?`<text x="${X+w/2}" y="${Hh-pb-6}" text-anchor="middle">no homes</text>`:
+      `<path d="M${X},${Hh-pb}V${y+4}q0,-4 4,-4h${w-8}q4,0 4,4V${Hh-pb}Z" fill="${col}"><title>${x.lab} min: ${pct(x.v,1)} of ${M(x.E)} spend (${x.n} points)</title></path><text class="v" x="${X+w/2}" y="${y-5}" text-anchor="middle">${pct(x.v,1)}</text>`;
+    g+=`<text x="${X+w/2}" y="${Hh-pb+15}" text-anchor="middle">${x.lab}</text>`});
+  g+=`<text x="${W/2}" y="${Hh-2}" text-anchor="middle">minutes on foot to ${c}</text>`;
+  return `<svg class="chart" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Share of spend by walking time to ${c}">${g}</svg>`}
+const rankOf=c=>CIDS.slice().sort((a,b)=>S.candidates[b].incremental_gbp-S.candidates[a].incremental_gbp).indexOf(c)+1;
+const SENS_EN={'β':'β, distance decay','коэф. CP':'CP format factor','γ':'γ, price sensitivity','доля онлайна':'Online share','доля местных':'Local share of offline','α выезд':'α, outside trips','α онлайн CP':'α, online (CP)'};
+const sensName=p=>{const k=Object.keys(SENS_EN).find(k=>p===k||p.startsWith(k+' ')); return k?SENS_EN[k]:p};
+function tornado(c){
+  const base=S.sensitivity.find(r=>r.parameter==='base')['incremental_'+c];
+  const by={}; S.sensitivity.filter(r=>r.parameter!=='base').forEach(r=>(by[r.parameter]=by[r.parameter]||[]).push(r));
+  const rows=Object.entries(by).map(([k,rs])=>{const v=rs.map(r=>({x:r['incremental_'+c],val:r.value})); const lo=v.reduce((a,b)=>a.x<b.x?a:b), hi=v.reduce((a,b)=>a.x>b.x?a:b); return {name:sensName(k),lo,hi,span:hi.x-lo.x}}).sort((a,b)=>b.span-a.span);
+  const xs=rows.flatMap(r=>[r.lo.x,r.hi.x]).concat(base), x0=Math.min(...xs)*.86, x1=Math.max(...xs)*1.04;
+  const W=460,lw=150,rh=26,top=6,Hh=top+rows.length*rh+26, sx=v=>lw+(W-lw-10)*(v-x0)/(x1-x0);
+  let g='';
+  rows.forEach((r,i)=>{const y=top+i*rh, a=sx(r.lo.x), b=sx(r.hi.x);
+    g+=`<text x="0" y="${y+15}" style="fill:var(--ink)">${esc(r.name)}</text>`;
+    g+=r.span<1?`<text x="${sx(base)+6}" y="${y+15}">no effect on a store</text>`:`<rect class="m" x="${a}" y="${y+4}" width="${Math.max(b-a,1)}" height="${rh-10}" rx="3" fill="var(--fss)" fill-opacity=".75"><title>${esc(r.name)}: ${r.lo.val} → ${M(r.lo.x)}; ${r.hi.val} → ${M(r.hi.x)}</title></rect>`+
+      `<text x="${a-4}" y="${y+15}" text-anchor="end">${r.lo.val}</text><text x="${b+4}" y="${y+15}">${r.hi.val}</text>`});
+  const tk=[]; const step=Math.pow(10,Math.floor(Math.log10(x1-x0)))/ (x1-x0>3*Math.pow(10,Math.floor(Math.log10(x1-x0)))?1:2);
+  for(let t=Math.ceil(x0/step)*step;t<=x1;t+=step) tk.push(t);
+  g=tk.map(t=>`<line class="grid" x1="${sx(t)}" x2="${sx(t)}" y1="${top}" y2="${Hh-22}"/><text x="${sx(t)}" y="${Hh-8}" text-anchor="middle">${M(t)}</text>`).join('')+g+
+    `<line class="zero" x1="${sx(base)}" x2="${sx(base)}" y1="${top-2}" y2="${Hh-22}"/>`;
+  return {svg:`<svg class="chart" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Sensitivity of ${c} incremental revenue">${g}</svg>`, base}}
+
+function huffPanel(){
+  const c=selC, r=S.candidates[c], p=candInfo(c);
+  document.getElementById('hf-h1').textContent=`${c} ${p.name}: ${M(r.sales_gbp)} of sales, ${M(r.incremental_gbp)} new to Argos`;
+  const outsideShare=r.from_outside_trips/r.sales_gbp, onlineShare=r.from_online/r.sales_gbp;
+  document.getElementById('hf-lede').textContent=`${cap(p.format)}. ${pct(outsideShare)} of its sales are trips residents now make to stores outside the walk zone, ${pct(onlineShare)} is online spend. Little comes from local shops or existing Argos points.`;
+  document.getElementById('hf-kpis').innerHTML=
+    `<div class="kpi"><b>${M(r.sales_gbp)}</b><span>sales a year</span></div>`+
+    `<div class="kpi"><b>${M(r.incremental_gbp)}</b><span>incremental to Argos, range ${M(r.incremental_low)}–${M(r.incremental_high)}</span></div>`+
+    `<div class="kpi"><b>#${rankOf(c)}</b><span>of ${CIDS.length} candidates by incremental revenue</span></div>`;
+  document.getElementById('hf-src').innerHTML=srcBars(c);
+  document.getElementById('hf-decay').innerHTML=decaySvg(c);
+  document.querySelectorAll('#hf-tab tr[data-c]').forEach(tr=>tr.classList.toggle('on',tr.dataset.c===c));
+  const t=tornado(c); document.getElementById('hf-tornado').innerHTML=t.svg;
+  document.getElementById('hf-tsub').textContent=`${c} incremental revenue when one input moves to the end of its range; line = base (${M(t.base)}).`;
+  document.querySelectorAll('#hf-seg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.c===c)));
+}
+function selectCand(c){selC=c; drawHuffMap(); huffPanel()}
+
+/* static parts of the panel */
+document.getElementById('hf-seg').innerHTML=CIDS.map(c=>`<button type="button" data-c="${c}" aria-pressed="false" title="${esc(candInfo(c).name)}">${c}</button>`).join('');
+document.querySelectorAll('#hf-seg button').forEach(b=>b.addEventListener('click',()=>selectCand(b.dataset.c)));
+document.getElementById('hf-tab').innerHTML=`<thead><tr><th>Candidate</th><th>Sales</th><th>Incremental</th><th>Range</th><th>Rank</th></tr></thead><tbody>`+
+  CIDS.map(c=>{const r=S.candidates[c], p=candInfo(c); return `<tr data-c="${c}" tabindex="0"><td><b>${c}</b> ${esc(p.name)}<br><span class="k" style="color:var(--muted)">${cap(p.format)}</span></td><td>${M(r.sales_gbp)}</td><td>${M(r.incremental_gbp)}</td><td>${M(r.incremental_low)}–${M(r.incremental_high)}</td><td>${rankOf(c)}</td></tr>`}).join('')+'</tbody>';
+document.querySelectorAll('#hf-tab tr[data-c]').forEach(tr=>{tr.addEventListener('click',()=>selectCand(tr.dataset.c)); tr.addEventListener('keydown',e=>{if(e.key==='Enter') selectCand(tr.dataset.c)})});
+const ao=PRM.alpha_online;
+document.getElementById('hf-tabnote').textContent=`Incremental = sales minus what existing Argos points lose and minus spend Argos already gets: ${pct(PRM.alpha_outside)} of outside trips, ${pct(ao.store)} (store) or ${pct(ao.collection_point)} (CP) of online. Range = those recapture rates at the ends of their ranges.`;
+(()=>{const runs=S.sensitivity, baseRank=runs.find(r=>r.parameter==='base').ranking, n=runs.filter(r=>r.ranking===baseRank).length;
+  document.getElementById('hf-tcap').textContent=`Ranking ${baseRank} holds in ${n===runs.length?'all '+n:n+' of '+runs.length} sensitivity runs.`})();
+
+/* how it was calculated */
+(()=>{const d=S.demand, wk=d.market_gbp*PRM.vat_divisor/52/d.households, ff=PRM.format_factor;
+  const betas=S.sensitivity.filter(r=>/^β/.test(r.parameter)).map(r=>+r.value).sort((a,b)=>a-b);
+  const steps=[
+   ['1. Demand',`Census 2021 households by Output Area, grown to mid-2024 with LSOA population estimates, allocated to OSM residential buildings by footprint × levels, then summed into ${d.points} points on a 50 m grid (${fmt(d.households)} households).`,
+    `E<sub>i</sub> = households<sub>i</sub> × £${wk.toFixed(2)}/week × 52 ÷ ${PRM.vat_divisor} &nbsp;⇒&nbsp; ΣE = ${M(d.market_gbp)} a year`,
+    '£/week: 12 Argos categories, ONS Family Spending, London-adjusted, weighted by how each item can be bought (collect / delivery).'],
+   ['2. Attractiveness','Each store gets one score from its range, prices and format.',
+    `A<sub>j</sub> = coverage<sub>j</sub> × max(price index<sub>j</sub>, ${PRM.price_index_floor})<sup>−γ</sup> × format factor`,
+    `Coverage is spend-weighted share of the basket a chain sells. Format factor: store ${ff.standalone}, concession ${ff.concession}, collection point ${ff.collection_point}; γ = ${PRM.gamma}.`],
+   ['3. Distance','Real walking time from every demand point to every store (Valhalla, pedestrian profile on OpenStreetMap).',null,null],
+   ['4. Choice','Each household splits its spend between stores and two options that are not on the map: online delivery and trips to stores outside the walk zone (U).',
+    `P<sub>ij</sub> = (A<sub>j</sub> / D<sub>ij</sub><sup>β</sup>) ÷ (U + Σ<sub>k</sub> A<sub>k</sub> / D<sub>ik</sub><sup>β</sup>)`,
+    `U = ${PRM.U_nonspatial}, calibrated so that today online takes ${pct(PRM.online_share)} of spend (ONS) and walk-zone stores take ${pct(PRM.local_share_of_offline)} of offline spend (Newham Retail & Leisure Study 2022).`],
+   ['5. Distance decay β',`β = ${PRM.beta}, set so the new store captures the target share of spend of households within a 5-minute walk. Range ${betas[0]}–${betas[betas.length-1]}.`,null,esc(S.calibration.beta)],
+   ['6. Incremental revenue','Not all of a new store’s sales are new to Argos.',
+    `Incremental = sales − existing Argos CPs − ${pct(PRM.alpha_outside)} × outside trips − α<sub>online</sub> × online`,
+    `α<sub>online</sub> = ${pct(ao.store)} for a store, ${pct(ao.collection_point)} for a collection point (a CP mostly switches existing argos.co.uk customers from delivery to collection).`],
+   ['7. Limitations','Residents of the 2 study MSOAs only (no workers or visitors); 12 categories only; β is not calibrated on Argos data (in the role: Argos customer postcodes); Huff draws proportionally with no brand loyalty, so a store’s incremental revenue is an upper bound.',null,null]];
+  document.getElementById('hf-steps').innerHTML=steps.map(([t,a,f,b])=>`<details><summary>${t}</summary><p>${a}</p>${f?`<span class="fx">${f}</span>`:''}${b?`<p class="note">${b}</p>`:''}</details>`).join('');
+  const NAMES={beta:'β, distance decay',gamma:'γ, price sensitivity',price_index_floor:'Price index floor',format_factor:'Format factor',online_share:'Online share of spend (target)',local_share_of_offline:'Walk-zone share of offline spend (target)',U_nonspatial:'U, non-spatial alternatives',online_fraction_of_U:'Online part of U',vat_divisor:'VAT divisor',alpha_outside:'α, recapture of outside trips',alpha_online:'α, recapture of online'};
+  const SUBN={standalone:'store',concession:'concession',collection_point:'collection point',store:'store'};
+  const isPct=k=>/share|alpha|fraction/.test(k);
+  const rows=[]; Object.entries(PRM).forEach(([k,v])=>{if(v&&typeof v==='object') Object.entries(v).forEach(([k2,v2])=>rows.push([`${NAMES[k]||k}: ${SUBN[k2]||k2}`,isPct(k)?pct(v2,1):v2]));
+    else rows.push([NAMES[k]||k,isPct(k)?pct(v,1):v])});
+  document.getElementById('hf-params').innerHTML='<tbody>'+rows.map(([a,b])=>`<tr><td>${a}</td><td>${b}</td></tr>`).join('')+'</tbody>';
+})();
+
+/* ---------- P&L ---------- */
+const SCN=PL.scenarios, SCOL={Low:'--scL',Base:'--scB',High:'--scH'};
+let selS=SCN.some(s=>s.key==='Base')?'Base':SCN[0].key;
+const plCands=PL.candidates;
+const yrs=v=>v==null?'no payback':v.toFixed(1)+' yrs';
+document.getElementById('pl-seg').innerHTML=SCN.map(s=>`<button type="button" data-s="${s.key}" aria-pressed="false">${esc(s.label)}</button>`).join('');
+document.querySelectorAll('#pl-seg button').forEach(b=>b.addEventListener('click',()=>{selS=b.dataset.s; plRender()}));
+const legHtml=()=>SCN.map(s=>`<span><i style="background:var(${SCOL[s.key]})"></i>${esc(s.label)}</span>`).join('');
+document.getElementById('pl-leg1').innerHTML=legHtml(); document.getElementById('pl-leg2').innerHTML=legHtml()+'<span>· × = no payback</span>';
+document.getElementById('pl-dl').href='data/'+PL.file;
+(()=>{const g=k=>plCands.map(c=>({c,v:c.scenarios[k].contribution}));
+  const best=g('Base').reduce((a,b)=>a.v>b.v?a:b);
+  const never=plCands.filter(c=>SCN.every(s=>c.scenarios[s.key].payback==null));
+  const stores=plCands.filter(c=>c.format==='Small standalone'), bs=stores.reduce((a,b)=>a.scenarios.Base.contribution>b.scenarios.Base.contribution?a:b);
+  const nm=id=>`${id} ${esc(candInfo(id)?candInfo(id).name:'')}`;
+  document.getElementById('pl-take').innerHTML=[
+   `<b>Highest contribution in Base:</b> ${nm(best.c.id)}, ${M(best.v)} a year (${best.c.format.toLowerCase()}).`,
+   never.length?`<b>Never pays back:</b> ${never.map(c=>nm(c.id)).join(', ')}, not in any of the ${SCN.length} scenarios.`:`<b>Every candidate pays back</b> in at least one scenario.`,
+   `<b>Best store:</b> ${nm(bs.id)} pays back in ${yrs(bs.scenarios.Base.payback)} in Base (${SCN.map(s=>s.key+' '+yrs(bs.scenarios[s.key].payback)).filter((_,i)=>SCN[i].key!=='Base').join(', ')}).`
+  ].map((t,i)=>`<li><b>${i+1}</b><span>${t}</span></li>`).join('')})();
+function plTable(){
+  const k=selS, rows=PL.lines, tot=new Set(['total_costs','contribution']), money=new Set(rows.map(r=>r.key)); money.delete('payback');
+  const cost=new Set(['rent','rates','staff','other_occupancy','logistics','cp_fee','total_costs']);
+  let h=`<thead><tr><th>£ a year</th>${plCands.map(c=>`<th>${c.id}<br><span style="font-weight:400">${esc(c.format)}</span></th>`).join('')}</tr></thead><tbody>`;
+  rows.forEach(r=>{h+=`<tr class="${tot.has(r.key)?'tot':cost.has(r.key)?'sub':''}"><td>${esc(r.label)}</td>`+plCands.map(c=>{const v=c.scenarios[k][r.key];
+    if(r.key==='payback') return `<td class="${v==null?'neg':''}">${yrs(v)}</td>`;
+    const shown=cost.has(r.key)&&v?-v:v; return `<td class="${shown<0&&!cost.has(r.key)?'neg':''}">${v===0&&cost.has(r.key)?'—':M(shown)}</td>`}).join('')+'</tr>'});
+  document.getElementById('pl-tab').innerHTML=h+'</tbody>';
+  const s=SCN.find(x=>x.key===k); document.getElementById('pl-scen').textContent=`β ${s.beta}: new store takes ${s.neighbour_share} of spend of households within a 5-minute walk.`}
+function contribSvg(){
+  const W=480,Hh=250,pl=46,pb=26,pt=16, vals=plCands.flatMap(c=>SCN.map(s=>c.scenarios[s.key].contribution));
+  const lo=Math.min(0,...vals)*1.15, hi=Math.max(0,...vals)*1.15, sy=v=>pt+(Hh-pb-pt)*(hi-v)/(hi-lo);
+  const gw=(W-pl)/plCands.length, bw=gw*.22;
+  let g=''; const step=50000; for(let t=Math.ceil(lo/step)*step;t<=hi;t+=step) g+=`<line class="grid" x1="${pl}" x2="${W}" y1="${sy(t)}" y2="${sy(t)}"/><text x="${pl-6}" y="${sy(t)+4}" text-anchor="end">${M(t)}</text>`;
+  plCands.forEach((c,i)=>{SCN.forEach((s,j)=>{const v=c.scenarios[s.key].contribution, x=pl+i*gw+gw*.14+j*(bw+2), y0=sy(0), y=sy(v), on=s.key===selS;
+      const h=Math.abs(y-y0), r=Math.min(4,h/2), up=v>=0;
+      const d=up?`M${x},${y0}V${y+r}q0,-${r} ${r},-${r}h${bw-2*r}q${r},0 ${r},${r}V${y0}Z`:`M${x},${y0}V${y-r}q0,${r} ${r},${r}h${bw-2*r}q${r},0 ${r},-${r}V${y0}Z`;
+      g+=`<path d="${d}" fill="var(${SCOL[s.key]})"><title>${c.id} · ${s.label}: ${M(v)}</title></path>`;
+      if(on) g+=`<text class="v" x="${x+bw/2}" y="${up?y-5:y+13}" text-anchor="middle">${M(v)}</text>`});
+    g+=`<text x="${pl+i*gw+gw/2}" y="${Hh-6}" text-anchor="middle" style="fill:var(--ink);font-weight:600">${c.id}</text>`});
+  g+=`<line class="zero" x1="${pl}" x2="${W}" y1="${sy(0)}" y2="${sy(0)}"/>`;
+  return `<svg class="chart" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Annual contribution by candidate and scenario">${g}</svg>`}
+function paybackSvg(){
+  const W=480,lw=40,rh=13,gap=12,top=4, n=plCands.length, Hh=top+n*(SCN.length*rh+gap)+22;
+  const vals=plCands.flatMap(c=>SCN.map(s=>c.scenarios[s.key].payback)).filter(v=>v!=null), mx=Math.ceil(Math.max(...vals));
+  const sx=v=>lw+(W-lw-80)*v/mx; let g='';
+  for(let t=0;t<=mx;t++) g+=`<line class="grid" x1="${sx(t)}" x2="${sx(t)}" y1="${top}" y2="${Hh-20}"/><text x="${sx(t)}" y="${Hh-6}" text-anchor="middle">${t}</text>`;
+  plCands.forEach((c,i)=>{const y0=top+i*(SCN.length*rh+gap);
+    g+=`<text x="0" y="${y0+SCN.length*rh/2+4}" style="fill:var(--ink);font-weight:600">${c.id}</text>`;
+    SCN.forEach((s,j)=>{const v=c.scenarios[s.key].payback, y=y0+j*rh, on=s.key===selS;
+      g+=v==null?`<text x="${sx(0)+4}" y="${y+10}" style="fill:var(--neg);font-weight:${on?700:400}">× no payback</text>`:
+        `<rect class="m" x="${sx(0)}" y="${y+1}" width="${Math.max(sx(v)-sx(0),2)}" height="${rh-3}" rx="2" fill="var(${SCOL[s.key]})"><title>${c.id} · ${s.label}: ${yrs(v)}</title></rect>`+
+          `<text class="${on?'v':''}" x="${sx(v)+4}" y="${y+10}">${yrs(v)}</text>`})});
+  g+=`<line class="zero" x1="${sx(0)}" x2="${sx(0)}" y1="${top}" y2="${Hh-20}"/>`;
+  return `<svg class="chart" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Payback in years by candidate and scenario">${g}</svg>`}
+function plRender(){document.querySelectorAll('#pl-seg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.s===selS)));
+  plTable(); document.getElementById('pl-contrib').innerHTML=contribSvg(); document.getElementById('pl-payback').innerHTML=paybackSvg()}
+(()=>{const fv=a=>a.unit==='pct'?pct(a.value,a.value*100%1?1:0):a.unit==='gbp'?'£'+a.value.toLocaleString('en-GB',{maximumFractionDigits:a.value<100?2:0,minimumFractionDigits:a.value%1&&a.value<100?2:0}):a.value;
+  let sec=null, h='<thead><tr><th>Assumption</th><th>Value</th><th style="text-align:left">Source / comment</th></tr></thead><tbody>';
+  PL.assumptions.forEach(a=>{if(a.section!==sec){sec=a.section; h+=`<tr class="sub"><td colspan="3" style="text-align:left;font-weight:600;color:var(--ink);padding-top:12px">${esc(sec)}</td></tr>`}
+    h+=`<tr><td>${esc(a.label)}</td><td>${fv(a)}</td><td class="wrap">${esc(a.note||'')}</td></tr>`});
+  document.getElementById('pl-ass').innerHTML=h+'</tbody>'})();
+plRender();
+
+/* ---------- shared sources for the Huff and P&L tabs ---------- */
+(()=>{const L0=[
+ ['ONS Census 2021 TS041 households (Nomis)','https://www.nomisweb.co.uk/'],
+ ['ONS small area population estimates mid-2024 (Nomis NM_2014_1)','https://www.nomisweb.co.uk/'],
+ ['ONS Open Geography Portal: OA/LSOA boundaries, population-weighted centroids','https://geoportal.statistics.gov.uk/'],
+ ['ONS Family Spending FYE 2025 (WB1, WB3)','https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook1detailedexpenditureandtrends'],
+ ['ONS Retail sales, internet share, Sep 2026','https://www.ons.gov.uk/businessindustryandtrade/retailindustry/bulletins/retailsales/september2026/pdf'],
+ ['Newham Retail & Leisure Study 2022, Appendices','https://www.newham.gov.uk/downloads/file/4990/appendices-final-28-7-2022'],
+ ['OpenStreetMap buildings, Geofabrik Greater London extract (data to 8 Nov 2026), © OpenStreetMap contributors, ODbL','https://download.geofabrik.de/europe/united-kingdom/england/greater-london.html'],
+ ['Valhalla routing (pedestrian)','https://valhalla1.openstreetmap.de/'],
+ ['J Sainsbury plc Annual Report 2026, financial review (Argos sales)','https://corporate.sainsburys.co.uk/media/qvrl2tml/financial-review.pdf'],
+ ["Sainsbury's: sale of Argos to Swift Partners",'https://corporate.sainsburys.co.uk/news/press-releases/sainsbury-s-agrees-sale-of-argos-to-swift-partners/']];
+  const seen=new Set(L0.map(x=>x[1]));
+  const extra=PL.sources.filter(s=>/^https?:/.test(s.url||'')&&!seen.has(s.url)).map(s=>[s.label,s.url]);
+  const html=L0.concat(extra).map(([t,u])=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a></li>`).join('')+
+    '<li>Competitor baskets and prices: argos.co.uk, tesco.com, groceries.morrisons.com, wickes.co.uk, lidl.co.uk (9 Nov 2026), project file competitor_basket.xlsx</li>'+
+    '<li>Huff model scripts: project folder model/, step1–step10</li>';
+  document.querySelectorAll('.srclist').forEach(u=>u.innerHTML=html)})();
+selectCand(selC);
+
 /* ---------- sections: each owns its layers, card and sheet ---------- */
 const SECT={
  'study-area':{always:[selG],toggles:[['ly-oa',[oa]],['ly-ctx',[ctxG]],['ly-iso',[iso,tunnel]],['ly-st',[stG,stLbl]],['ly-lbl',[lblG]]],
    bounds:()=>homeB},
  'competitors':{always:[studyL,shopG],toggles:[['ly2-zone',[zoneL]],['ly2-lbl',[shopLbl]]],
+   bounds:()=>L.geoJSON(C.zone).getBounds().pad(.01)},
+ 'huff':{always:[msoa4],toggles:[['ly4-zone',[zone4]],['ly4-flow',[flowG]],['ly4-dem',[demG]],['ly4-sup',[supG]]],
+   bounds:()=>L.latLngBounds(DEM.map(p=>[p.lat,p.lon]).concat(SUP.map(p=>[p.lat,p.lon]))).pad(.04)},
+ 'pnl':{always:[],toggles:[],nomap:true,bounds:()=>homeB},
+ 'candidates':{always:[msoa2,candG],toggles:[['ly3-zone',[zone3]],['ly3-alt',[altG,altLbl]],['ly3-ex',[exG]],['ly3-lbl',[candLbl,msoa2Lbl]]],
    bounds:()=>L.geoJSON(C.zone).getBounds().pad(.01)}};
 let cur=null;
 const card=()=>document.querySelector(`.layers-card[data-for="${cur}"]`);
@@ -393,7 +958,8 @@ function setSection(k){
   document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.section===k)));
   map.getContainer().classList.toggle('no-ctx',k==='study-area'&&!document.getElementById('ly-ctx').checked);
   document.querySelector(`.sheet[data-for="${k}"]`).scrollTop=0;
-  map.invalidateSize(); home(); zoomCls();
+  document.querySelector('main').classList.toggle('nomap',!!SECT[k].nomap);
+  if(!SECT[k].nomap){map.invalidateSize(); home(); zoomCls();}
 }
 Object.entries(SECT).forEach(([k,S])=>S.toggles.forEach(([id,ls])=>document.getElementById(id).addEventListener('change',e=>{if(cur===k) ls.forEach(l=>e.target.checked?l.addTo(map):map.removeLayer(l))})));
 document.querySelectorAll('.lc-fold').forEach(b=>{
