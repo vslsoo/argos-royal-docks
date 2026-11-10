@@ -457,7 +457,6 @@ main.nomap .mapcol{display:none}
     <div class="block">
       <h2>Where the sales come from</h2>
       <div class="bars" id="hf-src"></div>
-      <p class="note" id="hf-compnote"></p>
     </div>
 
     <div class="block">
@@ -512,6 +511,7 @@ main.nomap .mapcol{display:none}
         <h2>Payback, years</h2>
         <div class="sw-leg" id="pl-leg2"></div>
         <div id="pl-payback"></div>
+        <p class="note" id="pl-be"></p>
       </div>
     </div>
 
@@ -729,7 +729,7 @@ const supPopup=p=>{const c=selC, cand=p.type==='candidate';
   const kind=cand?`Candidate · ${cap(p.format)}`:p.chain==='Argos'?'Argos '+p.format:`Competitor · ${p.chain}`;
   let sales;
   if(cand) sales=p.point_id===c?`<dt>Sales</dt><dd><b>${M(p.sales_gbp)}</b> (new)</dd>`:`<dt>Sales if opened</dt><dd>${M(p.sales_gbp)} <span class="k">(not the selected candidate)</span></dd>`;
-  else if(p.type==='competitor') sales=`<dt>Sales</dt><dd><span class="k">not shown per chain: the modelled chains also absorb the share of independent shops, so trade from local shops is reported only in total</span></dd>`;
+  else if(p.type==='competitor') sales=`<dt>${c} draws</dt><dd>${M(S.candidates[c].from_local_competitors)} from local shops (total)</dd>`;
   else {const a=p.base_sales_gbp, b=p['sales_with_'+c+'_gbp']; sales=`<dt>Sales today</dt><dd>${M(a)}</dd><dt>With ${c}</dt><dd>${M(b)} <span class="k">(${M(b-a)}, ${pct((b-a)/a,1)})</span></dd>`}
   return `<b>${cand?p.point_id+' · ':''}${esc(p.name)}</b><br><span class="k">${esc(kind)}</span><dl class="pp">`+
     `<dt>Attractiveness A</dt><dd>${p.A}</dd><dt>Range coverage</dt><dd>${pct(p.coverage,1)}</dd><dt>Price index</dt><dd>${p.price_index}</dd>${sales}</dl>`+
@@ -753,7 +753,7 @@ function drawHuffMap(){
 
 /* panel */
 function srcBars(c){const r=S.candidates[c];
-  const rows=[['Trips to stores outside the walk zone',r.from_outside_trips],['Online (home delivery)',r.from_online],['Local shops (total)',r.from_local_competitors],['Existing Argos collection points',r.from_existing_argos]];
+  const rows=[['Trips to stores outside the walk zone',r.from_outside_trips],['Online (home delivery)',r.from_online],['From local shops (total)',r.from_local_competitors],['Existing Argos collection points',r.from_existing_argos]];
   const mx=Math.max(...rows.map(x=>x[1])), col=`var(${fmtCls(candInfo(c))==='cp'?'--fcp':'--fss'})`;
   return rows.map(([t,v])=>`<div class="bar" title="${t}: ${M(v)} (${pct(v/r.sales_gbp)})"><span>${t}</span><span class="tr"><i style="width:${(100*v/mx).toFixed(1)}%;--c:${col}"></i></span><b>${M(v)} <small>${pct(v/r.sales_gbp)}</small></b></div>`).join('')}
 const BANDS=[[0,2],[2,5],[5,10],[10,15],[15,20],[20,Infinity]];
@@ -768,13 +768,14 @@ function decaySvg(c){
     g+=`<text x="${X+w/2}" y="${Hh-pb+15}" text-anchor="middle">${x.lab}</text>`});
   g+=`<text x="${W/2}" y="${Hh-2}" text-anchor="middle">minutes on foot to ${c}</text>`;
   return `<svg class="chart" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Share of spend by walking time to ${c}">${g}</svg>`}
+const bRange=c=>{const x=PL.candidates.find(k=>k.id===c).scenarios; return `${M(x.Low.revenue)}–${M(x.High.revenue)}`};
 const rankOf=c=>CIDS.slice().sort((a,b)=>S.candidates[b].incremental_gbp-S.candidates[a].incremental_gbp).indexOf(c)+1;
 function huffPanel(){
   const c=selC, r=S.candidates[c], p=candInfo(c);
   document.getElementById('hf-h1').textContent=`${c} ${p.name}: ${M(r.sales_gbp)} of sales, ${M(r.incremental_gbp)} new to Argos`;
   document.getElementById('hf-kpis').innerHTML=
     `<div class="kpi"><b>${M(r.sales_gbp)}</b><span>sales a year</span></div>`+
-    `<div class="kpi"><b>${M(r.incremental_gbp)}</b><span>incremental to Argos, range ${M(r.incremental_low)}–${M(r.incremental_high)}</span></div>`+
+    `<div class="kpi"><b>${M(r.incremental_gbp)}</b><span>incremental to Argos, range ${bRange(c)}</span></div>`+
     `<div class="kpi"><b>#${rankOf(c)}</b><span>of ${CIDS.length} candidates by incremental revenue</span></div>`;
   document.getElementById('hf-src').innerHTML=srcBars(c);
   document.getElementById('hf-decay').innerHTML=decaySvg(c);
@@ -787,15 +788,15 @@ function selectCand(c){selC=c; drawHuffMap(); huffPanel()}
 document.getElementById('hf-seg').innerHTML=CIDS.map(c=>`<button type="button" data-c="${c}" aria-pressed="false" title="${esc(candInfo(c).name)}">${c}</button>`).join('');
 document.querySelectorAll('#hf-seg button').forEach(b=>b.addEventListener('click',()=>selectCand(b.dataset.c)));
 document.getElementById('hf-tab').innerHTML=`<thead><tr><th>Candidate</th><th>Sales</th><th>Incremental</th><th>Range</th><th>Rank</th></tr></thead><tbody>`+
-  CIDS.map(c=>{const r=S.candidates[c], p=candInfo(c); return `<tr data-c="${c}" tabindex="0"><td><b>${c}</b> ${esc(p.name)}<br><span class="k" style="color:var(--muted)">${cap(p.format)}</span></td><td>${M(r.sales_gbp)}</td><td>${M(r.incremental_gbp)}</td><td>${M(r.incremental_low)}–${M(r.incremental_high)}</td><td>${rankOf(c)}</td></tr>`}).join('')+'</tbody>';
+  CIDS.map(c=>{const r=S.candidates[c], p=candInfo(c); return `<tr data-c="${c}" tabindex="0"><td><b>${c}</b> ${esc(p.name)}<br><span class="k" style="color:var(--muted)">${cap(p.format)}</span></td><td>${M(r.sales_gbp)}</td><td>${M(r.incremental_gbp)}</td><td>${bRange(c)}</td><td>${rankOf(c)}</td></tr>`}).join('')+'</tbody>';
 document.querySelectorAll('#hf-tab tr[data-c]').forEach(tr=>{tr.addEventListener('click',()=>selectCand(tr.dataset.c)); tr.addEventListener('keydown',e=>{if(e.key==='Enter') selectCand(tr.dataset.c)})});
 const ao=PRM.alpha_online;
 const compIn=SUP.filter(p=>p.type==='competitor'), compAll=C.shops.filter(f=>f.properties.rel==='partial').length;
 const compNames=compIn.map(p=>p.chain).join(', ');
 const compTxt=`Competitors are modelled only where range and prices could be collected online (${compNames}). Independent shops in the walk zone are not modelled individually; their share is absorbed by the chains through the ${pct(PRM.local_share_of_offline)} local-retention calibration, so trade drawn from local shops is reported only in total.`;
-document.getElementById('hf-compnote').textContent=compTxt;
 (()=>{const runs=S.sensitivity, baseRank=runs.find(r=>r.parameter==='base').ranking, n=runs.filter(r=>r.ranking===baseRank).length;
-  document.getElementById('hf-tabnote').textContent=`Range: recapture rates α at the ends of their ranges. Ranking ${baseRank} holds in ${n===runs.length?'all '+n:n+' of '+runs.length} sensitivity runs.`})();
+  const sl=PL.scenarios.find(x=>x.key==='Low'), sh=PL.scenarios.find(x=>x.key==='High');
+  document.getElementById('hf-tabnote').textContent=`Range: distance decay β ${sl.beta.toFixed(2)}–${sh.beta.toFixed(2)} (new store's share of neighbours' spend ${sl.neighbour_share.replace('%','')}–${sh.neighbour_share}). Ranking holds in ${n===runs.length?'all '+n:n+' of '+runs.length} sensitivity runs.`})();
 
 /* how it was calculated */
 (()=>{const d=S.demand, wk=d.market_gbp*PRM.vat_divisor/52/d.households, ff=PRM.format_factor;
@@ -810,10 +811,10 @@ document.getElementById('hf-compnote').textContent=compTxt;
    ['3. Distance','Walking time on real paths (Valhalla, OpenStreetMap).',`D_{ij} = \\text{minutes on foot from } i \\text{ to } j`],
    ['4. Choice',`U = online delivery + trips outside the walk zone; calibrated to ${pct(PRM.online_share)} online and ${pct(PRM.local_share_of_offline)} of offline spend in the zone.`,
     `P_{ij} = \\dfrac{A_j / D_{ij}^{\\beta}}{U + \\sum_k A_k / D_{ik}^{\\beta}}`],
-   ['5. Distance decay β',`β ${bs.beta}: a new store takes ${bs.neighbour_share} of spend within a 5-minute walk. Low β ${lo.beta} (${lo.neighbour_share}), high β ${hi.beta} (${hi.neighbour_share}).`,null],
+   ['5. Distance decay β',`β ${bs.beta.toFixed(2)}: a new store takes ${bs.neighbour_share} of spend within a 5-minute walk. Low β ${lo.beta.toFixed(2)} (${lo.neighbour_share}), high β ${hi.beta.toFixed(2)} (${hi.neighbour_share}).</p><p>${bs.neighbour_share} = 1.5× Argos's ~9% national market share (Argos £4.1bn sales vs £51.7bn UK market for the 12 categories).`,null],
    ['6. Incremental revenue',`α<sub>online</sub>: ${pct(ao.store)} for a store, ${pct(ao.collection_point)} for a CP.`,
     `\\text{Incr.} = \\text{sales} - \\text{Argos CPs} - ${tp(PRM.alpha_outside)} \\cdot \\text{outside} - \\alpha_{\\text{online}} \\cdot \\text{online}`],
-   ['7. Limitations','Residents of the 2 MSOAs only · 12 categories · β not calibrated on Argos data · no brand loyalty, so store incremental is an upper bound · local competitors: chains only.',null]];
+   ['7. Limitations',`Residents of the 2 MSOAs only · 12 categories · β not calibrated on Argos data · no brand loyalty, so store incremental is an upper bound.</p><p>${compTxt}`,null]];
   const tex=(f)=>{const el=document.createElement('span'); el.className='fx'; if(window.katex){try{katex.render(f,el,{displayMode:false,throwOnError:false})}catch(e){el.textContent=f}} else el.textContent=f.replace(/\\[a-z]+\{?|[{}]/g,''); return el.outerHTML};
   document.getElementById('hf-steps').innerHTML=steps.map(([t,a,f])=>`<details><summary>${t}</summary><p>${a}</p>${f?tex(f):''}</details>`).join('');
   const NAMES={beta:'β, distance decay',gamma:'γ, price sensitivity',price_index_floor:'Price index floor',format_factor:'Format factor',online_share:'Online share of spend (target)',local_share_of_offline:'Walk-zone share of offline spend (target)',U_nonspatial:'U, non-spatial alternatives',online_fraction_of_U:'Online part of U',vat_divisor:'VAT divisor',alpha_outside:'α, recapture of outside trips',alpha_online:'α, recapture of online'};
@@ -828,12 +829,14 @@ document.getElementById('hf-compnote').textContent=compTxt;
 const SCN=PL.scenarios, SCOL={Low:'--scL',Base:'--scB',High:'--scH'};
 let selS=SCN.some(s=>s.key==='Base')?'Base':SCN[0].key;
 const plCands=PL.candidates;
-const yrs=v=>v==null?'no payback':v.toFixed(1)+' yrs';
+const yrs=v=>v==null?'loss-making':v.toFixed(1)+' yrs';
 document.getElementById('pl-seg').innerHTML=SCN.map(s=>`<button type="button" data-s="${s.key}" aria-pressed="false">${esc(s.label)}</button>`).join('');
 document.querySelectorAll('#pl-seg button').forEach(b=>b.addEventListener('click',()=>{selS=b.dataset.s; plRender()}));
 const legHtml=()=>SCN.map(s=>`<span><i style="background:var(${SCOL[s.key]})"></i>${esc(s.label)}</span>`).join('');
-document.getElementById('pl-leg1').innerHTML=legHtml(); document.getElementById('pl-leg2').innerHTML=legHtml()+'<span>· × = no payback</span>';
+document.getElementById('pl-leg1').innerHTML=legHtml(); document.getElementById('pl-leg2').innerHTML=legHtml()+'<span>· loss-making = annual contribution below zero; the capex is never recovered</span>';
 document.getElementById('pl-dl').href='data/'+PL.file;
+document.getElementById('pl-be').innerHTML=plCands.filter(c=>c.scenarios.Base.contribution<0).map(c=>{const b=c.scenarios.Base;
+  return `${c.id} needs ${M(b.breakeven)} incremental revenue to break even vs ${M(b.revenue)} forecast (+${Math.round(100*(b.breakeven/b.revenue-1))}%).`}).join('<br>');
 (()=>{const g=k=>plCands.map(c=>({c,v:c.scenarios[k].contribution}));
   const best=g('Base').reduce((a,b)=>a.v>b.v?a:b);
   const never=plCands.filter(c=>SCN.every(s=>c.scenarios[s.key].payback==null));
@@ -841,7 +844,7 @@ document.getElementById('pl-dl').href='data/'+PL.file;
   const nm=id=>`${id} ${esc(candInfo(id)?candInfo(id).name:'')}`;
   document.getElementById('pl-take').innerHTML=[
    `<b>Best contribution:</b> ${best.c.id}, ${M(best.v)} a year (Base)`,
-   never.length?`<b>No payback in any scenario:</b> ${never.map(c=>c.id).join(', ')}`:`<b>Every candidate pays back</b> in at least one scenario`,
+   never.length?`<b>Loss-making in every scenario:</b> ${never.map(c=>c.id).join(', ')}`:`<b>Every candidate pays back</b> in at least one scenario`,
    `<b>Best store:</b> ${bs.id}, payback ${yrs(bs.scenarios.Base.payback)} (Base)`
   ].map((t,i)=>`<li><b>${i+1}</b><span>${t}</span></li>`).join('')})();
 function plTable(){
@@ -849,8 +852,8 @@ function plTable(){
   const cost=new Set(['rent','rates','staff','other_occupancy','logistics','cp_fee','total_costs']);
   let h=`<thead><tr><th>£ a year</th>${plCands.map(c=>`<th>${c.id}<br><span style="font-weight:400">${esc(c.format)}</span></th>`).join('')}</tr></thead><tbody>`;
   rows.forEach(r=>{h+=`<tr class="${tot.has(r.key)?'tot':cost.has(r.key)?'sub':''}"><td>${esc(r.label)}</td>`+plCands.map(c=>{const v=c.scenarios[k][r.key];
-    if(r.key==='payback') return `<td class="${v==null?'neg':''}">${yrs(v)}</td>`;
-    const shown=cost.has(r.key)&&v?-v:v; return `<td class="${shown<0&&!cost.has(r.key)?'neg':''}">${v===0&&cost.has(r.key)?'—':M(shown)}</td>`}).join('')+'</tr>'});
+    if(r.key==='payback') return `<td class="${v==null?'neg':''}">${v==null?`loss-making (${M(c.scenarios[k].contribution)}/yr)`:yrs(v)}</td>`;
+    const shown=cost.has(r.key)&&v?-v:v; return `<td class="${shown<0&&!cost.has(r.key)?'neg':''}">${v===0&&(cost.has(r.key)||r.key==='breakeven')?'—':M(shown)}</td>`}).join('')+'</tr>'});
   document.getElementById('pl-tab').innerHTML=h+'</tbody>';
 }
 function contribSvg(){
@@ -874,7 +877,7 @@ function paybackSvg(){
   plCands.forEach((c,i)=>{const y0=top+i*(SCN.length*rh+gap);
     g+=`<text x="0" y="${y0+SCN.length*rh/2+4}" style="fill:var(--ink);font-weight:600">${c.id}</text>`;
     SCN.forEach((s,j)=>{const v=c.scenarios[s.key].payback, y=y0+j*rh, on=s.key===selS;
-      g+=v==null?`<text x="${sx(0)+4}" y="${y+10}" style="fill:var(--neg);font-weight:${on?700:400}">× no payback</text>`:
+      g+=v==null?`<text x="${sx(0)+4}" y="${y+10}" style="fill:var(--neg);font-weight:${on?700:400}">loss-making (${M(c.scenarios[s.key].contribution)}/yr)</text>`:
         `<rect class="m" x="${sx(0)}" y="${y+1}" width="${Math.max(sx(v)-sx(0),2)}" height="${rh-3}" rx="2" fill="var(${SCOL[s.key]})"><title>${c.id} · ${s.label}: ${yrs(v)}</title></rect>`+
           `<text class="${on?'v':''}" x="${sx(v)+4}" y="${y+10}">${yrs(v)}</text>`})});
   g+=`<line class="zero" x1="${sx(0)}" x2="${sx(0)}" y1="${top}" y2="${Hh-20}"/>`;
@@ -903,8 +906,7 @@ plRender();
   const seen=new Set(L0.map(x=>x[1]));
   const extra=PL.sources.filter(s=>/^https?:/.test(s.url||'')&&!seen.has(s.url)).map(s=>[s.label,s.url]);
   const html=L0.concat(extra).map(([t,u])=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a></li>`).join('')+
-    '<li>Competitor baskets and prices: argos.co.uk, tesco.com, groceries.morrisons.com, wickes.co.uk, lidl.co.uk (9 Nov 2026), project file competitor_basket.xlsx</li>'+
-    '<li>Huff model scripts: project folder model/, step1–step10</li>';
+    '<li>Competitor baskets and prices: argos.co.uk, tesco.com, groceries.morrisons.com, wickes.co.uk, lidl.co.uk (9 Nov 2026), project file competitor_basket.xlsx</li>';
   document.querySelectorAll('.srclist').forEach(u=>u.innerHTML=html)})();
 selectCand(selC);
 
