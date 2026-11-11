@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@500;600&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <style>
 /* Layout: planning-atlas tool. Top bar with section tabs, map canvas left, wide evidence sheet right; stacks on phones. Light theme only. */
 :root{
@@ -198,6 +198,35 @@ details.alts summary:focus-visible{outline:2px solid var(--accent);outline-offse
 .sp.cand{width:11px;height:11px;border-radius:50%}
 .sp.cand.sel{width:17px;height:17px;border-width:3px;box-shadow:0 0 0 2px var(--ink)}
 .sp.c-cp{background:var(--fcp)} .sp.c-ss{background:var(--fss)}
+.lf-zone4{fill:none;stroke:var(--st);stroke-opacity:.7;stroke-width:1;stroke-dasharray:5 4}
+.lf-msoa4{fill:none;stroke:#1F1E1B;stroke-opacity:.6;stroke-width:1}
+.demsel{fill:none;stroke:var(--ink);stroke-width:2.5}
+.cmp{display:grid;grid-template-columns:minmax(104px,30%) minmax(40px,1fr) repeat(var(--n,3),auto);gap:5px 10px;align-items:center;font-size:12.5px;margin-top:8px}
+.cmp .h{font-size:11.5px;font-weight:600;color:var(--muted);text-align:right}
+.cmp .v{text-align:right;white-space:nowrap}
+.cmp .v.d{font-weight:600}
+.cmp .g{grid-column:1/-1;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:6px;border-bottom:1px solid var(--line);padding-bottom:2px}
+.cmp .ind{padding-left:10px}
+.cmp .tr{display:flex;flex-direction:column;gap:2px}
+.cmp .tr i{display:block;height:6px;border-radius:0 3px 3px 0;background:var(--c,var(--ink));min-width:1px}
+.cmp .tr i.b0{background:var(--scL)}
+.cmp .tr i.z{min-width:0}
+.cmp .tot{font-weight:700}
+.cmp .rule{grid-column:1/-1;height:1.5px;background:var(--ink);margin-top:4px}
+.cmp .leg{grid-column:1/-1;display:flex;gap:14px;font-size:11.5px;color:var(--muted);margin-top:2px}
+.cmp .leg i{display:inline-block;width:14px;height:6px;border-radius:0 3px 3px 0;margin-right:5px;vertical-align:middle}
+.stack{display:flex;height:16px;border-radius:4px;overflow:hidden;margin:8px 0 6px;gap:2px;background:#fff}
+.stack i{display:block;height:100%;min-width:2px}
+.stleg{display:flex;flex-wrap:wrap;gap:3px 14px;font-size:12px;color:var(--muted)}
+.stleg span{display:inline-flex;align-items:center;gap:5px}.stleg i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.stleg b{color:var(--ink);font-weight:600}
+.why-h{font-size:12.5px;color:var(--muted);margin:0 0 4px}
+.why-take{font-size:13.5px;margin:10px 0 2px;padding:8px 10px;background:#F6F5F1;border-left:3px solid var(--ink);border-radius:0 6px 6px 0}
+.dtab.wt th{white-space:normal;vertical-align:bottom}
+.dtab.wt tr.u td{color:var(--muted)}
+.dtab.wt tr.sel td{font-weight:600;background:#F1EFEA}
+.fxl{font-size:12.5px;color:var(--muted);margin:4px 0 0}
+.fxd{margin-top:12px;padding:2px 12px}.fxd .katex-display{margin:.5em 0}
 .bars{display:flex;flex-direction:column;gap:7px;margin-top:8px}
 .bar{display:grid;grid-template-columns:minmax(120px,38%) 1fr auto;gap:10px;align-items:center;font-size:12.5px}
 .bar .tr{height:14px;position:relative}
@@ -305,17 +334,17 @@ main.nomap .mapcol{display:none}
       <label><input type="checkbox" id="ly3-lbl" checked><i class="sw" style="border:0;background:transparent;font-size:11px;line-height:12px;text-align:center">Aa</i>Labels</label>
       <button type="button" class="lc-fold" aria-expanded="true">Hide</button>
     </div>
-    <div class="layers-card" data-for="huff" role="group" aria-label="Map layers" hidden>
-      <div class="lc-title">Candidate</div>
-      <div class="seg" id="hf-seg" role="group" aria-label="Candidate"></div>
-      <label><input type="checkbox" id="ly4-flow" checked><i class="sw" style="height:3px;background:var(--fss);opacity:.6"></i><span id="flow-lbl">Spend flows</span></label>
-      <label><input type="checkbox" id="ly4-dem" checked><i class="sw" style="border-radius:50%;width:12px;background:var(--q3)"></i>Homes: size = spend, colour = candidate's share</label>
+    <div class="layers-card" data-for="huff" role="group" aria-label="Map layers" style="max-width:min(330px,calc(100% - 72px))" hidden>
+      <div class="lc-title">Scenario</div>
+      <div class="seg" id="hf-seg" role="group" aria-label="Scenario"></div>
+      <label><input type="checkbox" id="ly4-dem" checked><i class="sw" style="border-radius:50%;width:12px;background:var(--q3)"></i><span id="dem-lbl">Homes</span></label>
       <div class="ramp" id="share-ramp"></div>
       <label><input type="checkbox" id="ly4-sup" checked>Stores in the model</label>
       <div class="lc-pt"><i class="sp cp"></i>Argos collection point</div>
       <div class="lc-pt"><i class="sp comp"></i>Competitor (large chains only)</div>
       <div class="lc-pt"><i class="sp cand c-ss"></i><i class="sp cand c-cp"></i>Candidate (store / CP)</div>
-      <label><input type="checkbox" id="ly4-zone" checked><i class="sw" style="background:rgba(91,63,168,.07);border:1.5px dashed var(--st)"></i>15-minute walk from the study area</label>
+      <label><input type="checkbox" id="ly4-zone" checked><i class="sw" style="background:transparent;border:1px dashed var(--st)"></i>15-minute walk from the study area</label>
+      <label><input type="checkbox" id="ly4-flow"><i class="sw" style="height:3px;background:var(--fss);opacity:.6"></i><span id="flow-lbl">Show flows</span></label>
       <button type="button" class="lc-fold" aria-expanded="true">Hide</button>
     </div>
     <button type="button" id="reset" class="reset">Reset view</button>
@@ -455,21 +484,28 @@ main.nomap .mapcol{display:none}
     <div class="kpis" id="hf-kpis"></div>
 
     <div class="block">
-      <h2>Where the sales come from</h2>
-      <div class="bars" id="hf-src"></div>
+      <h2 id="hf-src-h"></h2>
+      <p class="sub" id="hf-src-sub"></p>
+      <div id="hf-src"></div>
       <p class="note" id="hf-src-note" style="margin-top:14px"></p>
     </div>
 
-    <div class="block">
+    <div class="block" id="hf-why-block">
+      <h2>Why this share?</h2>
+      <div id="hf-why"></div>
+    </div>
+
+    <div class="block" id="hf-decay-block">
       <h2>Share falls with walking time</h2>
       <p class="sub">Candidate's share of residents' spend, by minutes on foot.</p>
       <div id="hf-decay"></div>
     </div>
 
     <div class="block">
-      <h2>All four candidates</h2>
-      <p class="sub">Click a row to switch the map.</p>
-      <div class="tscroll"><table class="dtab" id="hf-tab"></table></div>
+      <h2>Compare candidates</h2>
+      <p class="sub">A = range coverage × price factor × format factor. Homes = households within a 5- or 10-minute walk; share = candidate's share of their spend. Click a row to switch the map.</p>
+      <div class="tscroll"><table class="dtab wt" id="hf-tab"></table></div>
+      <p class="why-take" id="hf-cmpnote"></p>
       <p class="note" id="hf-tabnote"></p>
     </div>
 
@@ -527,7 +563,8 @@ main.nomap .mapcol{display:none}
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <script src="data/territory.js"></script>
 <script src="data/competition.js"></script>
 <script src="data/candidates.js"></script>
@@ -707,59 +744,135 @@ const DEM=H.demand.features.map(f=>({...f.properties,lat:f.geometry.coordinates[
 const candInfo=id=>SUP.find(p=>p.point_id===id);
 const fmtCls=p=>p.format==='collection point'?'cp':'ss';
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
-const FLOW_MIN=500;
+const FLOW_MIN=500, TODAY='T';
 const SHARE_BINS=[.01,.03,.06,.12], SHARE_COL=['--q1','--q2','--q3','--q4','--q5'];
 const shareCol=v=>`var(${SHARE_COL[SHARE_BINS.filter(b=>v>=b).length]})`;
-const Emax=Math.max(...DEM.map(p=>p.E_gbp));
+const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const flowMax=Math.max(...CIDS.flatMap(c=>DEM.map(p=>p[c+'_gbp'])));
-let selC=CIDS.includes('C3')?'C3':CIDS[0];
+let selC=CIDS.includes('C3')?'C3':CIDS[0], selP=null;
 
-const zone4=L.geoJSON(C.zone,{pane:'river',style:{className:'lf-zone'},interactive:false});
-const msoa4=L.layerGroup(D.msoa.filter(f=>CLS[f.properties.id]).map(f=>L.geoJSON(f,{pane:'oa',style:{className:'lf-msoa2',fill:false},interactive:false})));
+/* Huff in the browser: same formula and parameters as the model (checked against base_share_* and C*_share) */
+const EXIST=SUP.filter(p=>p.type!=='candidate');
+const FF=PRM.format_factor;
+const ffOf=p=>p.format==='collection point'?FF.collection_point:p.format==='concession'?FF.concession:FF.standalone;
+const pfOf=p=>Math.pow(Math.max(p.price_index,PRM.price_index_floor),-PRM.gamma);
+const shortName=p=>p.type==='candidate'?p.point_id:p.type==='competitor'?p.chain:'Argos CP '+((p.name.match(/^(?:Tower Hamlets )?(.*?) Sainsbury/)||[,p.name])[1]);
+const wOf=(p,h)=>p.A/Math.pow(Math.max(h['t_'+p.point_id],.01),PRM.beta);
+function huffAt(h,c){
+  const alts=EXIST.concat(c===TODAY?[]:[candInfo(c)]).map(p=>({p,w:wOf(p,h)}));
+  const den=PRM.U_nonspatial+alts.reduce((s,x)=>s+x.w,0);
+  alts.forEach(x=>x.share=x.w/den);
+  const pU=PRM.U_nonspatial/den;
+  return {alts,den,pU,online:pU*PRM.online_fraction_of_U,outside:pU*(1-PRM.online_fraction_of_U)};
+}
+const localShare=h=>1-h.base_share_U;
+const homeShare=(h,c)=>c===TODAY?localShare(h):h[c+'_share'];
+const pctS=v=>v>0&&v<.0005?'<0.1%':pct(v,v<.095?1:0);
+
+/* where the money goes: today vs with a candidate */
+const sumD=k=>DEM.reduce((s,p)=>s+p[k],0);
+const BASE={online:sumD('base_online_gbp'),outside:sumD('base_outside_gbp')};
+const MARKET=S.demand.market_gbp, LOCAL0=EXIST.reduce((s,p)=>s+p.base_sales_gbp,0);
+function moneyRows(c){
+  const r=c===TODAY?null:S.candidates[c], w=(p)=>r?p['sales_with_'+c+'_gbp']:p.base_sales_gbp;
+  const byT=(a,b)=>b.base_sales_gbp-a.base_sales_gbp;
+  const rows=[{t:'Online (home delivery)',a:BASE.online,b:r?BASE.online-r.from_online:null},
+    {t:'Trips outside the walk zone',a:BASE.outside,b:r?BASE.outside-r.from_outside_trips:null},
+    {g:'Local shops'}];
+  EXIST.filter(p=>p.type==='competitor').sort(byT).forEach(p=>rows.push({t:p.chain,a:p.base_sales_gbp,b:r?w(p):null,ind:1}));
+  rows.push({g:'Existing Argos collection points'});
+  EXIST.filter(p=>p.type!=='competitor').sort(byT).forEach(p=>rows.push({t:shortName(p).replace('Argos CP ',''),a:p.base_sales_gbp,b:r?w(p):null,ind:1}));
+  if(r){rows.push({g:'New store'}); rows.push({t:`${c} ${candInfo(c).name}`,a:0,b:r.sales_gbp,ind:1,nw:1})}
+  return rows}
+function moneyChart(c){
+  const rows=moneyRows(c), T=c===TODAY, val=rows.filter(x=>!x.g), mx=Math.max(...val.map(x=>Math.max(x.a,x.b||0)));
+  const col=T?'var(--scB)':`var(${fmtCls(candInfo(c))==='cp'?'--fcp':'--fss'})`, wd=v=>(100*v/mx).toFixed(2)+'%';
+  const totA=val.reduce((s,x)=>s+x.a,0), totB=val.reduce((s,x)=>s+(x.b||0),0);
+  let h=T?`<div></div><div></div><div class="h">£ a year</div><div class="h">Share</div>`
+         :`<div></div><div></div><div class="h">Today</div><div class="h">With ${c}</div><div class="h">Change</div>`;
+  rows.forEach(x=>{
+    if(x.g){h+=`<div class="g">${x.g}</div>`; return}
+    const tip=T?`${x.t}: ${M(x.a)} (${pctS(x.a/totA)})`:`${x.t}: today ${M(x.a)}, with ${c} ${M(x.b)} (${x.b-x.a>=0?'+':''}${M(x.b-x.a)})`;
+    h+=`<div class="${x.ind?'ind':''}" title="${esc(tip)}">${esc(x.t)}</div>`;
+    h+=T?`<div class="tr" title="${esc(tip)}"><i style="width:${wd(x.a)};--c:${col}"></i></div><div class="v">${M(x.a)}</div><div class="v">${pctS(x.a/totA)}</div>`
+        :`<div class="tr" title="${esc(tip)}"><i class="b0${x.a?'':' z'}" style="width:${wd(x.a)}"></i><i style="width:${wd(x.b)};--c:${col}"></i></div><div class="v">${x.a?M(x.a):'—'}</div><div class="v">${M(x.b)}</div><div class="v d">${x.b-x.a>0?'+':''}${M(x.b-x.a)}</div>`});
+  h+=`<div class="rule"></div>`+(T?`<div class="tot">Total</div><div></div><div class="v tot">${M(totA)}</div><div class="v tot">100%</div>`
+      :`<div class="tot">Total</div><div></div><div class="v tot">${M(totA)}</div><div class="v tot">${M(totB)}</div><div class="v tot">${Math.abs(totB-totA)<1000?'£0':M(totB-totA)}</div>`);
+  if(!T) h+=`<div class="leg"><span><i style="background:var(--scL)"></i>Today</span><span><i style="background:${col}"></i>With ${c}</span></div>`;
+  return `<div class="cmp" style="--n:${T?2:3}">${h}</div>`}
+function srcNote(c){const r=S.candidates[c], P=S.parameters, f=v=>pct(v/r.sales_gbp),
+    g=v=>+(v*100).toFixed(1)+'%', on=P.online_share, loc=P.local_share_of_offline*(1-on);
+  return `How to read this. The percentages show where this store's ${M(r.sales_gbp)} of sales would come from. The model is run twice, without and with the store, and the results are compared. Each bar is the money a source loses when the store opens: ${f(r.from_outside_trips)} comes from residents who now travel less to bigger centres such as Beckton and Stratford, ${f(r.from_online)} from fewer online orders, ${f(r.from_local_competitors)} from local shops and ${f(r.from_existing_argos)} from existing Argos collection points. Today residents spend ${g(1-on-loc)} of this budget on trips, ${g(on)} online and ${g(loc)} locally, so the new store takes from each in about the same proportion.`}
+
+/* map */
+const zone4=L.geoJSON(C.zone,{pane:'river',style:{className:'lf-zone4'},interactive:false});
+const msoa4=L.layerGroup(D.msoa.filter(f=>CLS[f.properties.id]).map(f=>L.geoJSON(f,{pane:'oa',style:{className:'lf-msoa4',fill:false},interactive:false})));
 const flowG=L.layerGroup(), demG=L.layerGroup(), supG=L.layerGroup();
-document.getElementById('flow-lbl').textContent=`Spend flows to the candidate (≥ ${M(FLOW_MIN)} a year)`;
+document.getElementById('flow-lbl').textContent=`Show spend flows (≥ ${M(FLOW_MIN)} a year)`;
 document.getElementById('share-ramp').innerHTML=SHARE_COL.map((c,i)=>`<span><i style="background:var(${c})"></i>${i===0?'<'+trimPct(SHARE_BINS[0]):i===SHARE_COL.length-1?'≥'+trimPct(SHARE_BINS[i-1]):trimPct(SHARE_BINS[i-1])+'–'+trimPct(SHARE_BINS[i])}</span>`).join('');
 
-const demPopup=p=>{const c=selC;
-  return `<b>Home cluster ${p.pid}</b> <span class="k">· OA ${esc(p.oa21cd)}</span><dl class="pp">`+
-  `<dt>Households</dt><dd>${p.households.toFixed(1)}</dd><dt>Market</dt><dd>${M(p.E_gbp)} a year</dd>`+
-  `<dt>Walk to ${c}</dt><dd>${p[c+'_walk_min'].toFixed(1)} min</dd><dt>${c} share</dt><dd>${pct(p[c+'_share'],1)}</dd>`+
-  `<dt>£ to ${c}</dt><dd><b>${M(p[c+'_gbp'])}</b></dd>`+
-  `<dt>of which</dt><dd>${M(p[c+'_from_outside_gbp'])} from trips outside · ${M(p[c+'_from_online_gbp'])} from online · ${M(p[c+'_from_local_gbp'])} from local stores</dd></dl>`};
-const supPopup=p=>{const c=selC, cand=p.type==='candidate';
+const supPopup=p=>{const c=selC, T=c===TODAY, cand=p.type==='candidate';
   const kind=cand?`Candidate · ${cap(p.format)}`:p.chain==='Argos'?'Argos '+p.format:`Competitor · ${p.chain}`;
   let sales;
-  if(cand) sales=p.point_id===c?`<dt>Sales</dt><dd><b>${M(p.sales_gbp)}</b> (new)</dd>`:`<dt>Sales if opened</dt><dd>${M(p.sales_gbp)} <span class="k">(not the selected candidate)</span></dd>`;
-  else if(p.type==='competitor') sales=`<dt>${c} draws</dt><dd>${M(S.candidates[c].from_local_competitors)} from local shops (total)</dd>`;
+  if(cand) sales=p.point_id===c?`<dt>Sales</dt><dd><b>${M(p.sales_gbp)}</b> (new)</dd>`:`<dt>Sales if opened</dt><dd>${M(p.sales_gbp)}</dd>`;
+  else if(T) sales=`<dt>Sales today</dt><dd>${M(p.base_sales_gbp)}</dd>`;
   else {const a=p.base_sales_gbp, b=p['sales_with_'+c+'_gbp']; sales=`<dt>Sales today</dt><dd>${M(a)}</dd><dt>With ${c}</dt><dd>${M(b)} <span class="k">(${M(b-a)}, ${pct((b-a)/a,1)})</span></dd>`}
   return `<b>${cand?p.point_id+' · ':''}${esc(p.name)}</b><br><span class="k">${esc(kind)}</span><dl class="pp">`+
     `<dt>Attractiveness A</dt><dd>${p.A}</dd><dt>Range coverage</dt><dd>${pct(p.coverage,1)}</dd><dt>Price index</dt><dd>${p.price_index}</dd>${sales}</dl>`+
     `<span class="k">Sales: residents of the 2 study MSOAs only, 12 categories, £ ex VAT a year.</span>`};
 
 function drawHuffMap(){
-  const c=selC, cp=candInfo(c), to=[cp.lat,cp.lon], col=`var(${fmtCls(cp)==='cp'?'--fcp':'--fss'})`;
+  const c=selC, T=c===TODAY;
   flowG.clearLayers(); demG.clearLayers(); supG.clearLayers();
-  DEM.filter(p=>p[c+'_gbp']>=FLOW_MIN).sort((a,b)=>a[c+'_gbp']-b[c+'_gbp']).forEach(p=>
-    flowG.addLayer(L.polyline([[p.lat,p.lon],to],{pane:'iso',interactive:false,className:'flow',color:getComputedStyle(document.documentElement).getPropertyValue(fmtCls(cp)==='cp'?'--fcp':'--fss').trim(),weight:Math.max(.7,10*p[c+'_gbp']/flowMax)})));
-  DEM.slice().sort((a,b)=>b.E_gbp-a.E_gbp).forEach(p=>{
-    const m=L.circleMarker([p.lat,p.lon],{pane:'ctx',radius:2+12*Math.sqrt(p.E_gbp/Emax),className:'dem',fillColor:getComputedStyle(document.documentElement).getPropertyValue(SHARE_COL[SHARE_BINS.filter(b=>p[c+'_share']>=b).length]).trim()});
-    m.bindPopup(()=>demPopup(p),{maxWidth:320}); demG.addLayer(m)});
-  SUP.forEach(p=>{const cand=p.type==='candidate', on=p.point_id===c;
+  document.getElementById('dem-lbl').textContent=T?'Homes: share of spend at local stores today':`Homes: ${c}'s share of spend`;
+  if(!T){const cp=candInfo(c), to=[cp.lat,cp.lon];
+    DEM.filter(p=>p[c+'_gbp']>=FLOW_MIN).sort((a,b)=>a[c+'_gbp']-b[c+'_gbp']).forEach(p=>
+      flowG.addLayer(L.polyline([[p.lat,p.lon],to],{pane:'iso',interactive:false,className:'flow',color:cssv(fmtCls(cp)==='cp'?'--fcp':'--fss'),weight:Math.max(.7,10*p[c+'_gbp']/flowMax)})))}
+  DEM.forEach(p=>{const v=homeShare(p,c);
+    const m=L.circleMarker([p.lat,p.lon],{pane:'ctx',radius:4.5,className:'dem',fillColor:cssv(SHARE_COL[SHARE_BINS.filter(b=>v>=b).length])});
+    m.bindTooltip(`${pctS(v)} · click for the calculation`,{direction:'top',offset:[0,-4]});
+    m.on('click',()=>{selP=p.pid; drawSel(); whyPanel(true)});
+    demG.addLayer(m)});
+  drawSel();
+  SUP.forEach(p=>{const cand=p.type==='candidate', on=p.point_id===c, col=`var(${fmtCls(p)==='cp'?'--fcp':'--fss'})`;
     const cls=cand?`sp cand c-${fmtCls(p)}${on?' sel':''}`:p.chain==='Argos'?'sp cp':'sp comp', sz=on?23:cand?15:13;
-    const m=L.marker([p.lat,p.lon],{pane:'top',zIndexOffset:on?2000:cand?1000:0,icon:L.divIcon({className:'',html:`<i class="${cls}"></i>`,iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]}),title:p.name,alt:p.name});
+    const m=L.marker([p.lat,p.lon],{pane:'top',zIndexOffset:on?2000:cand?1000:0,icon:L.divIcon({className:'',html:`<i class="${cls}"${cand&&!on&&!T?' style="opacity:.55"':''}></i>`,iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]}),title:p.name,alt:p.name});
     m.bindPopup(()=>supPopup(p),{maxWidth:320});
     if(cand) m.bindTooltip(p.point_id,{permanent:true,direction:'right',offset:[on?12:8,0],className:on?'clbl':'albl'}).on('tooltipopen',e=>{const el=e.tooltip.getElement(); if(el) el.style.setProperty('--c',col)});
     supG.addLayer(m)});
 }
+let selRing=null;
+function drawSel(){if(selRing){demG.removeLayer(selRing); selRing=null}
+  const h=DEM.find(p=>p.pid===selP); if(!h) return;
+  selRing=L.circleMarker([h.lat,h.lon],{pane:'ctx',radius:8,className:'demsel',interactive:false}); demG.addLayer(selRing)}
+
+/* why this share? */
+const fmtA=v=>v>=.1?v.toFixed(2).replace(/0$/,''):v.toFixed(3);
+function whyPanel(scroll){
+  const el=document.getElementById('hf-why'), h=DEM.find(p=>p.pid===selP), c=selC, T=c===TODAY;
+  if(!h){el.innerHTML=`<p class="sub">Click a home on the map to see how its share is calculated.</p>`; return}
+  const R=huffAt(h,c), cand=T?null:R.alts.find(x=>x.p.type==='candidate');
+  const shop=R.alts.filter(x=>x.p.type==='competitor').reduce((s,x)=>s+x.share,0), cps=R.alts.filter(x=>x.p.type==='existing').reduce((s,x)=>s+x.share,0);
+  const segs=(cand?[[c,cand.share,`var(${fmtCls(cand.p)==='cp'?'--fcp':'--fss'})`]]:[]).concat([['Local shops',shop,'var(--comp)'],['Existing Argos CPs',cps,'var(--cp)'],['Online',R.online,'var(--scB)'],['Trips outside',R.outside,'var(--scL)']]);
+  const stack=`<div class="stack" role="img" aria-label="${esc(segs.map(([t,v])=>t+' '+pctS(v)).join(', '))}">${segs.map(([t,v,col])=>`<i style="width:${(100*v).toFixed(2)}%;background:${col}" title="${t}: ${pctS(v)}"></i>`).join('')}</div>`+
+    `<div class="stleg">${segs.map(([t,v,col])=>`<span><i style="background:${col}"></i>${t} <b>${pctS(v)}</b></span>`).join('')}</div>`;
+  const rows=R.alts.slice().sort((a,b)=>b.w-a.w);
+  const wt=`<thead><tr><th>Store</th><th>Range coverage</th><th>Price factor</th><th>Format</th><th>A</th><th>Walk, min</th><th>Weight = A / t<sup>β</sup></th><th>Share</th></tr></thead><tbody>`+
+    rows.map(x=>`<tr class="${x.p.type==='candidate'?'sel':''}"><td>${esc(shortName(x.p))}</td><td>${pct(x.p.coverage,1)}</td><td>${pfOf(x.p).toFixed(2)}</td><td>${ffOf(x.p)}</td><td><b>${fmtA(x.p.A)}</b></td><td>${h['t_'+x.p.point_id].toFixed(1)}</td><td><b>${x.w.toFixed(3)}</b></td><td>${pctS(x.share)}</td></tr>`).join('')+
+    `<tr class="u"><td>Online + trips (U)</td><td></td><td></td><td></td><td></td><td></td><td><b>${PRM.U_nonspatial.toFixed(3)}</b></td><td>${pctS(R.pU)}</td></tr></tbody>`;
+  const best=R.alts.filter(x=>x.p.type!=='candidate').sort((a,b)=>b.w-a.w)[0];
+  const bestTxt=`${shortName(best.p)} is ${h['t_'+best.p.point_id].toFixed(1)} min away (A = ${fmtA(best.p.A)})`;
+  let take;
+  if(cand){const cp=cand.p, why=ffOf(cp)<1?`is a collection point (A = ${fmtA(cp.A)})`:cp.coverage>=1?`has full Argos range (A = ${fmtA(cp.A)})`:`has A = ${fmtA(cp.A)}`;
+    take=`${c} takes ${pctS(cand.share)} here: it is ${h['t_'+c].toFixed(1)} min away and ${why}; ${bestTxt}.`}
+  else take=`Local stores take ${pctS(1-R.pU)} here; the strongest pull is ${shortName(best.p)}, ${h['t_'+best.p.point_id].toFixed(1)} min away (A = ${fmtA(best.p.A)}). The rest goes online (${pctS(R.online)}) or on trips outside the walk zone (${pctS(R.outside)}).`;
+  el.innerHTML=`<p class="why-h">Home cluster ${h.pid} · ${h.households.toFixed(1)} households · ${M(h.E_gbp)} a year · ${T?'today, no new store':'with '+c}</p>`+stack+
+    `<p class="why-take">${take}</p><div class="tscroll"><table class="dtab wt">${wt}</table></div>`+
+    `<p class="note">Share = weight / (U + sum of all store weights). Price factor = max(price index, ${PRM.price_index_floor})<sup>−${PRM.gamma}</sup>; β = ${PRM.beta}.</p>`;
+  if(scroll) document.getElementById('hf-why-block').scrollIntoView({behavior:'smooth',block:'start'});
+}
 
 /* panel */
-function srcBars(c){const r=S.candidates[c];
-  const rows=[['Trips to stores outside the walk zone',r.from_outside_trips],['Online (home delivery)',r.from_online],['From local shops (total)',r.from_local_competitors],['Existing Argos collection points',r.from_existing_argos]];
-  const mx=Math.max(...rows.map(x=>x[1])), col=`var(${fmtCls(candInfo(c))==='cp'?'--fcp':'--fss'})`;
-  return rows.map(([t,v])=>`<div class="bar" title="${t}: ${M(v)} (${pct(v/r.sales_gbp)})"><span>${t}</span><span class="tr"><i style="width:${(100*v/mx).toFixed(1)}%;--c:${col}"></i></span><b>${M(v)} <small>${pct(v/r.sales_gbp)}</small></b></div>`).join('')}
-function srcNote(c){const r=S.candidates[c], P=S.parameters, f=v=>pct(v/r.sales_gbp),
-    g=v=>+(v*100).toFixed(1)+'%', on=P.online_share, loc=P.local_share_of_offline*(1-on);
-  return `How to read this. The percentages show where this store's ${M(r.sales_gbp)} of sales would come from. The model is run twice, without and with the store, and the results are compared. Each bar is the money a source loses when the store opens: ${f(r.from_outside_trips)} comes from residents who now travel less to bigger centres such as Beckton and Stratford, ${f(r.from_online)} from fewer online orders, ${f(r.from_local_competitors)} from local shops and ${f(r.from_existing_argos)} from existing Argos collection points. Today residents spend ${g(1-on-loc)} of this budget on trips, ${g(on)} online and ${g(loc)} locally, so the new store takes from each in about the same proportion.`}
 const BANDS=[[0,2],[2,5],[5,10],[10,15],[15,20],[20,Infinity]];
 function decaySvg(c){
   const vals=BANDS.map(([a,b])=>{const ps=DEM.filter(p=>p[c+'_walk_min']>=a&&p[c+'_walk_min']<b); const E=ps.reduce((s,p)=>s+p.E_gbp,0);
@@ -775,25 +888,51 @@ function decaySvg(c){
 const bRange=c=>{const x=PL.candidates.find(k=>k.id===c).scenarios; return `${M(x.Low.revenue)}–${M(x.High.revenue)}`};
 const rankOf=c=>CIDS.slice().sort((a,b)=>S.candidates[b].incremental_gbp-S.candidates[a].incremental_gbp).indexOf(c)+1;
 function huffPanel(){
-  const c=selC, r=S.candidates[c], p=candInfo(c);
-  document.getElementById('hf-h1').textContent=`${c} ${p.name}: ${M(r.sales_gbp)} of sales, ${M(r.incremental_gbp)} new to Argos`;
-  document.getElementById('hf-kpis').innerHTML=
-    `<div class="kpi"><b>${M(r.sales_gbp)}</b><span>sales a year</span></div>`+
-    `<div class="kpi"><b>${M(r.incremental_gbp)}</b><span>incremental to Argos, range ${bRange(c)}</span></div>`+
-    `<div class="kpi"><b>#${rankOf(c)}</b><span>of ${CIDS.length} candidates by incremental revenue</span></div>`;
-  document.getElementById('hf-src').innerHTML=srcBars(c);
-  document.getElementById('hf-src-note').textContent=srcNote(c);
-  document.getElementById('hf-decay').innerHTML=decaySvg(c);
+  const c=selC, T=c===TODAY, show=(id,on)=>{document.getElementById(id).hidden=!on};
+  if(T){
+    document.getElementById('hf-h1').textContent=`Today: residents spend ${M(MARKET)} a year; ${pct(LOCAL0/MARKET,1)} of it is spent at stores in the walk zone`;
+    document.getElementById('hf-kpis').innerHTML=
+      `<div class="kpi"><b>${M(MARKET)}</b><span>residents' spend a year, ${S.demand.households.toLocaleString('en-GB')} households</span></div>`+
+      `<div class="kpi"><b>${M(BASE.outside)}</b><span>spent on trips outside the walk zone</span></div>`+
+      `<div class="kpi"><b>${M(LOCAL0)}</b><span>spent at local stores in the model (${pct(LOCAL0/MARKET,1)})</span></div>`;
+    document.getElementById('hf-src-h').textContent=`Where ${M(MARKET)} goes today`;
+    document.getElementById('hf-src-sub').textContent='No new store. £ ex VAT a year, 12 categories.';
+  } else {
+    const r=S.candidates[c], p=candInfo(c);
+    document.getElementById('hf-h1').textContent=`${c} ${p.name}: ${M(r.sales_gbp)} of sales, ${M(r.incremental_gbp)} new to Argos`;
+    document.getElementById('hf-kpis').innerHTML=
+      `<div class="kpi"><b>${M(r.sales_gbp)}</b><span>sales a year</span></div>`+
+      `<div class="kpi"><b>${M(r.incremental_gbp)}</b><span>incremental to Argos, range ${bRange(c)}</span></div>`+
+      `<div class="kpi"><b>#${rankOf(c)}</b><span>of ${CIDS.length} candidates by incremental revenue</span></div>`;
+    document.getElementById('hf-src-h').textContent=`Where the sales come from: today vs with ${c}`;
+    document.getElementById('hf-src-sub').textContent=`${M(MARKET)} of residents' spend, before and after ${c} opens. £ ex VAT a year.`;
+    document.getElementById('hf-src-note').textContent=srcNote(c);
+    document.getElementById('hf-decay').innerHTML=decaySvg(c);
+  }
+  document.getElementById('hf-src').innerHTML=moneyChart(c);
+  show('hf-src-note',!T); show('hf-decay-block',!T);
+  whyPanel(false);
   document.querySelectorAll('#hf-tab tr[data-c]').forEach(tr=>tr.classList.toggle('on',tr.dataset.c===c));
   document.querySelectorAll('#hf-seg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.c===c)));
 }
 function selectCand(c){selC=c; drawHuffMap(); huffPanel()}
 
 /* static parts of the panel */
-document.getElementById('hf-seg').innerHTML=CIDS.map(c=>`<button type="button" data-c="${c}" aria-pressed="false" title="${esc(candInfo(c).name)}">${c}</button>`).join('');
+document.getElementById('hf-seg').innerHTML=`<button type="button" data-c="${TODAY}" aria-pressed="false">Today (no new store)</button>`+CIDS.map(c=>`<button type="button" data-c="${c}" aria-pressed="false" title="${esc(candInfo(c).name)}">With ${c}</button>`).join('');
 document.querySelectorAll('#hf-seg button').forEach(b=>b.addEventListener('click',()=>selectCand(b.dataset.c)));
-document.getElementById('hf-tab').innerHTML=`<thead><tr><th>Candidate</th><th>Sales</th><th>Incremental</th><th>Range</th><th>Rank</th></tr></thead><tbody>`+
-  CIDS.map(c=>{const r=S.candidates[c], p=candInfo(c); return `<tr data-c="${c}" tabindex="0"><td><b>${c}</b> ${esc(p.name)}<br><span class="k" style="color:var(--muted)">${cap(p.format)}</span></td><td>${M(r.sales_gbp)}</td><td>${M(r.incremental_gbp)}</td><td>${bRange(c)}</td><td>${rankOf(c)}</td></tr>`}).join('')+'</tbody>';
+(()=>{const nb=(c,m)=>DEM.filter(p=>p[c+'_walk_min']<=m), hh=(c,m)=>Math.round(nb(c,m).reduce((s,p)=>s+p.households,0)),
+    sh5=c=>{const ps=nb(c,5); return ps.reduce((s,p)=>s+p[c+'_gbp'],0)/ps.reduce((s,p)=>s+p.E_gbp,0)};
+  const n0=v=>v.toLocaleString('en-GB');
+  document.getElementById('hf-tab').innerHTML=`<thead><tr><th>Candidate</th><th>A</th><th>Homes ≤5 min</th><th>≤10 min</th><th>Share ≤5 min</th><th>Sales</th><th>Incre&shy;mental</th></tr></thead><tbody>`+
+    CIDS.map(c=>{const r=S.candidates[c], p=candInfo(c);
+      return `<tr data-c="${c}" tabindex="0" title="${esc(p.name)}"><td><b>${c}</b><br><span class="k" style="color:var(--muted);white-space:nowrap">${fmtCls(p)==='cp'?'Collection point':cap(p.format)}</span></td><td><b>${fmtA(p.A)}</b><br><span class="k" style="color:var(--muted)">${p.coverage} × ${pfOf(p)} × ${ffOf(p)}</span></td><td>${n0(hh(c,5))}</td><td>${n0(hh(c,10))}</td><td>${pct(sh5(c),1)}</td><td>${M(r.sales_gbp)}</td><td>${M(r.incremental_gbp)}</td></tr>`}).join('')+'</tbody>';
+  const top=CIDS.slice().sort((a,b)=>S.candidates[b].incremental_gbp-S.candidates[a].incremental_gbp)[0];
+  const ss=CIDS.filter(c=>ffOf(candInfo(c))===1&&c!==top), cps=CIDS.filter(c=>ffOf(candInfo(c))<1);
+  let t=`${top} leads because more homes are close: ${n0(hh(top,5))} households within 5 minutes`;
+  if(ss.length) t+=` vs ${ss.map(c=>`${n0(hh(c,5))} for ${c}`).join(', ')}, at a similar share (${[top,...ss].map(c=>pct(sh5(c),1)).join(' vs ')})`;
+  t+='.';
+  if(cps.length) t+=` ${cps.join(' and ')} ${cps.length>1?'are collection points':'is a collection point'} (A = ${fmtA(candInfo(cps[0]).A)}), so ${cps.length>1?'they take':'it takes'} only ${cps.map(c=>pct(sh5(c),1)).join(' and ')} of spend nearby.`;
+  document.getElementById('hf-cmpnote').textContent=t})();
 document.querySelectorAll('#hf-tab tr[data-c]').forEach(tr=>{tr.addEventListener('click',()=>selectCand(tr.dataset.c)); tr.addEventListener('keydown',e=>{if(e.key==='Enter') selectCand(tr.dataset.c)})});
 const ao=PRM.alpha_online;
 const compIn=SUP.filter(p=>p.type==='competitor'), compAll=C.shops.filter(f=>f.properties.rel==='partial').length;
@@ -808,20 +947,30 @@ const compTxt=`Competitors are modelled only where range and prices could be col
   const betas=S.sensitivity.filter(r=>/^β/.test(r.parameter)).map(r=>+r.value).sort((a,b)=>a-b);
   const sc=k=>PL.scenarios.find(x=>x.key===k), lo=sc('Low'), bs=sc('Base'), hi=sc('High');
   const tp=v=>(v*100).toFixed(0)+'\\%', tm=v=>'\\text{'+M(v)+'}';
+  const r1=v=>+(v*100).toFixed(1), loc1=r1(PRM.local_share_of_offline*(1-PRM.online_share)), on1=r1(PRM.online_share), rest1=r1(1-PRM.local_share_of_offline*(1-PRM.online_share)), out1=+(rest1-on1).toFixed(1);
   const steps=[
    ['1. Demand',`${d.points} points on a 50 m grid: Census 2021 households, grown to mid-2024 and placed in OSM residential buildings.`,
     `E_i = \\text{households}_i \\times \\text{£}${wk.toFixed(2)}/\\text{wk} \\times 52 \\div ${PRM.vat_divisor} \\qquad \\textstyle\\sum_i E_i = ${tm(d.market_gbp)}`],
    ['2. Attractiveness',`Format factor: store ${ff.standalone} · concession ${ff.concession} · CP ${ff.collection_point}. γ = ${PRM.gamma}.`,
     `A_j = \\text{coverage}_j \\times \\max(\\text{price index}_j,\\ ${PRM.price_index_floor})^{-\\gamma} \\times \\text{format}_j`],
    ['3. Distance','Walking time on real paths (Valhalla, OpenStreetMap).',`D_{ij} = \\text{minutes on foot from } i \\text{ to } j`],
-   ['4. Choice',`U = online delivery + trips outside the walk zone; calibrated to ${pct(PRM.online_share)} online and ${pct(PRM.local_share_of_offline)} of offline spend in the zone.`,
-    `P_{ij} = \\dfrac{A_j / D_{ij}^{\\beta}}{U + \\sum_k A_k / D_{ik}^{\\beta}}`],
+   ['4. Choice',null,null,[
+     [`A_j = \\text{coverage}_j \\times \\max(\\text{price}_j,\\,${PRM.price_index_floor})^{-\\gamma} \\times \\text{format}_j`,'Attractiveness of store <i>j</i>: share of the range it stocks, price factor and format factor.'],
+     [`w_{ij} = \\dfrac{A_j}{D_{ij}^{\\,\\beta}}`,`Weight of store <i>j</i> for demand point <i>i</i>: attractiveness divided by walking minutes to the power β = ${PRM.beta}.`],
+     [`P_{ij} = \\dfrac{w_{ij}}{U + \\sum_k w_{ik}}`,'Share of the spend at point <i>i</i> that goes to store <i>j</i>.'],
+     [`P_{iU} = \\dfrac{U}{U + \\sum_k w_{ik}}`,`Share that goes online or on trips outside the walk zone; U = ${PRM.U_nonspatial}, the same for every home.`],
+     [`\\dfrac{\\sum_i E_i \\sum_j P_{ij}}{\\sum_i E_i} = ${loc1}\\%`,`Calibration: without the new store, walk-zone stores take ${loc1}% of spend.`],
+     [`U_{\\text{online}} = \\tfrac{${on1}}{${rest1}}\\,U,\\quad U_{\\text{outside}} = \\tfrac{${out1}}{${rest1}}\\,U`,`U is split into online (${on1}% of spend) and trips outside the walk zone (${out1}%).`],
+     [`\\text{Sales}_j = \\sum_i P_{ij}\\,E_i`,'Sales of store <i>j</i>: its share at each demand point times that point\'s spend, summed.']],
+    `A = attractiveness; D = walking minutes (Valhalla); β = ${PRM.beta}; U = online and trips outside the walk zone, calibrated so that walk-zone stores take ${loc1}% of spend without the new store; E = annual spend of a demand point, £ ex VAT.`],
    ['5. Distance decay β',`β ${bs.beta.toFixed(2)}: a new store takes ${bs.neighbour_share} of spend within a 5-minute walk. Low β ${lo.beta.toFixed(2)} (${lo.neighbour_share}), high β ${hi.beta.toFixed(2)} (${hi.neighbour_share}).</p><p>${bs.neighbour_share} = 1.5× Argos's ~9% national market share (Argos £4.1bn sales vs £51.7bn UK market for the 12 categories).`,null],
    ['6. Incremental revenue',`α<sub>online</sub>: ${pct(ao.store)} for a store, ${pct(ao.collection_point)} for a CP.`,
     `\\text{Incr.} = \\text{sales} - \\text{Argos CPs} - ${tp(PRM.alpha_outside)} \\cdot \\text{outside} - \\alpha_{\\text{online}} \\cdot \\text{online}`],
    ['7. Limitations',`Residents of the 2 MSOAs only · 12 categories · β not calibrated on Argos data · no brand loyalty, so store incremental is an upper bound.</p><p>${compTxt}`,null]];
   const tex=(f)=>{const el=document.createElement('span'); el.className='fx'; if(window.katex){try{katex.render(f,el,{displayMode:false,throwOnError:false})}catch(e){el.textContent=f}} else el.textContent=f.replace(/\\[a-z]+\{?|[{}]/g,''); return el.outerHTML};
-  document.getElementById('hf-steps').innerHTML=steps.map(([t,a,f])=>`<details><summary>${t}</summary><p>${a}</p>${f?tex(f):''}</details>`).join('');
+  const disp=d=>d.map(([x,l])=>`<div class="fx fxd">\\[${x}\\]</div><p class="fxl">${l}</p>`).join('');
+  document.getElementById('hf-steps').innerHTML=steps.map(([t,a,f,d,after])=>`<details><summary>${t}</summary>${a?`<p>${a}</p>`:''}${f?tex(f):''}${d?disp(d):''}${after?`<p class="fxl" style="margin-top:12px">${after}</p>`:''}</details>`).join('');
+  if(window.renderMathInElement) renderMathInElement(document.getElementById('hf-steps'),{delimiters:[{left:'\\[',right:'\\]',display:true}],throwOnError:false});
   const NAMES={beta:'β, distance decay',gamma:'γ, price sensitivity',price_index_floor:'Price index floor',format_factor:'Format factor',online_share:'Online share of spend (target)',local_share_of_offline:'Walk-zone share of offline spend (target)',U_nonspatial:'U, non-spatial alternatives',online_fraction_of_U:'Online part of U',vat_divisor:'VAT divisor',alpha_outside:'α, recapture of outside trips',alpha_online:'α, recapture of online'};
   const SUBN={standalone:'store',concession:'concession',collection_point:'collection point',store:'store'};
   const isPct=k=>/share|alpha|fraction/.test(k);
@@ -922,7 +1071,7 @@ const SECT={
  'competitors':{always:[studyL,shopG],toggles:[['ly2-zone',[zoneL]],['ly2-lbl',[shopLbl]]],
    bounds:()=>L.geoJSON(C.zone).getBounds().pad(.01)},
  'huff':{always:[msoa4],toggles:[['ly4-zone',[zone4]],['ly4-flow',[flowG]],['ly4-dem',[demG]],['ly4-sup',[supG]]],
-   bounds:()=>L.latLngBounds(DEM.map(p=>[p.lat,p.lon]).concat(SUP.map(p=>[p.lat,p.lon]))).pad(.04)},
+   bounds:()=>L.latLngBounds(DEM.map(p=>[p.lat,p.lon]).concat(SUP.filter(p=>p.type!=='existing').map(p=>[p.lat,p.lon]))).pad(.06)},
  'pnl':{always:[],toggles:[],nomap:true,bounds:()=>homeB},
  'candidates':{always:[msoa2,candG],toggles:[['ly3-zone',[zone3]],['ly3-alt',[altG,altLbl]],['ly3-ex',[exG]],['ly3-lbl',[candLbl,msoa2Lbl]]],
    bounds:()=>L.geoJSON(C.zone).getBounds().pad(.01)}};
