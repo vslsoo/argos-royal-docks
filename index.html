@@ -376,7 +376,7 @@ main.nomap .mapcol{display:none}
     <div class="intro">
       <div class="eyebrow">Competitors · 15-minute walk from the study area</div>
       <h1>No local competitor: no shop within walking distance sells the Argos range</h1>
-      <p>We checked every shop OpenStreetMap records within a 15-minute walk of Canning Town and Pontoon Dock. None of the general-merchandise chains is there. What exists covers one category each, or is a small non-food aisle in a supermarket.</p>
+      <p>Every shop recorded in OpenStreetMap within a 15-minute walk of Canning Town and Pontoon Dock was checked. None of the general-merchandise chains is there. What exists covers one category each, or is a small non-food aisle in a supermarket.</p>
     </div>
     <div class="kpis">
       <div class="kpi zero"><b>0</b><span>direct competitors</span></div>
@@ -457,6 +457,7 @@ main.nomap .mapcol{display:none}
     <div class="block">
       <h2>Where the sales come from</h2>
       <div class="bars" id="hf-src"></div>
+      <p class="note" id="hf-src-note" style="margin-top:14px"></p>
     </div>
 
     <div class="block">
@@ -756,6 +757,9 @@ function srcBars(c){const r=S.candidates[c];
   const rows=[['Trips to stores outside the walk zone',r.from_outside_trips],['Online (home delivery)',r.from_online],['From local shops (total)',r.from_local_competitors],['Existing Argos collection points',r.from_existing_argos]];
   const mx=Math.max(...rows.map(x=>x[1])), col=`var(${fmtCls(candInfo(c))==='cp'?'--fcp':'--fss'})`;
   return rows.map(([t,v])=>`<div class="bar" title="${t}: ${M(v)} (${pct(v/r.sales_gbp)})"><span>${t}</span><span class="tr"><i style="width:${(100*v/mx).toFixed(1)}%;--c:${col}"></i></span><b>${M(v)} <small>${pct(v/r.sales_gbp)}</small></b></div>`).join('')}
+function srcNote(c){const r=S.candidates[c], P=S.parameters, f=v=>pct(v/r.sales_gbp),
+    g=v=>+(v*100).toFixed(1)+'%', on=P.online_share, loc=P.local_share_of_offline*(1-on);
+  return `How to read this. The percentages show where this store's ${M(r.sales_gbp)} of sales would come from. The model is run twice, without and with the store, and the results are compared. Each bar is the money a source loses when the store opens: ${f(r.from_outside_trips)} comes from residents who now travel less to bigger centres such as Beckton and Stratford, ${f(r.from_online)} from fewer online orders, ${f(r.from_local_competitors)} from local shops and ${f(r.from_existing_argos)} from existing Argos collection points. Today residents spend ${g(1-on-loc)} of this budget on trips, ${g(on)} online and ${g(loc)} locally, so the new store takes from each in about the same proportion.`}
 const BANDS=[[0,2],[2,5],[5,10],[10,15],[15,20],[20,Infinity]];
 function decaySvg(c){
   const vals=BANDS.map(([a,b])=>{const ps=DEM.filter(p=>p[c+'_walk_min']>=a&&p[c+'_walk_min']<b); const E=ps.reduce((s,p)=>s+p.E_gbp,0);
@@ -778,6 +782,7 @@ function huffPanel(){
     `<div class="kpi"><b>${M(r.incremental_gbp)}</b><span>incremental to Argos, range ${bRange(c)}</span></div>`+
     `<div class="kpi"><b>#${rankOf(c)}</b><span>of ${CIDS.length} candidates by incremental revenue</span></div>`;
   document.getElementById('hf-src').innerHTML=srcBars(c);
+  document.getElementById('hf-src-note').textContent=srcNote(c);
   document.getElementById('hf-decay').innerHTML=decaySvg(c);
   document.querySelectorAll('#hf-tab tr[data-c]').forEach(tr=>tr.classList.toggle('on',tr.dataset.c===c));
   document.querySelectorAll('#hf-seg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.c===c)));
