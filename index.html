@@ -342,7 +342,7 @@ main.nomap .mapcol{display:none}
       <label><input type="checkbox" id="ly4-sup" checked>Stores in the model</label>
       <div class="lc-pt"><i class="sp cp"></i>Argos collection point</div>
       <div class="lc-pt"><i class="sp comp"></i>Competitor (large chains only)</div>
-      <div class="lc-pt"><i class="sp cand c-ss"></i><i class="sp cand c-cp"></i>Candidate (store / CP)</div>
+      <div class="lc-pt" id="hf-cand-leg"><i class="sp cand c-ss"></i><i class="sp cand c-cp"></i>Candidate (store / CP)</div>
       <label><input type="checkbox" id="ly4-zone" checked><i class="sw" style="background:transparent;border:1px dashed var(--st)"></i>15-minute walk from the study area</label>
       <label><input type="checkbox" id="ly4-flow"><i class="sw" style="height:3px;background:var(--fss);opacity:.6"></i><span id="flow-lbl">Show flows</span></label>
       <button type="button" class="lc-fold" aria-expanded="true">Hide</button>
@@ -824,6 +824,7 @@ const supPopup=p=>{const c=selC, T=c===TODAY, cand=p.type==='candidate';
 function drawHuffMap(){
   const c=selC, T=c===TODAY;
   flowG.clearLayers(); demG.clearLayers(); supG.clearLayers();
+  document.getElementById('hf-cand-leg').hidden=T;
   document.getElementById('dem-lbl').textContent=T?'Homes: share of spend at local stores today':`Homes: ${c}'s share of spend`;
   if(!T){const cp=candInfo(c), to=[cp.lat,cp.lon];
     DEM.filter(p=>p[c+'_gbp']>=FLOW_MIN).sort((a,b)=>a[c+'_gbp']-b[c+'_gbp']).forEach(p=>
@@ -834,7 +835,7 @@ function drawHuffMap(){
     m.on('click',()=>{selP=p.pid; drawSel(); whyPanel(true)});
     demG.addLayer(m)});
   drawSel();
-  SUP.forEach(p=>{const cand=p.type==='candidate', on=p.point_id===c, col=`var(${fmtCls(p)==='cp'?'--fcp':'--fss'})`;
+  SUP.filter(p=>p.type!=='candidate'||p.point_id===c).forEach(p=>{const cand=p.type==='candidate', on=p.point_id===c, col=`var(${fmtCls(p)==='cp'?'--fcp':'--fss'})`;
     const cls=cand?`sp cand c-${fmtCls(p)}${on?' sel':''}`:p.chain==='Argos'?'sp cp':'sp comp', sz=on?23:cand?15:13;
     const m=L.marker([p.lat,p.lon],{pane:'top',zIndexOffset:on?2000:cand?1000:0,icon:L.divIcon({className:'',html:`<i class="${cls}"${cand&&!on&&!T?' style="opacity:.55"':''}></i>`,iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]}),title:p.name,alt:p.name});
     m.bindPopup(()=>supPopup(p),{maxWidth:320});
